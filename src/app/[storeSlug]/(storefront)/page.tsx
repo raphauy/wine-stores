@@ -4,6 +4,8 @@ import { getStoreDAOBySlug } from '@/services/store-services'
 import { ArrowDownToLine, CheckCircle, Leaf, Truck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ProductGridSection } from './bak_page'
+import { getFeaturedProducts } from '@/services/product-services'
 type Props= {
   params: {
     storeSlug: string
@@ -47,7 +49,7 @@ export default async function StoreFrontHome({ params }: Props) {
 
       <section className='border-t border-gray-200 bg-gray-50'>
         <MaxWidthWrapper className='py-20 text-center'>
-          <p>productos destacados</p>
+          <ProductGridSection title="Destacados" productsFetcher={getFeaturedProducts} storeSlug={storeSlug} />
         </MaxWidthWrapper>
       </section>
     </>
