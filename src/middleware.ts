@@ -12,6 +12,14 @@ export default auth((req) => {
         return
     }
 
+    if (nextUrl.pathname === "/auth/login") {
+        const isLoggedIn = !!req.auth
+        if (isLoggedIn) {
+            return Response.redirect(new URL("/", nextUrl))
+        }
+        return
+    }
+
     const host= req.headers.get('host') || req.headers.get('x-forwarded-host')
     if (!host) return
 
