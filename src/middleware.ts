@@ -43,21 +43,21 @@ export default auth((req) => {
     //     return Response.redirect(new URL(`/auth/login${encodedCallbackUrl}`, nextUrl))
     // }
 
-    // if (subdomain) {
-    //     const searchParams = nextUrl.searchParams.toString()
-    //     const path = nextUrl.pathname
-    //     if (path.startsWith("/auth"))
-    //         return
+    if (subdomain) {
+        const searchParams = nextUrl.searchParams.toString()
+        const path = nextUrl.pathname
+        if (path.startsWith("/auth"))
+            return
         
-    //     const newPath = "/" + path.split('/').filter(Boolean).slice(1).join('/')
-    //     console.log('newPath', newPath)        
-    //     const pathWithSearchParams = `${newPath}${searchParams.length > 0 ? `?${searchParams}` : ''}`
-    //     // console.log('pathWithSearchParams', pathWithSearchParams)
+        const newPath = "/" + path.split('/').filter(Boolean).slice(1).join('/')
+        console.log('newPath', newPath)        
+        const pathWithSearchParams = `${newPath}${searchParams.length > 0 ? `?${searchParams}` : ''}`
+        // console.log('pathWithSearchParams', pathWithSearchParams)
 
-    //     subdomain= subdomain.substring(0, subdomain.length - 1)
-    //     console.log('subdomain', subdomain)
-    //     return NextResponse.rewrite(new URL(`/${subdomain}${pathWithSearchParams}`, req.url))
-    // }
+        subdomain= subdomain.substring(0, subdomain.length - 1)
+        console.log('subdomain', subdomain)
+        return NextResponse.rewrite(new URL(`/${subdomain}${pathWithSearchParams}`, req.url))
+    }
     
 
     return
