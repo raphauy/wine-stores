@@ -10,13 +10,13 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth
     //console.log('isLoggedIn', isLoggedIn)
 
-    const publicDomain= process.env.NEXT_PUBLIC_URL?.split('//')[1]
+    const publicUrl= process.env.NEXT_PUBLIC_URL
+    const publicDomain= publicUrl?.split('//')[1]
     let hostname = req.headers
     let subdomain = hostname.get('host')?.split(`${publicDomain}`).filter(Boolean)[0]
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
 //    const isPublicRoute = publicRoutes.includes(nextUrl.pathname) && !subdomain
-    //console.log('nextUrl', nextUrl.pathname);    
     
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   
@@ -43,7 +43,8 @@ export default auth((req) => {
     //     return Response.redirect(new URL(`/auth/login${encodedCallbackUrl}`, nextUrl))
     // }
 
-    if (subdomain) {
+    const host= req.headers.get('host') || req.headers.get('x-forwarded-host')
+    if (subdomain && host !== publicUrl) {
         const searchParams = nextUrl.searchParams.toString()
         const path = nextUrl.pathname
         if (path.startsWith("/auth"))

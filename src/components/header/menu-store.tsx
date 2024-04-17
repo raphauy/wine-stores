@@ -3,14 +3,17 @@
 import { useAdminRoles } from "@/app/admin/users/use-roles"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { UserRole } from "@prisma/client"
-import { BriefcaseBusiness, LayoutDashboard, LockKeyhole, Receipt, ShoppingBasket, Store, Tag, User } from "lucide-react"
+import { ShoppingBasket, Store, Tag, User } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
 
+const publicUrl= process.env.NEXT_PUBLIC_URL!
 
-export default function MenuStore() {
+type Props= {
+  isSubdomain: boolean
+}
+export default function MenuStore({ isSubdomain }: Props) {
     
     const user= useSession().data?.user
     const userRole= user?.role
@@ -31,26 +34,28 @@ export default function MenuStore() {
     if (clientSlug)
         return <div></div>
 
+    const basePath= isSubdomain ? "" : `/${storeSlug}` 
+    
     const data= [
         {
-            href: `/${storeSlug}`,
+            href: `${basePath === "" ? "/" : basePath}`,
             icon: Store,
             text: "Tienda"
         },
         {
-            href: `/${storeSlug}/users`,
+            href: `${basePath}/users`,
             icon: User,
             text: "Usuarios",
             roles: alowedRoles
         },
         {
-            href: `/${storeSlug}/categories`,
+            href: `${basePath}/categories`,
             icon: Tag,
             text: "Categorías",
             roles: alowedRoles
         },
         {
-            href: `/${storeSlug}/products`,
+            href: `${basePath}/products`,
             icon: ShoppingBasket, 
             text: "Productos",
             roles: alowedRoles

@@ -1,11 +1,5 @@
-import { redirect } from "next/navigation";
 import { getCurrentRole, getCurrentUser } from "@/lib/utils";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import Logo from "@/components/header/logo";
-import Selectors from "@/components/header/selectors/selectors";
-import Logged from "@/components/header/logged";
-import Menu from "@/components/header/menu";
-import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface Props {
   children: React.ReactNode

@@ -6,6 +6,7 @@ import Selectors from "@/components/header/selectors/selectors";
 import Logged from "@/components/header/logged";
 import Menu from "@/components/header/menu";
 import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 interface Props {
   children: React.ReactNode
@@ -15,6 +16,12 @@ interface Props {
 }
 
 export default async function AdminLayout({ children, params }: Props) {
+
+  const currentHost= headers().get("x-forwarded-host")
+  const isSubdomain= currentHost !== process.env.NEXT_PUBLIC_URL?.split("//")[1]
+  console.log("process.env.NEXT_PUBLIC_URL", process.env.NEXT_PUBLIC_URL)
+  console.log("isSubdomain", isSubdomain)
+  console.log("isSubdomain", isSubdomain)
 
   const session = await auth();
   return (
@@ -27,7 +34,7 @@ export default async function AdminLayout({ children, params }: Props) {
               <Selectors />
               <Logged />
             </div>
-            <Menu />
+            <Menu isSubdomain={isSubdomain} />
           </div>
         }
         {children}

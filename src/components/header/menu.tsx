@@ -5,7 +5,11 @@ import { useParams, usePathname } from "next/navigation"
 import MenuAdmin from "./menu-admin"
 import MenuStore from "./menu-store"
 
-export default function Menu() {
+type Props= {
+    isSubdomain: boolean
+  }
+  
+export default function Menu({ isSubdomain }: Props) {
 
     const user= useSession().data?.user
 
@@ -19,7 +23,7 @@ export default function Menu() {
     if (path.startsWith("/admin")) {
         menu= <MenuAdmin />
     } else if (storeSlug) {
-        menu= <MenuStore />
+        menu= <MenuStore isSubdomain={isSubdomain} />
     } else {
         menu= null    
     }
