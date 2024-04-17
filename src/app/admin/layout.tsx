@@ -23,10 +23,6 @@ export default async function AdminLayout({ children }: Props) {
 
   const currentHost= headers().get("x-forwarded-host")
   const isSubdomain= currentHost !== process.env.NEXT_PUBLIC_URL?.split("//")[1]
-  console.log("process.env.NEXT_PUBLIC_URL", process.env.NEXT_PUBLIC_URL)
-  console.log("isSubdomain", isSubdomain)
-  console.log("isSubdomain", isSubdomain)
-  
 
   return (
     <div className="flex flex-col items-center flex-grow p-1 w-full max-w-[1350px]">
