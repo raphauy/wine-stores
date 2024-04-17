@@ -29,7 +29,7 @@ export default async function StoreFrontHome({ params }: Props) {
           </p>
           <div className='flex flex-col sm:flex-row gap-4 mt-6'>
             <Link
-              href='#'
+              href='/productos'
               className={buttonVariants()}>
               Explora lo Más Vendido
             </Link>

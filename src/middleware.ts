@@ -49,13 +49,13 @@ export default auth((req) => {
         if (path.startsWith("/auth"))
             return
         
-        const newPath = "/" + path.split('/').filter(Boolean).slice(1).join('/')
+        const newPath = "/" + path.split('/').filter(Boolean).slice(0).join('/')
         console.log('newPath', newPath)        
         const pathWithSearchParams = `${newPath}${searchParams.length > 0 ? `?${searchParams}` : ''}`
         // console.log('pathWithSearchParams', pathWithSearchParams)
 
         subdomain= subdomain.substring(0, subdomain.length - 1)
-        console.log('subdomain', subdomain)
+        console.log("path:", path, 'subdomain:', subdomain, pathWithSearchParams)
         return NextResponse.rewrite(new URL(`/${subdomain}${pathWithSearchParams}`, req.url))
     }
     
