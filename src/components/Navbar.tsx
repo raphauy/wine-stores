@@ -36,8 +36,8 @@ export default async function Navbar({ storeSlug, categories, featuredProducts }
               <MobileNav categories={categories} featuredProducts={featuredProducts} />
 
               <div className='ml-4 flex lg:ml-0'>
-                <Link key={store.id} href={`/${store.slug}`}>
-                  <Button variant="ghost">
+                <Link key={store.id} href={`/`}>
+                  <Button variant="link">
                     <div className="flex items-center gap-2">
                       { store.image && <Image src={store.image} alt={store.name} width={40} height={40} className="rounded-full" />}
                     </div>
