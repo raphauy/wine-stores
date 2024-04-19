@@ -19,7 +19,7 @@ export default async function StoreFrontHome({ params }: Props) {
 
   const category= await getCategoryDAOBySlug(storeSlug, categorySlug)
   if (!category) {
-    return <div>No se ha encontrado la categoría</div>
+    return <div></div>
   }
 
   const host= headers().get('host')
