@@ -1,6 +1,6 @@
 'use client'
 
-import { useOnClickOutside } from '@/lib/use-on-click-outside'
+import { useOnClickOutside } from '@/hooks/use-on-click-outside'
 import { useEffect, useRef, useState } from 'react'
 import NavItem from './NavItem'
 import { CategoryDAO } from '@/services/category-services'

@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger
 import { Separator } from './ui/separator'
 import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
-import { buttonVariants } from './ui/button'
+import { Button, buttonVariants } from './ui/button'
 import Image from 'next/image'
 import { ScrollArea } from './ui/scroll-area'
 import { useEffect, useState } from 'react'
@@ -65,8 +65,10 @@ const Cart = () => {
 
               <SheetFooter>
                 <SheetTrigger asChild>
-                  <Link href='/cart' className={buttonVariants({className: 'w-full',})}>
-                    Ir al Checkout
+                  <Link href='#' className='w-full'>
+                    <Button className='w-full' disabled>
+                      Ir al Checkout (comming soon...)
+                    </Button>
                   </Link>
                 </SheetTrigger>
               </SheetFooter>
