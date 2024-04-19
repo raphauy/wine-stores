@@ -17,6 +17,7 @@ type Props= {
   id?: string
   closeDialog: () => void
 }
+console.log("sssssssss");
 
 export function CategoryForm({ id, closeDialog }: Props) {
   const params= useParams()
@@ -36,7 +37,8 @@ export function CategoryForm({ id, closeDialog }: Props) {
 
   useEffect(() => {
     setSlug(generateSlug(watchName))
-  }, [watchName])
+    form.setValue("slug", slug)
+  }, [watchName, form, slug])
   const [loading, setLoading] = useState(false)
   
 

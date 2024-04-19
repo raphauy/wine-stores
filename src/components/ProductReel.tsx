@@ -11,6 +11,7 @@ import ProductListing from './ProductListing'
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { getInfiniteProductsAction } from '@/app/[storeSlug]/(storefront)/product-actions'
+import { Button } from './ui/button'
 
 interface ProductReelProps {
   title: string
@@ -46,21 +47,6 @@ export default function ProductReel(props: ProductReelProps) {
     }
   }, [storeSlug, query])
   
-  // const { data: queryResults, isLoading } =
-  //   trpc.getInfiniteProducts.useInfiniteQuery(
-  //     {
-  //       limit: query.limit ?? FALLBACK_LIMIT,
-  //       query,
-  //     },
-  //     {
-  //       getNextPageParam: (lastPage) => lastPage.nextPage,
-  //     }
-  //   )
-
-  // const products = queryResults?.pages.flatMap(
-  //   (page) => page.items
-  // )
-
   let map: (ProductDAO | null)[] = []
   if (products && products.length) {
     map = products
@@ -76,7 +62,7 @@ export default function ProductReel(props: ProductReelProps) {
       <div className='md:flex md:items-center md:justify-between mb-4'>
         <div className='max-w-2xl px-4 lg:max-w-4xl lg:px-0'>
           {title ? (
-            <h1 className='text-2xl font-bold text-gray-900 sm:text-3xl'>
+            <h1 className='text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white'>
               {title}
             </h1>
           ) : null}
@@ -90,9 +76,12 @@ export default function ProductReel(props: ProductReelProps) {
         {href ? (
           <Link
             href={href}
-            className='hidden text-sm font-medium text-blue-600 hover:text-blue-500 md:block'>
-            Ver más{' '}
-            <span aria-hidden='true'>&rarr;</span>
+            >
+              <Button className='hidden md:block' variant="link">
+                Ver más <span aria-hidden='true'>&rarr;</span>
+              </Button>
+            
+            
           </Link>
         ) : null}
       </div>

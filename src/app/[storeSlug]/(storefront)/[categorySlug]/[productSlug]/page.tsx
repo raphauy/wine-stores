@@ -74,11 +74,17 @@ export default async function ProductoPage({ params }: PageProps) {
               {BREADCRUMBS.map((breadcrumb, i) => (
                 <li key={breadcrumb.href}>
                   <div className='flex items-center text-sm'>
-                    <Link
+                    {/* <Link
                       href={breadcrumb.href}
                       className='font-medium text-sm text-muted-foreground hover:text-gray-900'>
                       {breadcrumb.name}
+                    </Link> */}
+                    <Link href={breadcrumb.href}>
+                      <Button variant="link" className='text-muted-foreground'>
+                        {breadcrumb.name}
+                      </Button>
                     </Link>
+
                     {i !== BREADCRUMBS.length - 1 ? (
                       <svg
                         viewBox='0 0 20 20'
@@ -94,14 +100,14 @@ export default async function ProductoPage({ params }: PageProps) {
             </ol>
 
             <div className='mt-4'>
-              <h1 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+              <h1 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white'>
                 {product.name}
               </h1>
             </div>
 
             <section className='mt-4'>
               <div className='flex items-center'>
-                <p className='font-medium text-gray-900'>
+                <p className='font-medium text-gray-900 dark:text-white'>
                   {formatPrice(product.price)}
                 </p>
 
@@ -163,7 +169,7 @@ export default async function ProductoPage({ params }: PageProps) {
       <ProductReel
         href={isSubdomain ? `/${product.category.slug}` : `/${storeSlug}/${product.category.slug}`}
         query={{ category: product.category.id, limit: 4 }}
-        title={`Productos similares en ${label}`}
+        title={`Productos similares`}
         subtitle={`Encuentra vinos similares a '${product.name}' en ${label}`}
         isSubdomain={isSubdomain}
       />

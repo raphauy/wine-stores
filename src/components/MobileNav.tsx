@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { buttonVariants } from './ui/button'
+import { Button, buttonVariants } from './ui/button'
 
 type Props= {
   categories: CategoryDAO[]
@@ -74,15 +74,11 @@ export default function MobileNav({ categories, isSubdomain } : Props){
                 {categories.map((category) => (
                   <li
                     key={category.name}
-                    className='space-y-10 px-4 pb-8 pt-10'>
+                    className='space-y-4 px-2 py-3'>
                     <Link href={isSubdomain ? `/${category.slug}` : `/${storeSlug}/${category.slug}`} className='-m-2 block p-2 font-medium text-gray-900'>
-                      <div className='border-b border-gray-200'>
-                        <div className='-mb-px flex'>
-                          <p className='border-transparent text-gray-900 flex-1 whitespace-nowrap border-b-2 py-4 text-base font-medium'>
-                            {category.name}
-                          </p>
-                        </div>
-                      </div>
+                      <Button variant="link" className='text-muted-foreground'>
+                        {category.name}
+                      </Button>
                     </Link> 
                   </li>
                 ))}

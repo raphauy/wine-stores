@@ -28,8 +28,6 @@ export default function ProductListing({ product, index, isSubdomain }: ProductL
 
   if (!product || !isVisible) return <ProductPlaceholder />
 
-  const label = product.category.name
-
   const validUrls = product.images.map((image) => image.url)
 
   if (isVisible && product) {
@@ -45,13 +43,13 @@ export default function ProductListing({ product, index, isSubdomain }: ProductL
         <div className='flex flex-col w-full'>
           <ImageSlider urls={validUrls} />
 
-          <h3 className='mt-4 font-medium text-sm text-gray-700'>
+          <h3 className='mt-4 font-medium text-gray-700 dark:text-white'>
             {product.name}
           </h3>
-          <p className='mt-1 text-sm text-gray-500'>
-            {label}
+          <p className='mt-1 text-sm text-gray-500 dark:text-white'>
+            {product.category.name}
           </p>
-          <p className='mt-1 font-medium text-sm text-gray-900'>
+          <p className='mt-1 font-medium text-sm text-gray-900 dark:text-white'>
             {formatPrice(product.price)}
           </p>
         </div>
