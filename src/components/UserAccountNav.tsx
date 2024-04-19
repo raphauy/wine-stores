@@ -20,7 +20,7 @@ export default function UserAccountNav({ user }: Props) {
           variant='ghost'
           size='sm'
           className='relative'>
-          My account
+          Mi cuenta
         </Button>
       </DropdownMenuTrigger>
 

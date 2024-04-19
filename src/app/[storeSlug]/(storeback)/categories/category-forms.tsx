@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Loader } from "lucide-react"
 import { useParams } from "next/navigation"
+import { generateSlug } from "@/lib/utils"
 
 type Props= {
   id?: string
@@ -25,10 +26,17 @@ export function CategoryForm({ id, closeDialog }: Props) {
     resolver: zodResolver(categorySchema),
     defaultValues: {
       name: "",
+      slug: "",
       storeSlug
     },
     mode: "onChange",
   })
+  const watchName = form.watch("name")
+  const [slug, setSlug] = useState("")
+
+  useEffect(() => {
+    setSlug(generateSlug(watchName))
+  }, [watchName])
   const [loading, setLoading] = useState(false)
   
 
@@ -49,7 +57,9 @@ export function CategoryForm({ id, closeDialog }: Props) {
     if (id) {
       getCategoryDAOAction(id).then((data) => {
         if (data) {
-          form.reset(data)
+          form.setValue("name", data.name)
+          form.setValue("storeSlug", storeSlug)
+          form.setValue("slug", data.slug)
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {
@@ -58,7 +68,7 @@ export function CategoryForm({ id, closeDialog }: Props) {
         })
       })
     }
-  }, [form, id])
+  }, [form, id, storeSlug])
 
   return (
     <div className="p-4 bg-white rounded-md">
@@ -75,10 +85,25 @@ export function CategoryForm({ id, closeDialog }: Props) {
                   <Input placeholder="Category's name" {...field} />
                 </FormControl>
                 <FormMessage />
+                <p>slug: {slug}</p>
               </FormItem>
             )}
           />
-          
+
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem className="hidden">
+                <FormLabel>Slug</FormLabel>
+                <FormControl>
+                  <Input placeholder="" {...field} disabled={true} value={generateSlug(watchName)} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
       
         <div className="flex justify-end">
             <Button onClick={() => closeDialog()} type="button" variant={"secondary"} className="w-32">Cancel</Button>

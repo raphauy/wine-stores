@@ -1,6 +1,5 @@
 import Navbar from '@/components/Navbar'
-import Footer from '@/components/footer'
-import { cn, constructMetadata } from '@/lib/utils'
+import { constructMetadata } from '@/lib/utils'
 import { getCategorysDAO } from '@/services/category-services'
 import { getFeaturedProducts } from '@/services/product-services'
 import { Inter } from 'next/font/google'

@@ -1,7 +1,7 @@
 "use client"
 
 import * as z from "zod"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
@@ -20,6 +20,7 @@ import { toast } from "@/components/ui/use-toast"
 import { DeleteProductDialog } from "../product-dialogs"
 import { createProductAction, updateProductAction } from "../product-actions"
 import { Textarea } from "@/components/ui/textarea"
+import { generateSlug } from "@/lib/utils"
 
 
 interface ProductFormProps {
@@ -47,6 +48,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     price: String(initialData?.price),
   } : {
     name: '',
+    slug: '',
     description: '',
     images: [],
     price: "0",
@@ -59,6 +61,13 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     resolver: zodResolver(productSchema),
     defaultValues
   });
+  const watchName = form.watch("name")
+  const [slug, setSlug] = useState("")
+
+  useEffect(() => {
+    setSlug(generateSlug(watchName))
+  }, [watchName])
+  
 
   const onSubmit = async (data: ProductFormValues) => {
     try {
@@ -66,7 +75,12 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
       if (initialData) {
         await updateProductAction(initialData.id, data)
       } else {
-        await createProductAction(storeSlug, data)
+        const categorySlug= categories.find((category) => category.id === data.categoryId)?.slug
+        if (!categorySlug) {
+          toast({ title: "Error", description: "No se pudo crear el producto, el categoría no existe.", variant: "destructive" })
+        } else {
+          await createProductAction(storeSlug, categorySlug, data)
+        }
       }
       toast({ title: toastMessage })        
       router.push(`/${storeSlug}/products`);
@@ -132,6 +146,19 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
             <p></p>
             <FormField
               control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem className="hidden">
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl >
+                    <Input placeholder="" {...field} disabled={true} value={slug} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -140,6 +167,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                     <Input disabled={loading} placeholder="Nombre del producto" {...field} />
                   </FormControl>
                   <FormMessage />
+                  <p>slug: {slug}</p>
                 </FormItem>
               )}
             />

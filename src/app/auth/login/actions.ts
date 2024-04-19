@@ -3,6 +3,7 @@
 import { signIn } from "@/lib/auth";
 import { sendCodeEmail } from "@/lib/mail";
 import { LoginSchema, createOTPConfirmation, deleteOTPConfirmation, generateOTPCode, getOTPCodeByEmail, getOTPConfirmationByUserId, getUserByEmail, setUserAsVerified } from "@/services/login-services";
+import { UserFormValues, createUser } from "@/services/user-services";
 import { AuthError } from "next-auth";
 import * as z from "zod";
 
@@ -17,15 +18,23 @@ export async function loginAction(values: z.infer<typeof LoginSchema>, callbackU
 
   const { email, code } = validatedFields.data;
 
-  const existingUser = await getUserByEmail(email);
+  let user = await getUserByEmail(email);
 
-  if (!existingUser || !existingUser.email) {
-    return { error: "Email does not exist!" }
+  if (!user || !user.email) {
+    // create new user
+    const data: UserFormValues= {
+      email,
+      role: "CLIENT"
+    }
+    user = await createUser(data)
+    if (!user) {
+      return { error: "Error al crear usuario! Por favor intenta de nuevo." }
+    }
   }
 
-  if (existingUser.email) {
+  if (user.email) {
     if (code) {
-      const oTPCode = await getOTPCodeByEmail(existingUser.email)
+      const oTPCode = await getOTPCodeByEmail(user.email)
 
       if (!oTPCode) {
         return { error: "Código no encontrado!" }
@@ -41,19 +50,19 @@ export async function loginAction(values: z.infer<typeof LoginSchema>, callbackU
         return { error: "Código expirado!" }
       }
 
-      await setUserAsVerified(existingUser.id)
+      await setUserAsVerified(user.id)
 
       // await deleteOTPCode(oTPCode.id)
 
-      const existingConfirmation = await getOTPConfirmationByUserId(existingUser.id)
+      const existingConfirmation = await getOTPConfirmationByUserId(user.id)
 
       if (existingConfirmation) {
         await deleteOTPConfirmation(existingConfirmation.id)
       }
 
-      await createOTPConfirmation(existingUser.id)
+      await createOTPConfirmation(user.id)
     } else {
-      const oTPCode = await generateOTPCode(existingUser.email)
+      const oTPCode = await generateOTPCode(user.email)
       await sendCodeEmail(
         oTPCode.email,
         oTPCode.code,

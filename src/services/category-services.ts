@@ -5,6 +5,7 @@ import { StoreDAO, getStoreDAOBySlug } from "./store-services"
 export type CategoryDAO = {
 	id: string
 	name: string
+  slug: string
 	createdAt: Date
 	updatedAt: Date
 	store: StoreDAO
@@ -13,6 +14,7 @@ export type CategoryDAO = {
 
 export const categorySchema = z.object({
 	name: z.string().min(1, "name is required."),
+  slug: z.string().min(1, "slug is required."),
 	storeSlug: z.string().min(1, "storeSlug is required."),
 })
 

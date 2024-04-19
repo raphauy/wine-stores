@@ -79,3 +79,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.swiper-pagination-bullet-active {
+  color: #fff;
+  background: black !important;
+  scale: 1 !important ;
+}

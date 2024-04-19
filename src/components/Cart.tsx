@@ -22,10 +22,7 @@ const Cart = () => {
     setIsMounted(true)
   }, [])
 
-  const cartTotal = items.reduce(
-    (total, { product }) => total + product.price,
-    0
-  )
+  const cartTotal = items.reduce((total, { product }) => total + product.price,0)
 
   const fee = 1
 
@@ -76,11 +73,7 @@ const Cart = () => {
 
               <SheetFooter>
                 <SheetTrigger asChild>
-                  <Link
-                    href='/cart'
-                    className={buttonVariants({
-                      className: 'w-full',
-                    })}>
+                  <Link href='/cart' className={buttonVariants({className: 'w-full',})}>
                     Ir al Checkout
                   </Link>
                 </SheetTrigger>
@@ -102,14 +95,7 @@ const Cart = () => {
               Tu carrito está vacío
             </div>
             <SheetTrigger asChild>
-              <Link
-                href='/products'
-                className={buttonVariants({
-                  variant: 'link',
-                  size: 'sm',
-                  className:
-                    'text-sm text-muted-foreground',
-                })}>
+              <Link href='/products' className={buttonVariants({ variant: 'link', size: 'sm', className:'text-sm text-muted-foreground' })}>
                 Agrega items a tu carrito para hacer checkout
               </Link>
             </SheetTrigger>

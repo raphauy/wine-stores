@@ -22,7 +22,7 @@ export default async function NotAlowedPage({ searchParams }: Props) {
           {
             user ? 
             <Link href={"/"}><Button className='w-24 mt-10'>Home</Button></Link> :
-            <Link href={"/login"}><Button className='w-24 mt-10'>Login</Button></Link> 
+            <Link href={"/auth/login"}><Button className='w-24 mt-10'>Login</Button></Link> 
           }
         </div>
       </section>

@@ -20,11 +20,11 @@ export default async function AdminLayout({ children, params }: Props) {
     const storeSlug= params.storeSlug
     
     if (currentUser?.storeSlug!==storeSlug) {
-      return redirect("/auth/unauthorized?message=You are not authorized to access this page ss")
+      return redirect("/auth/unauthorized?message=You are not authorized to access this page")
     }
 
   } else if (!currentRole?.startsWith("ADMIN")) {
-    return redirect("/auth/unauthorized?message=You are not authorized to access this page dd")
+    return redirect("/auth/unauthorized?message=You are not authorized to access this page")
   }
 
   return (

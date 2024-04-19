@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { auth } from "./auth"
 import { Metadata } from "next"
+import { UserRole } from "@prisma/client"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -41,22 +42,23 @@ export function generateSlug(name: string): string {
     .trim(); // Eliminar espacios al inicio y al final
 }
 
-export function formatPrice(price: number | string, options: {
-    currency?: 'USD' | 'EUR' | 'GBP' | 'UYU'
-    notation?: Intl.NumberFormatOptions['notation']
-  } = {}
-) {
-  const { currency = 'USD', notation = 'compact' } = options
+type CurrencyOptions= {
+  currency?: 'USD' | 'EUR' | 'GBP' | 'UYU'
+  notation?: Intl.NumberFormatOptions['notation']
+}
+export function formatPrice(price: number | string, options: CurrencyOptions = {}) {
+  const { currency = 'UYU', notation = 'compact' } = options
 
-  const numericPrice =
-    typeof price === 'string' ? parseFloat(price) : price
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price
 
-  return new Intl.NumberFormat('es-UY', {
+  const res= new Intl.NumberFormat('es-UY', {
     style: 'currency',
     currency,
     notation,
-    maximumFractionDigits: 2,
-  }).format(numericPrice)
+    maximumFractionDigits: 0,
+  })
+  
+  return res.format(numericPrice)
 }
 
 
@@ -90,7 +92,7 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: '@joshtriedcoding',
+      creator: '@tinta.wine',
     },
     icons,
     metadataBase: new URL('https://agency-planner.com'),
@@ -101,4 +103,8 @@ export function constructMetadata({
       },
     }),
   }
+}
+
+export function getAdminRoles() {
+  return [UserRole.ADMIN, UserRole.STORE_OWNER, UserRole.STORE_ADMIN]
 }

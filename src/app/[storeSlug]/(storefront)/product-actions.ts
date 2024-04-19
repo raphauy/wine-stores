@@ -1,23 +1,19 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { ProductDAO, ProductFormValues, createProduct, updateProduct, getFullProductDAO, deleteProduct, slugExists } from "@/services/product-services"
+import { ProductDAO, ProductFormValues, createProduct, updateProduct, getFullProductDAO, deleteProduct, getInfiniteProducts } from "@/services/product-services"
 import { getStoreDAOBySlug } from "@/services/store-services"
+import { TQueryValidator } from "@/components/query-validator"
 
 
 export async function getProductDAOAction(id: string): Promise<ProductDAO | null> {
     return getFullProductDAO(id)
 }
 
-export async function createProductAction(storeSlug: string, categorySlug: string, data: ProductFormValues): Promise<ProductDAO | null> {        
+export async function createProductAction(storeSlug: string, data: ProductFormValues): Promise<ProductDAO | null> {        
     const store= await getStoreDAOBySlug(storeSlug) 
     if (!store) {
       throw new Error("store not found")
-    }
-
-    const exists= await slugExists(data.slug, storeSlug, categorySlug)
-    if (exists) {
-      throw new Error("ya existe un producto con este nombre")
     }
 
     const updated= await createProduct(store.id, data)
@@ -43,3 +39,13 @@ export async function deleteProductAction(id: string): Promise<ProductDAO | null
     return deleted as ProductDAO
 }
 
+export async function getInfiniteProductsAction(storeSlug: string, query: TQueryValidator): Promise<ProductDAO[]> {
+    const store= await getStoreDAOBySlug(storeSlug) 
+    if (!store) {
+      throw new Error("store not found")
+    }
+
+    const products= await getInfiniteProducts(store.id, query)
+
+    return products as ProductDAO[]
+}

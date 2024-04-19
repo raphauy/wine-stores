@@ -1,17 +1,15 @@
-import Link from 'next/link'
-import MaxWidthWrapper from './MaxWidthWrapper'
-import { Icons } from './Icons'
-import { Button, buttonVariants } from './ui/button'
-import Cart from './Cart'
-import { cookies } from 'next/headers'
-import UserAccountNav from './UserAccountNav'
+import { auth } from '@/lib/auth'
 import { CategoryDAO } from '@/services/category-services'
 import { ProductDAO } from '@/services/product-services'
-import { auth } from '@/lib/auth'
-import MobileNav from './MobileNav'
 import { getStoreDAOBySlug } from '@/services/store-services'
-import NavItems from './NavItems'
 import Image from 'next/image'
+import Link from 'next/link'
+import Cart from './Cart'
+import MaxWidthWrapper from './MaxWidthWrapper'
+import MobileNav from './MobileNav'
+import NavItems from './NavItems'
+import UserAccountNav from './UserAccountNav'
+import { Button, buttonVariants } from './ui/button'
 
 type Props= {
   storeSlug: string
@@ -20,12 +18,12 @@ type Props= {
 }
 
 export default async function Navbar({ storeSlug, categories, featuredProducts } : Props){
-  const nextCookies = cookies()
+  
   const session = await auth();
   const user= session?.user
 
   const store= await getStoreDAOBySlug(storeSlug)
-  if (!store) return <div>No se encontró el Store</div>
+  if (!store) return <div></div>
 
   return (
     <div className='sticky z-50 top-0 inset-x-0 h-16 bg-red-50 w-full '>
@@ -51,15 +49,6 @@ export default async function Navbar({ storeSlug, categories, featuredProducts }
 
               <div className='ml-auto flex items-center'>
                 <div className='hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6'>
-                  {user ? null : (
-                    <Link
-                      href='/auth/login'
-                      className={buttonVariants({
-                        variant: 'ghost',
-                      })}>
-                      Login
-                    </Link>
-                  )}
 
                   {user ? null : (
                     <span
@@ -72,11 +61,11 @@ export default async function Navbar({ storeSlug, categories, featuredProducts }
                     <UserAccountNav user={user} />
                   ) : (
                     <Link
-                      href='/sign-up'
+                      href={`/micuenta`}
                       className={buttonVariants({
                         variant: 'ghost',
                       })}>
-                      Crear cuenta
+                      Mi cuenta
                     </Link>
                   )}
 

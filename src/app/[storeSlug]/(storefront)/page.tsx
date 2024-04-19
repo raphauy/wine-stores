@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ProductGridSection } from './bak_page'
 import { getFeaturedProducts } from '@/services/product-services'
+import ProductReel from '@/components/ProductReel'
 type Props= {
   params: {
     storeSlug: string
@@ -18,6 +19,12 @@ export default async function StoreFrontHome({ params }: Props) {
   }
 
   const store= await getStoreDAOBySlug(storeSlug)
+
+  const categories= store.categories
+
+  if (!store || !store.image) {
+    return <div>No se ha encontrado el Store</div>
+  }
   return (
     <>
       <MaxWidthWrapper>
@@ -29,7 +36,7 @@ export default async function StoreFrontHome({ params }: Props) {
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
             Bienvenido a la tienda de <span className='font-bold'>{store.name}</span>. Cada botella en nuestra plataforma es cuidadosamente seleccionada por nuestro equipo para garantizar los más altos estándares de calidad.
           </p>
-          <div className='flex flex-col sm:flex-row gap-4 mt-6'>
+          {/* <div className='flex flex-col sm:flex-row gap-4 mt-6'>
             <Link
               href='/productos'
               className={buttonVariants()}>
@@ -38,20 +45,28 @@ export default async function StoreFrontHome({ params }: Props) {
             <Button variant='ghost'>
               Nuestra promesa de calidad &rarr;
             </Button>
-          </div>
+          </div> */}
         </div>
-        {/* <ProductReel
-          query={{ sort: 'desc', limit: 4 }}
-          href='/products?sort=recent'
-          title='Brand new'
-        /> */}
+        {
+          categories && categories.map((category) => (
+            <ProductReel
+              key={category.id}
+              query={{ sort: 'asc', limit: 4, category: category.id }}
+              href={`/productos`}
+              title={category.name}
+            />
+          ))
+        }
       </MaxWidthWrapper>
 
-      <section className='border-t border-gray-200 bg-gray-50'>
-        <MaxWidthWrapper className='py-20 text-center'>
-          <ProductGridSection title="Destacados" productsFetcher={getFeaturedProducts} storeSlug={storeSlug} />
-        </MaxWidthWrapper>
-      </section>
+
+      {/* <section className='border-t border-gray-200 bg-gray-50'>
+      <ProductReel
+        query={{ sort: 'desc' }}
+        href='/productos?sort=recent'
+        title='Brand new'
+      />
+      </section> */}
     </>
   )
 }

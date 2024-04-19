@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import authConfig from "@/lib/auth.config"
 import { NextResponse } from "next/server"
+import { cookies } from "next/headers"
   
 const { auth } = NextAuth(authConfig)
 
@@ -12,7 +13,7 @@ export default auth((req) => {
         return
     }
 
-    if (nextUrl.pathname === "/auth/login") {
+    if (nextUrl.pathname.startsWith("/auth")) { 
         const isLoggedIn = !!req.auth
         if (isLoggedIn) {
             return Response.redirect(new URL("/", nextUrl))

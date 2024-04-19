@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getCurrentRole, getCurrentUser } from "@/lib/utils";
+import { getAdminRoles, getCurrentRole, getCurrentUser } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Logo from "@/components/header/logo";
 import Selectors from "@/components/header/selectors/selectors";
@@ -7,6 +7,7 @@ import Logged from "@/components/header/logged";
 import Menu from "@/components/header/menu";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { UserRole } from "@prisma/client";
 
 interface Props {
   children: React.ReactNode
@@ -21,6 +22,13 @@ export default async function AdminLayout({ children, params }: Props) {
   const isSubdomain= currentHost !== process.env.NEXT_PUBLIC_URL?.split("//")[1]
 
   const session = await auth();
+  const currentRole: UserRole| undefined = session?.user?.role as UserRole | undefined
+  const isAdmin= currentRole === UserRole.ADMIN || currentRole === UserRole.STORE_OWNER || currentRole === UserRole.STORE_ADMIN
+
+  if (!isAdmin) {
+    return children
+  }
+
   return (
     <div className="flex flex-col items-center flex-grow p-1 w-full">
         {

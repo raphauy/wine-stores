@@ -40,7 +40,8 @@ export default function MenuStore({ isSubdomain }: Props) {
         {
             href: `${basePath === "" ? "/" : basePath}`,
             icon: Store,
-            text: "Tienda"
+            text: "Tienda",
+            roles: alowedRoles
         },
         {
             href: `${basePath}/users`,

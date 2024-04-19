@@ -77,6 +77,9 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
+      aspectRatio: {
+        "botella": "1 / 1.25",
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -3,10 +3,12 @@ import { prisma } from "@/lib/db"
 import { StoreDAO } from "./store-services"
 import { CategoryDAO } from "./category-services"
 import { ImageDAO } from "./image-services"
+import { QueryValidator, TQueryValidator } from "@/components/query-validator"
 
 export type ProductDAO = {
 	id: string
 	name: string
+  slug: string
   description?: string
 	price: number
 	isFeatured: boolean
@@ -22,6 +24,7 @@ export type ProductDAO = {
 
 export const productSchema = z.object({
 	name: z.string().min(1, "nombre es obligatorio."),
+  slug: z.string().min(1, "slug es obligatorio."),
   description: z.string().optional(),
   price: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
   images: z.object({ url: z.string() }).array(),
@@ -48,7 +51,8 @@ export async function getProductDAO(id: string) {
       id
     },
     include: {
-      images: true
+      images: true,
+      category: true,
     }
   })
   return found as ProductDAO
@@ -65,6 +69,7 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
   const created= await prisma.product.create({
     data: {
       name: data.name,
+      slug: data.slug,
       price,
       isFeatured: data.isFeatured,
       isArchived: data.isArchived,
@@ -223,4 +228,51 @@ export async function getFullProductDAO(id: string) {
   })
   return found as ProductDAO
 }
-    
+
+export async function getInfiniteProducts(storeId: string, query: TQueryValidator) {
+  
+  const categoryId= query.category
+  const sort= query.sort
+  const limit= query.limit
+
+  const where= categoryId ? { 
+    storeId,
+    isArchived: false,
+    categoryId 
+  } 
+  : 
+  {
+    storeId,
+    isArchived: false,
+  }
+
+  const found = await prisma.product.findMany({
+    where,
+    orderBy: {
+      name: sort,
+    },
+    take: limit,
+    include: {
+			store: true,
+			category: true,
+      images: true
+		}
+  })
+
+  return found as ProductDAO[]
+}
+
+export async function slugExists(slug: string, storeSlug: string, categorySlug: string) {
+  const found = await prisma.product.findFirst({
+    where: {
+      slug,
+      store: {
+        slug: storeSlug
+      },
+      category: {
+        slug: categorySlug
+      }
+    },
+  })
+  return found !== null
+}
