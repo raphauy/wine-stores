@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { ProductGridSection } from './bak_page'
 import { getFeaturedProducts } from '@/services/product-services'
 import ProductReel from '@/components/ProductReel'
+import { headers } from 'next/headers'
 type Props= {
   params: {
     storeSlug: string
@@ -18,8 +19,9 @@ export default async function StoreFrontHome({ params }: Props) {
     return <div>No se ha encontrado el Store</div>
   }
 
-  // ToDo: cambiar isSubdomain
-  const isSubdomain= false
+  const host= headers().get('host')
+  const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+  const isSubdomain= hostUrl !== host
 
   const store= await getStoreDAOBySlug(storeSlug)
 
@@ -57,6 +59,7 @@ export default async function StoreFrontHome({ params }: Props) {
               query={{ sort: 'asc', limit: 4, category: category.id }}
               href={`${isSubdomain ? `/${category.slug}` : `/${storeSlug}/${category.slug}`}`} 
               title={category.name}
+              isSubdomain={isSubdomain}
             />
           ))
         }

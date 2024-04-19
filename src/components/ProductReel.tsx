@@ -17,12 +17,13 @@ interface ProductReelProps {
   subtitle?: string
   href?: string
   query: TQueryValidator
+  isSubdomain: boolean
 }
 
 const FALLBACK_LIMIT = 4
 
 export default function ProductReel(props: ProductReelProps) { 
-  const { title, subtitle, href, query } = props
+  const { title, subtitle, href, query, isSubdomain } = props
 
   const params= useParams()
   const storeSlug= params.storeSlug as string
@@ -104,6 +105,7 @@ export default function ProductReel(props: ProductReelProps) {
                 key={`product-${i}`}
                 product={product}
                 index={i}
+                isSubdomain={isSubdomain}
               />
             ))}
           </div>

@@ -12,7 +12,7 @@ import ImageSlider from './ImageSlider'
 interface ProductListingProps {
   product: ProductDAO | null
   index: number
-  isSubdomain?: boolean
+  isSubdomain: boolean  
 }
 
 export default function ProductListing({ product, index, isSubdomain }: ProductListingProps) {  

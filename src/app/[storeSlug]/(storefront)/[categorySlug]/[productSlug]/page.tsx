@@ -2,11 +2,13 @@
 import ImageSlider from '@/components/ImageSlider'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
+import { Button } from '@/components/ui/button'
 //import { PRODUCT_CATEGORIES } from '@/config'
 //import { getPayloadClient } from '@/get-payload'
 import { formatPrice } from '@/lib/utils'
 import { getProductDAO, getProductDAOBySlug } from '@/services/product-services'
 import { Check, Shield } from 'lucide-react'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -21,15 +23,16 @@ interface PageProps {
 
 export default async function ProductoPage({ params }: PageProps) {
 
-
   const storeSlug = params.storeSlug
   const categorySlug = params.categorySlug
   const productSlug= params.productSlug
 
   const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
 
-  // ToDo: cambiar isSubdomain
-  const isSubdomain= false
+  const host= headers().get('host')
+  const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+  const isSubdomain= hostUrl !== host
+
   const categoryHref= isSubdomain ? `/${categorySlug}` : `/${storeSlug}/${categorySlug}` 
   const homeHref= isSubdomain ? `/` : `/${storeSlug}`
 
@@ -108,7 +111,7 @@ export default async function ProductoPage({ params }: PageProps) {
               </div>
 
               <div className='mt-4 space-y-6'>
-                <p className='text-base text-muted-foreground'>
+                <p className='text-base text-muted-foreground whitespace-pre-line'>
                   {product.description}
                 </p>
               </div>
@@ -119,7 +122,7 @@ export default async function ProductoPage({ params }: PageProps) {
                   className='h-5 w-5 flex-shrink-0 text-green-500'
                 />
                 <p className='ml-2 text-sm text-muted-foreground'>
-                  Eligible for instant delivery
+                  Entrega inmediata
                 </p>
               </div>
             </section>
@@ -137,6 +140,9 @@ export default async function ProductoPage({ params }: PageProps) {
             <div>
               <div className='mt-10'>
                 {/* <AddToCartButton product={product} /> */}
+                <Button className="w-full">
+                  Agregar al carrito (comming soon...)
+                </Button>
               </div>
               <div className='mt-6 text-center'>
                 <div className='group inline-flex text-sm text-medium'>
@@ -145,7 +151,7 @@ export default async function ProductoPage({ params }: PageProps) {
                     className='mr-2 h-5 w-5 flex-shrink-0 text-gray-400'
                   />
                   <span className='text-muted-foreground hover:text-gray-700'>
-                    30 Day Return Guarantee
+                    Satisfacción garantizada
                   </span>
                 </div>
               </div>
@@ -155,10 +161,11 @@ export default async function ProductoPage({ params }: PageProps) {
       </div>
 
       <ProductReel
-        href='/products'
+        href={isSubdomain ? `/${product.category.slug}` : `/${storeSlug}/${product.category.slug}`}
         query={{ category: product.category.id, limit: 4 }}
         title={`Productos similares en ${label}`}
         subtitle={`Encuentra vinos similares a '${product.name}' en ${label}`}
+        isSubdomain={isSubdomain}
       />
     </MaxWidthWrapper>
   )

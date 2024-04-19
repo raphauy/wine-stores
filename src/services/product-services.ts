@@ -88,6 +88,7 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
   const created= await prisma.product.create({
     data: {
       name: data.name,
+      description: data.description,
       slug: data.slug,
       price,
       isFeatured: data.isFeatured,
@@ -116,6 +117,7 @@ export async function updateProduct(id: string, data: ProductFormValues) {
     },
     data: {
       name: data.name,
+      description: data.description,
       slug: data.slug,
       price,
       isFeatured: data.isFeatured,

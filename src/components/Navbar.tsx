@@ -16,9 +16,10 @@ type Props= {
   storeSlug: string
   categories: CategoryDAO[]
   featuredProducts: ProductDAO[]
+  isSubdomain: boolean
 }
 
-export default async function Navbar({ storeSlug, categories, featuredProducts } : Props){
+export default async function Navbar({ storeSlug, categories, featuredProducts, isSubdomain } : Props){
   
   const session = await auth();
   const user= session?.user
@@ -35,7 +36,7 @@ export default async function Navbar({ storeSlug, categories, featuredProducts }
               <MobileNav categories={categories} featuredProducts={featuredProducts} />
 
               <div className='ml-4 flex lg:ml-0'>
-                <Link key={store.id} href={`/`}>
+                <Link key={store.id} href={isSubdomain ? `/` : `/${storeSlug}`}>
                   <Button variant="link">
                     <div className="flex items-center gap-2">
                       { store.image && <Image src={store.image} alt={store.name} width={40} height={40} className="rounded-full" />}
