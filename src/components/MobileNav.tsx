@@ -89,15 +89,6 @@ export default function MobileNav({ categories, isSubdomain } : Props){
               </ul>
             </div>
 
-            <div className='space-y-6 border-t border-gray-200 px-4 py-6'>
-              <Link
-                href={isSubdomain ? `/micuenta` : `/${storeSlug}/micuenta`}
-                className={buttonVariants({
-                  variant: 'ghost',
-                })}>
-                Mi cuenta
-              </Link>
-            </div>
           </div>
         </div>
       </div>
