@@ -1,4 +1,6 @@
-import { useCart } from '@/lib/use-cart'
+"use client"
+
+import { useCart } from '@/hooks/use-cart'
 import { formatPrice } from '@/lib/utils'
 import { ImageDAO } from '@/services/image-services'
 import { ProductDAO } from '@/services/product-services'
@@ -8,7 +10,7 @@ import Image from 'next/image'
 type Props= {
   product: ProductDAO
 }
-export default async function CartItem({ product }: Props) {
+export default function CartItem({ product }: Props) {
   const image: ImageDAO= product.images[0]
 
   const { removeItem } = useCart()

@@ -9,7 +9,7 @@ import { buttonVariants } from './ui/button'
 import Image from 'next/image'
 import { ScrollArea } from './ui/scroll-area'
 import { useEffect, useState } from 'react'
-import { useCart } from '@/lib/use-cart'
+import { useCart } from '@/hooks/use-cart'
 import CartItem from './CartItem'
 
 const Cart = () => {
@@ -23,8 +23,6 @@ const Cart = () => {
   }, [])
 
   const cartTotal = items.reduce((total, { product }) => total + product.price,0)
-
-  const fee = 1
 
   return (
     <Sheet>
@@ -58,15 +56,9 @@ const Cart = () => {
                   <span>Gratis</span>
                 </div>
                 <div className='flex'>
-                  <span className='flex-1'>
-                    Comisión
-                  </span>
-                  <span>{formatPrice(fee)}</span>
-                </div>
-                <div className='flex'>
                   <span className='flex-1'>Total</span>
                   <span>
-                    {formatPrice(cartTotal + fee)}
+                    {formatPrice(cartTotal)}
                   </span>
                 </div>
               </div>

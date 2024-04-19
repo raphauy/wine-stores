@@ -47,7 +47,7 @@ type CurrencyOptions= {
   notation?: Intl.NumberFormatOptions['notation']
 }
 export function formatPrice(price: number | string, options: CurrencyOptions = {}) {
-  const { currency = 'UYU', notation = 'compact' } = options
+  const { currency = 'UYU', notation = 'standard' } = options
 
   const numericPrice = typeof price === 'string' ? parseFloat(price) : price
 
