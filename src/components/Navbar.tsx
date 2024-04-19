@@ -46,7 +46,7 @@ export default async function Navbar({ storeSlug, categories, featuredProducts, 
               </div>
 
               <div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
-                <MenuCategories isSubdomain={false} categories={categories} />
+                <MenuCategories isSubdomain={isSubdomain} categories={categories} />
               </div>
 
               <div className='ml-auto flex items-center'>
