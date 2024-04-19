@@ -5,15 +5,18 @@ import { ProductDAO } from '@/services/product-services'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { buttonVariants } from './ui/button'
 
 type Props= {
   categories: CategoryDAO[]
-  featuredProducts: ProductDAO[]
+  isSubdomain: boolean
 }
-export default function MobileNav({ categories, featuredProducts } : Props){
+export default function MobileNav({ categories, isSubdomain } : Props){
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  const storeSlug= useParams().storeSlug
 
   const pathname = usePathname()
 
@@ -47,6 +50,7 @@ export default function MobileNav({ categories, featuredProducts } : Props){
       </button>
     )
 
+
   return (
     <div>
       <div className='relative z-40 lg:hidden'>
@@ -71,57 +75,28 @@ export default function MobileNav({ categories, featuredProducts } : Props){
                   <li
                     key={category.name}
                     className='space-y-10 px-4 pb-8 pt-10'>
-                    <div className='border-b border-gray-200'>
-                      <div className='-mb-px flex'>
-                        <p className='border-transparent text-gray-900 flex-1 whitespace-nowrap border-b-2 py-4 text-base font-medium'>
-                          {category.name}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className='grid grid-cols-2 gap-y-10 gap-x-4'>
-                      {featuredProducts.map((product) => (
-                        <div
-                          key={product.name}
-                          className='group relative text-sm'>
-                          <div className='relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
-                            <Image
-                              fill
-                              src={product.images[0].url}
-                              alt='product category image'
-                              className='object-cover object-center'
-                            />
-                          </div>
-                          <Link
-                            href={"#"}
-                            className='mt-6 block font-medium text-gray-900'>
-                            {product.name}
-                          </Link>
+                    <Link href={isSubdomain ? `/${category.slug}` : `/${storeSlug}/${category.slug}`} className='-m-2 block p-2 font-medium text-gray-900'>
+                      <div className='border-b border-gray-200'>
+                        <div className='-mb-px flex'>
+                          <p className='border-transparent text-gray-900 flex-1 whitespace-nowrap border-b-2 py-4 text-base font-medium'>
+                            {category.name}
+                          </p>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    </Link> 
                   </li>
                 ))}
               </ul>
             </div>
 
             <div className='space-y-6 border-t border-gray-200 px-4 py-6'>
-              <div className='flow-root'>
-                <Link
-                  onClick={() => closeOnCurrent('/sign-in')}
-                  href='/sign-in'
-                  className='-m-2 block p-2 font-medium text-gray-900'>
-                  Sign in
-                </Link>
-              </div>
-              <div className='flow-root'>
-                <Link
-                  onClick={() => closeOnCurrent('/sign-up')}
-                  href='/sign-up'
-                  className='-m-2 block p-2 font-medium text-gray-900'>
-                  Sign up
-                </Link>
-              </div>
+              <Link
+                href={isSubdomain ? `/micuenta` : `/${storeSlug}/micuenta`}
+                className={buttonVariants({
+                  variant: 'ghost',
+                })}>
+                Mi cuenta
+              </Link>
             </div>
           </div>
         </div>

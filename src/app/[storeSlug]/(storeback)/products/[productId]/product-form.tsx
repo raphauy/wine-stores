@@ -66,7 +66,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
   useEffect(() => {
     setSlug(generateSlug(watchName))
-  }, [watchName])
+    form.setValue("slug", slug)
+  }, [watchName, slug, form])
   
 
   const onSubmit = async (data: ProductFormValues) => {

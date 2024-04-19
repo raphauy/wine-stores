@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { ProductDAO, ProductFormValues, createProduct, updateProduct, getFullProductDAO, deleteProduct, slugExists } from "@/services/product-services"
 import { getStoreDAOBySlug } from "@/services/store-services"
+import { generateSlug } from "@/lib/utils"
 
 
 export async function getProductDAOAction(id: string): Promise<ProductDAO | null> {

@@ -33,7 +33,7 @@ export default async function Navbar({ storeSlug, categories, featuredProducts, 
         <MaxWidthWrapper>
           <div className=''>
             <div className='flex h-16 items-center'>
-              <MobileNav categories={categories} featuredProducts={featuredProducts} />
+              <MobileNav categories={categories} isSubdomain={isSubdomain} />
 
               <div className='ml-4 flex lg:ml-0'>
                 <Link key={store.id} href={isSubdomain ? `/` : `/${storeSlug}`}>
