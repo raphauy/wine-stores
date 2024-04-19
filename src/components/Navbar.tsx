@@ -7,10 +7,9 @@ import Link from 'next/link'
 import Cart from './Cart'
 import MaxWidthWrapper from './MaxWidthWrapper'
 import MobileNav from './MobileNav'
-import NavItems from './NavItems'
 import UserAccountNav from './UserAccountNav'
-import { Button, buttonVariants } from './ui/button'
 import MenuCategories from './header/menu-categories'
+import { Button, buttonVariants } from './ui/button'
 
 type Props= {
   storeSlug: string
