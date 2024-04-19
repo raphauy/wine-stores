@@ -44,23 +44,25 @@ export async function getCategoryDAO(id: string) {
   return found as CategoryDAO
 }
     
-export async function createCategory(storeId: string, name: string) {
+export async function createCategory(storeId: string, name: string, slug: string) {
   const created = await prisma.category.create({
     data: {
       storeId,
-      name
+      name,
+      slug
     }
   })
   return created
 }
 
-export async function updateCategory(id: string, name: string) {
+export async function updateCategory(id: string, name: string, slug: string) {
   const updated = await prisma.category.update({
     where: {
       id
     },
     data: {
-      name
+      name,
+      slug
     }
   })
   return updated

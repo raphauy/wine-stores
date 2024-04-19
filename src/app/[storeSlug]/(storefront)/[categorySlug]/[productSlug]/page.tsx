@@ -5,7 +5,7 @@ import ProductReel from '@/components/ProductReel'
 //import { PRODUCT_CATEGORIES } from '@/config'
 //import { getPayloadClient } from '@/get-payload'
 import { formatPrice } from '@/lib/utils'
-import { getProductDAO } from '@/services/product-services'
+import { getProductDAO, getProductDAOBySlug } from '@/services/product-services'
 import { Check, Shield } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -14,15 +14,17 @@ import { notFound } from 'next/navigation'
 interface PageProps {
   params: {
     storeSlug: string
-    productId: string
+    categorySlug: string
+    productSlug: string
   }
 }
 
 export default async function ProductoPage({ params }: PageProps) {
-  const productId= params.productId
   const storeSlug = params.storeSlug
+  const categorySlug = params.categorySlug
+  const productSlug= params.productSlug
 
-  const product = await getProductDAO(productId) 
+  const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
 
   const BREADCRUMBS = [
     { id: 1, name: 'Inicio', href: '/' },

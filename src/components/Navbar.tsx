@@ -10,6 +10,7 @@ import MobileNav from './MobileNav'
 import NavItems from './NavItems'
 import UserAccountNav from './UserAccountNav'
 import { Button, buttonVariants } from './ui/button'
+import MenuCategories from './header/menu-categories'
 
 type Props= {
   storeSlug: string
@@ -44,7 +45,7 @@ export default async function Navbar({ storeSlug, categories, featuredProducts }
               </div>
 
               <div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
-                <NavItems categories={categories} featuredProducts={featuredProducts} />
+                <MenuCategories isSubdomain={false} categories={categories} />
               </div>
 
               <div className='ml-auto flex items-center'>

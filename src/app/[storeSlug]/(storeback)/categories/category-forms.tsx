@@ -42,6 +42,7 @@ export function CategoryForm({ id, closeDialog }: Props) {
 
   const onSubmit = async (data: CategoryFormValues) => {
     setLoading(true)
+    data.slug= slug
     try {
       await createOrUpdateCategoryAction(id ? id : null, data)
       toast({ title: id ? "Category updated" : "Category created" })

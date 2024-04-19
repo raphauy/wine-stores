@@ -57,6 +57,25 @@ export async function getProductDAO(id: string) {
   })
   return found as ProductDAO
 }
+
+export async function getProductDAOBySlug(storeSlug: string, categorySlug: string, productSlug: string) {
+  const found = await prisma.product.findFirst({
+    where: {
+      slug: productSlug,
+      store: {
+        slug: storeSlug
+      },
+      category: {
+        slug: categorySlug
+      }
+    },
+    include: {
+      images: true,
+      category: true,
+    }
+  })
+  return found as ProductDAO
+}
     
 export async function createProduct(storeId: string, data: ProductFormValues) {
   if (data.images.length === 0) {
