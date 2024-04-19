@@ -40,7 +40,7 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
   const inactiveStyles = 'hidden text-gray-400'
 
   return (
-    <div className='group relative bg-zinc-100 aspect-botella overflow-hidden rounded-xl'>
+    <div className='group relative bg-zinc-100 aspect-botella overflow-hidden rounded-xl border'>
       <div className='absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition'>
         <button
           onClick={(e) => {

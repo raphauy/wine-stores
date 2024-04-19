@@ -29,6 +29,8 @@ export default async function ProductoPage({ params }: PageProps) {
 
   const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
 
+  if (!product) return notFound()
+
   const host= headers().get('host')
   const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
   const isSubdomain= hostUrl !== host
@@ -41,27 +43,6 @@ export default async function ProductoPage({ params }: PageProps) {
     { id: 2, name: `${product.category.name}`, href: categoryHref },
   ]
   
-  // const payload = await getPayloadClient()
-
-  // const { docs: products } = await payload.find({
-  //   collection: 'products',
-  //   limit: 1,
-  //   where: {
-  //     id: {
-  //       equals: productId,
-  //     },
-  //     approvedForSale: {
-  //       equals: 'approved',
-  //     },
-  //   },
-  // })
-
-//  const [product] = products
-
-  if (!product) return notFound()
-
-  const label = product.category.name
-
   const validUrls = product.images.map((image) => image.url)
 
   return (
@@ -112,7 +93,7 @@ export default async function ProductoPage({ params }: PageProps) {
                 </p>
 
                 <div className='ml-4 border-l text-muted-foreground border-gray-300 pl-4'>
-                  {label}
+                  {product.category.name}
                 </div>
               </div>
 
@@ -170,7 +151,7 @@ export default async function ProductoPage({ params }: PageProps) {
         href={isSubdomain ? `/${product.category.slug}` : `/${storeSlug}/${product.category.slug}`}
         query={{ category: product.category.id, limit: 4 }}
         title={`Productos similares`}
-        subtitle={`Encuentra vinos similares a '${product.name}' en ${label}`}
+        subtitle={`Encuentra vinos similares a '${product.name}' en ${product.category.name}`}
         isSubdomain={isSubdomain}
       />
     </MaxWidthWrapper>
