@@ -130,7 +130,7 @@ export default async function ProductoPage({ params }: PageProps) {
 
           {/* Product images */}
           <div className='mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center'>
-            <div className='aspect-square rounded-lg'>
+            <div className='aspect-square rounded-lg border'>
               <ImageSlider urls={validUrls} />
             </div>
           </div>
