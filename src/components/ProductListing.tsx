@@ -12,9 +12,10 @@ import ImageSlider from './ImageSlider'
 interface ProductListingProps {
   product: ProductDAO | null
   index: number
+  isSubdomain?: boolean
 }
 
-export default function ProductListing({ product, index }: ProductListingProps) {  
+export default function ProductListing({ product, index, isSubdomain }: ProductListingProps) {  
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   useEffect(() => {
@@ -32,8 +33,9 @@ export default function ProductListing({ product, index }: ProductListingProps) 
   const validUrls = product.images.map((image) => image.url)
 
   if (isVisible && product) {
+    const href= isSubdomain ? `/${product.category.slug}/${product.slug}` : `/${product.store.slug}/${product.category.slug}/${product.slug}`
     return (
-      <Link href={`/${product.store.slug}/producto/${product.id}`}
+      <Link href={href}
         className={cn('invisible h-full w-full cursor-pointer group/main',
           {
             'visible animate-in fade-in-5': isVisible,

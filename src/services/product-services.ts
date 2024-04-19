@@ -116,6 +116,7 @@ export async function updateProduct(id: string, data: ProductFormValues) {
     },
     data: {
       name: data.name,
+      slug: data.slug,
       price,
       isFeatured: data.isFeatured,
       isArchived: data.isArchived,

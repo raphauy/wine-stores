@@ -35,6 +35,18 @@ export async function getCategorysDAO(storeSlug: string) {
   return found as CategoryDAO[]
 }
 
+export async function getCategoryDAOBySlug(storeSlug: string, categorySlug: string) {
+  const found = await prisma.category.findFirst({
+    where: {
+      slug: categorySlug,
+      store: {
+        slug: storeSlug
+      }
+    },
+  })
+  return found as CategoryDAO
+}
+
 export async function getCategoryDAO(id: string) {
   const found = await prisma.category.findUnique({
     where: {

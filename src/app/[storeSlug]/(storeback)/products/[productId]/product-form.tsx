@@ -71,7 +71,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
   const onSubmit = async (data: ProductFormValues) => {
     try {
-      setLoading(true);
+      setLoading(true)
+      data.slug= slug
       if (initialData) {
         await updateProductAction(initialData.id, data)
       } else {

@@ -20,15 +20,22 @@ interface PageProps {
 }
 
 export default async function ProductoPage({ params }: PageProps) {
+
+
   const storeSlug = params.storeSlug
   const categorySlug = params.categorySlug
   const productSlug= params.productSlug
 
   const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
 
+  // ToDo: cambiar isSubdomain
+  const isSubdomain= false
+  const categoryHref= isSubdomain ? `/${categorySlug}` : `/${storeSlug}/${categorySlug}` 
+  const homeHref= isSubdomain ? `/` : `/${storeSlug}`
+
   const BREADCRUMBS = [
-    { id: 1, name: 'Inicio', href: '/' },
-    { id: 2, name: 'Products', href: '/products' },
+    { id: 1, name: 'Inicio', href: homeHref },
+    { id: 2, name: `${product.category.name}`, href: categoryHref },
   ]
   
   // const payload = await getPayloadClient()
@@ -150,7 +157,7 @@ export default async function ProductoPage({ params }: PageProps) {
       <ProductReel
         href='/products'
         query={{ category: product.category.id, limit: 4 }}
-        title={`Similar a ${label}`}
+        title={`Productos similares en ${label}`}
         subtitle={`Encuentra vinos similares a '${product.name}' en ${label}`}
       />
     </MaxWidthWrapper>

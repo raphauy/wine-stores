@@ -13,10 +13,13 @@ type Props= {
   }
 }
 export default async function StoreFrontHome({ params }: Props) {
-  const storeSlug = params.storeSlug
+  const storeSlug = params.storeSlug  
   if (!storeSlug) {
     return <div>No se ha encontrado el Store</div>
   }
+
+  // ToDo: cambiar isSubdomain
+  const isSubdomain= false
 
   const store= await getStoreDAOBySlug(storeSlug)
 
@@ -52,7 +55,7 @@ export default async function StoreFrontHome({ params }: Props) {
             <ProductReel
               key={category.id}
               query={{ sort: 'asc', limit: 4, category: category.id }}
-              href={`/productos`}
+              href={`${isSubdomain ? `/${category.slug}` : `/${storeSlug}/${category.slug}`}`} 
               title={category.name}
             />
           ))

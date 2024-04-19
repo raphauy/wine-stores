@@ -29,9 +29,6 @@ export default function MenuCategories({ isSubdomain, categories }: Props) {
     if (clientSlug)
         return <div></div>
 
-    const basePath= isSubdomain ? "" : `/${storeSlug}` 
-    
-        
     return (
         <nav className="h-full flex items-center">
             <ul className="flex items-center">
