@@ -71,6 +71,8 @@ function getHostRewrite(host: string) {
             return 'gimenez-mendez'
         case 'gimenez-mendez.tinta.wine': 
             return 'gimenez-mendez'
+        case 'bodega-familiar.tinta.wine': 
+            return 'bodega-familiar'
         default:
             return ""
     }
