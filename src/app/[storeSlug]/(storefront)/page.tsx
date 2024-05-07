@@ -40,7 +40,10 @@ export default async function StoreFrontHome({ params }: Props) {
             {store.name}
           </h1>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
-            Bienvenido a la tienda de <span className='font-bold'>{store.name}</span>. Cada botella en nuestra plataforma es cuidadosamente seleccionada por nuestro equipo para garantizar los más altos estándares de calidad.
+            Bienvenido a la tienda de <span className='font-bold'>{store.name}</span>.             
+          </p>
+          <p className='text-lg max-w-prose text-muted-foreground'>
+            {store.description}
           </p>
           {/* <div className='flex flex-col sm:flex-row gap-4 mt-6'>
             <Link
