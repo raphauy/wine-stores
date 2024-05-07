@@ -85,7 +85,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         }
       }
       toast({ title: toastMessage })        
-      router.push(`/${storeSlug}/products`);
+      router.push(`/products`);
     } catch (error: any) {
       toast({ title: "Algo salió mal!", description: error.message, variant: "destructive"})
     } finally {
