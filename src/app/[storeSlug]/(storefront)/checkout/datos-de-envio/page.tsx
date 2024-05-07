@@ -2,25 +2,18 @@
 
 import { ProductQuantity } from '@/components/Cart'
 import { useCart } from '@/hooks/use-cart'
+import { DatosEnvioFormValues } from '@/services/order-services'
 import { useRouter } from 'next/navigation'
 import { OrderForm } from '../../../(storeback)/orders/order-forms'
 import OrderSummary from '../order-summary'
-import { z } from 'zod'
 
-export const schema = z.object({
-  email: z.string().email("necesitamos un email para asociar este pedido."),
-	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
-	address: z.string().min(1, "necesitamos una dirección para poder enviar tu pedido."),
-})
-
-export type FormValues = z.infer<typeof schema>
 
 export default function Page() { 
   const { items, setEmail, setPhone, setAddress } = useCart()
 
   const router= useRouter()
 
-  function setData(data: FormValues) {
+  function setData(data: DatosEnvioFormValues) {
     setEmail(data.email)
     setPhone(data.phone || '')
     setAddress(data.address)

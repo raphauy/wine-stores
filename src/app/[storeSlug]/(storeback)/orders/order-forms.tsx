@@ -1,28 +1,27 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "@/components/ui/use-toast"
-import { useEffect, useState } from "react"
-import { deleteOrderAction, createOrUpdateOrderAction, getOrderDAOAction } from "./order-actions"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { toast } from "@/components/ui/use-toast"
+import { useCart } from "@/hooks/use-cart"
+import { DatosEnvioFormValues, datosEnvioSchema } from "@/services/order-services"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useCart } from "@/hooks/use-cart"
-import { z } from "zod"
-import { FormValues, schema } from "../../(storefront)/checkout/datos-de-envio/page"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { deleteOrderAction } from "./order-actions"
 
 type Props= {
-  setData: (data: FormValues) => void
+  setData: (data: DatosEnvioFormValues) => void
 }
 
 export function OrderForm({ setData }: Props) {
   const { email, phone, address } = useCart() 
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+  const form = useForm<DatosEnvioFormValues>({
+    resolver: zodResolver(datosEnvioSchema),
     defaultValues: {
       email,
       phone,
@@ -33,7 +32,7 @@ export function OrderForm({ setData }: Props) {
 
   const router= useRouter()
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: DatosEnvioFormValues) => {
     setData(data)
   }
 

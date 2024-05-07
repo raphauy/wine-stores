@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react'
 import { useCart } from '@/hooks/use-cart'
 import CartItem from './CartItem'
 import { ProductDAO } from '@/services/product-services'
-import { FEE } from '@/app/[storeSlug]/(storefront)/carrito/page'
+
+const FEE = 250
 
 export type ProductQuantity = {
   product: ProductDAO
@@ -20,6 +21,7 @@ export type ProductQuantity = {
 }
 
 const Cart = () => {
+
   const { items } = useCart()
   const itemCount = items.length
 

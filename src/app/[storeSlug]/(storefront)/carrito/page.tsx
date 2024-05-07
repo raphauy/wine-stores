@@ -12,8 +12,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import OrderSummary from '../checkout/order-summary'
 
-export const FEE = 250
-
 export default function Page() { 
   const { items, addItem, removeItem, removeAllOf } = useCart()
 

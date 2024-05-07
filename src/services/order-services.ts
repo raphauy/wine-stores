@@ -32,6 +32,15 @@ export const orderSchema = z.object({
 export type OrderFormValues = z.infer<typeof orderSchema>
 
 
+export const datosEnvioSchema = z.object({
+  email: z.string().email("necesitamos un email para asociar este pedido."),
+	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
+	address: z.string().min(1, "necesitamos una dirección para poder enviar tu pedido."),
+})
+
+export type DatosEnvioFormValues = z.infer<typeof datosEnvioSchema>
+
+
 export async function getOrdersDAO() {
   const found = await prisma.order.findMany({
     orderBy: {
