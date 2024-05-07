@@ -20,7 +20,7 @@ export default async function ProductsPage({ params }: Props) {
     <div className="w-full">      
 
       <div className="flex justify-end mx-auto my-2">
-        <Link href={`/${storeSlug}/products/new`} >
+        <Link href={`/products/new`} >
           <Button className="gap-2">
             <PlusCircle className="h-5 w-5" /> Crear Producto
           </Button>

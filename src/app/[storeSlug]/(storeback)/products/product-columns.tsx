@@ -134,7 +134,7 @@ export const columns: ColumnDef<ProductDAO>[] = [
       return (
         <div className="flex items-center justify-end gap-2">
 
-          <Link href={`/${data.store.slug}/products/${data.id}`} >
+          <Link href={`/products/${data.id}`} >
             <Button variant="ghost">
               <Pencil />
             </Button>
