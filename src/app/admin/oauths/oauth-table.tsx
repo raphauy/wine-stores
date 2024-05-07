@@ -9,38 +9,59 @@ import { X } from "lucide-react"
 import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table"
 import { DataTablePagination } from "@/components/data-table/data-table-pagination"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
-import { OrderStatus } from "@prisma/client"
   
 interface DataTableToolbarProps<TData> {
   table: TanstackTable<TData>;
 }
 
-const statuses= Object.values(OrderStatus)
 export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
   return (
     <div className="flex gap-1 dark:text-white items-center">
-
-        {table.getColumn("status")  && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Estado"
-            options={statuses}
+        
+          <Input className="max-w-xs" placeholder="provider filter..."
+              value={(table.getColumn("provider")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("provider")?.setFilterValue(event.target.value)}                
           />
-        )}
-
-        <Input className="max-w-xs" placeholder="email filter..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
-        />
-
-        <Input className="max-w-xs" placeholder="address filter..."
-            value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => table.getColumn("address")?.setFilterValue(event.target.value)}                
-        />
           
+      
+          <Input className="max-w-xs" placeholder="codeVerifier filter..."
+              value={(table.getColumn("codeVerifier")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("codeVerifier")?.setFilterValue(event.target.value)}                
+          />
+          
+      
+          <Input className="max-w-xs" placeholder="codeChallengeMethod filter..."
+              value={(table.getColumn("codeChallengeMethod")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("codeChallengeMethod")?.setFilterValue(event.target.value)}                
+          />
+          
+      
+          <Input className="max-w-xs" placeholder="accessToken filter..."
+              value={(table.getColumn("accessToken")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("accessToken")?.setFilterValue(event.target.value)}                
+          />
+          
+      
+          <Input className="max-w-xs" placeholder="refreshToken filter..."
+              value={(table.getColumn("refreshToken")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("refreshToken")?.setFilterValue(event.target.value)}                
+          />
+          
+      
+          <Input className="max-w-xs" placeholder="expiresAt filter..."
+              value={(table.getColumn("expiresAt")?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn("expiresAt")?.setFilterValue(event.target.value)}                
+          />
+          
+        {/* {table.getColumn("role") && roles && (
+          <DataTableFacetedFilter
+            column={table.getColumn("role")}
+            title="Rol"
+            options={roles}
+          />
+        )} */}
         {isFiltered && (
           <Button
             variant="ghost"
@@ -51,6 +72,9 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             <X className="w-4 h-4 ml-2" />
           </Button>
         )}
+        <div className="flex-1 ">
+          <DataTableViewOptions table={table}/>
+        </div>
     </div>
   )
 }

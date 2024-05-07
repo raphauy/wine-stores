@@ -2,9 +2,8 @@
 
 import { useSession } from "next-auth/react"
 import { useParams, usePathname } from "next/navigation"
-import MenuAdmin from "./menu-admin"
-import MenuStore from "./menu-store"
-import { useAdminRoles } from "@/app/admin/users/use-roles"
+import MenuStore from "../../app/[storeSlug]/(storeback)/menu-store"
+import MenuAdmin from "../../app/admin/menu-admin"
 
 type Props= {
     isSubdomain: boolean

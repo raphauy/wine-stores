@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import authConfig from "@/lib/auth.config"
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
   
 const { auth } = NextAuth(authConfig)
 
@@ -24,18 +23,20 @@ export default auth((req) => {
     const host= req.headers.get('host') || req.headers.get('x-forwarded-host')
     if (!host) return
 
-    console.log('host', host)
+    console.log('host: ', host)
     
     const hostRewrite= getHostRewrite(host)
-    console.log('hostRewrite', hostRewrite)
 
     if (hostRewrite) {
+        console.log('hostRewrite', hostRewrite)
         const searchParams = nextUrl.searchParams.toString()
         const path = nextUrl.pathname
         const newUrl= `/${hostRewrite}${path}${searchParams.length > 0 ? `?${searchParams}` : ''}`
         console.log('newUrl', newUrl)
         
         return NextResponse.rewrite(new URL(newUrl, req.url))
+    } else {
+        console.log('no hostRewrite')        
     }
     
     // if (subdomain && host !== publicUrl) {
@@ -71,6 +72,12 @@ function getHostRewrite(host: string) {
             return 'gimenez-mendez'
         case 'gimenez-mendez.tinta.wine': 
             return 'gimenez-mendez'
+        case 'gimenez-mendez.tunnel.tinta.wine':
+            return 'gimenez-mendez'
+
+        case 'cerro-chapeu.tunnel.tinta.wine':
+            return 'cerro-chapeu'
+    
         case 'bodega-familiar.tinta.wine': 
             return 'bodega-familiar'
         default:

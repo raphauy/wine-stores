@@ -58,6 +58,8 @@ model Store {
   description   String?                    // gennext: show.column
   igHandle      String?                    // gennext: show.column
 
+  mpRedirectUrl String?                    // gennext: show.column
+
   createdAt DateTime @default(now())           // gennext: skip.zod
   updatedAt DateTime @updatedAt                // gennext: skip.zod
 
@@ -68,6 +70,8 @@ model Store {
   categories    Category[] @relation("StoreToCategory")   // gennext: skip.list
   products      Product[]  @relation("StoreToProduct")    // gennext: skip.list
   orders        Order[]     @relation("StoreToOrder")     // gennext: skip.list
+
+  oauth         Oauth[]
 }
 
 model Category {
@@ -111,17 +115,37 @@ model Product {
   @@index([categoryId])                         // gennext: show.list skip.zod
 }
 
+enum PaymentMethod {
+  MercadoPago
+  TransferenciaBancaria
+  RedesDeCobranza
+}
+
+enum OrderStatus {
+  Created
+  Pending
+  PaymentSent
+  Paid
+  Packing
+  Delivered
+  Refunded
+  Cancelled
+}
+
 model Order {
-  id          String    @id @default(cuid())
-  isPaid      Boolean   @default(false)                // gennext: show.column
-  phone       String    @default("")                   // gennext: show.column
-  address     String    @default("")                   // gennext: show.column
+  id            String    @id @default(cuid())
+  status        OrderStatus   @default(Created)          // gennext: show.column
+  email         String                                   // gennext: show.column
+  phone         String                                   // gennext: show.column
+  address       String                                   // gennext: show.column
 
-  createdAt   DateTime    @default(now())             // gennext: skip.zod
-  updatedAt   DateTime    @updatedAt                  // gennext: skip.zod
+  paymentMethod PaymentMethod                            // gennext: show.column
 
-  store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
-  storeId     String    
+  createdAt     DateTime    @default(now())              // gennext: skip.zod
+  updatedAt     DateTime    @updatedAt                   // gennext: skip.zod
+
+  store         Store     @relation("StoreToOrder", fields: [storeId], references: [id])
+  storeId       String    
 
   orderItems  OrderItem[]                              // gennext: skip.list
 
@@ -130,13 +154,19 @@ model Order {
 
 // Intermediary for a many-to-many relationship
 model OrderItem {
-  id          String    @id @default(cuid())
+  id            String    @id @default(cuid())
 
-  order       Order   @relation(fields: [orderId], references: [id])
-  orderId     String  
+  quantity      Int       @default(1)                    // gennext: show.column
+  soldUnitPrice Float?    @default(0)                   // gennext: show.column
+  soldName      String?   @default("")                  // gennext: show.column
+  soldCategory  String?   @default("")                  // gennext: show.column
+  soldImage     String?   @default("")                  // gennext: show.column
 
-  product     Product @relation(fields: [productId], references: [id])
-  productId   String  // Foreign Key to Product
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId       String  
+
+  product       Product    @relation(fields: [productId], references: [id])
+  productId     String
 
   @@index([orderId])                            // gennext: show.list skip.zod
   @@index([productId])                          // gennext: show.list skip.zod
@@ -154,4 +184,24 @@ model Image {
   productId   String
 
   @@index([productId])                           // gennext: show.list skip.zod
+}
+
+model Oauth {
+  id                  String    @id @default(cuid())
+  provider            String    // gennext: show.column
+  codeVerifier        String // gennext: show.column
+  codeChallenge       String 
+  codeChallengeMethod String    // gennext: show.column
+  
+  accessToken         String?   // gennext: show.column
+  refreshToken        String?   // gennext: show.column
+  expiresAt           DateTime? // gennext: show.column
+
+  userId              String?   // gennext: show.column
+
+  createdAt   DateTime    @default(now())        // gennext: skip.zod
+  updatedAt   DateTime    @updatedAt             // gennext: skip.zod
+
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId     String
 }

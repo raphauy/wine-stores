@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "postinstall": "prisma generate",
@@ -46,6 +46,7 @@
     "embla-carousel-react": "^8.0.0",
     "input-otp": "^1.2.2",
     "lucide-react": "^0.363.0",
+    "mercadopago": "^2.0.9",
     "next": "14.1.4",
     "next-auth": "5.0.0-beta.4",
     "next-cloudinary": "^6.3.0",

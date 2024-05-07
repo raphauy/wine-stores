@@ -3,19 +3,19 @@
 import { useCart } from '@/hooks/use-cart'
 import { formatPrice } from '@/lib/utils'
 import { ImageDAO } from '@/services/image-services'
-import { ProductDAO } from '@/services/product-services'
-import { ImageIcon, X } from 'lucide-react'
+import { ImageIcon, MinusCircle, Plus, PlusCircle, X } from 'lucide-react'
 import Image from 'next/image'
+import { ProductQuantity } from './Cart'
 
 type Props= {
-  product: ProductDAO
+  product: ProductQuantity
 }
-export default function CartItem({ product }: Props) {
-  const image: ImageDAO= product.images[0]
+export default function CartItem({ product: productQuantity }: Props) {
+  const image: ImageDAO= productQuantity.product.images[0]
 
-  const { removeItem } = useCart()
+  const { addItem,removeItem } = useCart()
 
-  const category= product.category
+  const category= productQuantity.product.category
 
   const label = category?.name || 'Unknown'
 
@@ -27,7 +27,7 @@ export default function CartItem({ product }: Props) {
             {typeof image !== 'string' && image.url ? (
               <Image
                 src={image.url}
-                alt={product.name}
+                alt={productQuantity.product.name}
                 fill
                 className='absolute object-cover'
               />
@@ -43,27 +43,42 @@ export default function CartItem({ product }: Props) {
 
           <div className='flex flex-col self-start'>
             <span className='line-clamp-1 text-sm font-medium mb-1'>
-              {product.name}
+              {productQuantity.product.name}
             </span>
 
             <span className='line-clamp-1 text-xs capitalize text-muted-foreground'>
               {label}
             </span>
 
-            <div className='mt-4 text-xs text-muted-foreground'>
+            <div className='mt-4 text-xs text-muted-foreground flex items-center gap-4'>
               <button
-                onClick={() => removeItem(product.id)}
+                onClick={() => removeItem(productQuantity.product.id)}
                 className='flex items-center gap-0.5'>
-                <X className='w-3 h-4' />
-                Quitar
+                
+                { productQuantity.quantity > 1 ? 
+                <MinusCircle className='w-4 h-4' />
+                : 
+                <><X className='w-3 h-4' /><p>Quitar</p></>
+                }
+              </button>
+              <button
+                onClick={() => addItem(productQuantity.product)}
+                className='flex items-center gap-0.5'>
+                  <PlusCircle className='w-4 h-4' />                  
               </button>
             </div>
           </div>
         </div>
 
-        <div className='flex flex-col space-y-1 font-medium'>
+        <div className='flex items-center gap-2 font-medium'>
+          {
+            productQuantity.quantity > 1 &&
+            <p className='text-sm'>
+              {productQuantity.quantity} x
+            </p>
+          }
           <span className='ml-auto line-clamp-1 text-sm'>
-            {formatPrice(product.price)}
+            {formatPrice(productQuantity.product.price)}
           </span>
         </div>
       </div>

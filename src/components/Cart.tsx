@@ -11,6 +11,13 @@ import { ScrollArea } from './ui/scroll-area'
 import { useEffect, useState } from 'react'
 import { useCart } from '@/hooks/use-cart'
 import CartItem from './CartItem'
+import { ProductDAO } from '@/services/product-services'
+import { FEE } from '@/app/[storeSlug]/(storefront)/carrito/page'
+
+export type ProductQuantity = {
+  product: ProductDAO
+  quantity: number
+}
 
 const Cart = () => {
   const { items } = useCart()
@@ -23,6 +30,17 @@ const Cart = () => {
   }, [])
 
   const cartTotal = items.reduce((total, { product }) => total + product.price,0)
+
+  const uniqueProducts: ProductQuantity[] = []
+
+  items.forEach(({ product }) => {
+    if (!uniqueProducts.find(({ product: p }) => p.id === product.id)) {
+      uniqueProducts.push({ product, quantity: 1 })
+    } else {
+      const index = uniqueProducts.findIndex(({ product: p }) => p.id === product.id)
+      uniqueProducts[index].quantity += 1
+    }
+  })
 
   return (
     <Sheet>
@@ -43,8 +61,8 @@ const Cart = () => {
           <>
             <div className='flex w-full flex-col pr-6'>
               <ScrollArea>
-                {items.map(({ product }) => (
-                  <CartItem key={product.id} product={product} />
+                {uniqueProducts.map((productQuantity, index) => (
+                  <CartItem key={productQuantity.product.id} product={productQuantity} />
                 ))}
               </ScrollArea>
             </div>
@@ -53,7 +71,10 @@ const Cart = () => {
               <div className='space-y-1.5 text-sm'>
                 <div className='flex'>
                   <span className='flex-1'>Envío</span>
-                  <span>Gratis</span>
+                  { FEE > 0 ? formatPrice(FEE) 
+                    :
+                    <p>Gratis</p>
+                  }
                 </div>
                 <div className='flex'>
                   <span className='flex-1'>Total</span>
@@ -65,9 +86,9 @@ const Cart = () => {
 
               <SheetFooter>
                 <SheetTrigger asChild>
-                  <Link href='#' className='w-full'>
-                    <Button className='w-full' disabled>
-                      Ir al Checkout (comming soon...)
+                  <Link href={`/carrito`} className='w-full'>
+                    <Button className='w-full'>
+                      Ir al Checkout
                     </Button>
                   </Link>
                 </SheetTrigger>

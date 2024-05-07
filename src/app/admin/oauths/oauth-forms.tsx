@@ -1,45 +1,37 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
-import { StoreFormValues, storeSchema } from '@/services/store-services'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader } from "lucide-react"
-import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { createOrUpdateStoreAction, deleteStoreAction, getStoreDAOAction } from "./store-actions"
+import { toast } from "@/components/ui/use-toast"
+import { useEffect, useState } from "react"
+import { deleteOauthAction, createOrUpdateOauthAction, getOauthDAOAction } from "./oauth-actions"
+import { oauthSchema, OauthFormValues } from '@/services/oauth-services'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Loader } from "lucide-react"
 
 type Props= {
   id?: string
   closeDialog: () => void
 }
 
-export function StoreForm({ id, closeDialog }: Props) {
-  const form = useForm<StoreFormValues>({
-    resolver: zodResolver(storeSchema),
-    defaultValues: {
-      name: "",
-      slug: "",
-      image: "",
-      igHandle: "",
-      description: "",
-      mpRedirectUrl: "",
-    },
+export function OauthForm({ id, closeDialog }: Props) {
+  const form = useForm<OauthFormValues>({
+    resolver: zodResolver(oauthSchema),
+    defaultValues: {},
     mode: "onChange",
   })
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data: StoreFormValues) => {
-
+  const onSubmit = async (data: OauthFormValues) => {
     setLoading(true)
     try {
-      await createOrUpdateStoreAction(id ? id : null, data)
-      toast({ title: id ? "Store updated" : "Store created" })
+      await createOrUpdateOauthAction(id ? id : null, data)
+      toast({ title: id ? "Oauth updated" : "Oauth created" })
       closeDialog()
     } catch (error: any) {
-      toast({ title: "Error", description: error.message })
+      toast({ title: "Error", description: error.message, variant: "destructive" })
     } finally {
       setLoading(false)
     }
@@ -47,7 +39,7 @@ export function StoreForm({ id, closeDialog }: Props) {
 
   useEffect(() => {
     if (id) {
-      getStoreDAOAction(id).then((data) => {
+      getOauthDAOAction(id).then((data) => {
         if (data) {
           form.reset(data)
         }
@@ -67,12 +59,102 @@ export function StoreForm({ id, closeDialog }: Props) {
           
           <FormField
             control={form.control}
-            name="name"
+            name="provider"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Provider</FormLabel>
                 <FormControl>
-                  <Input placeholder="Store's name" {...field} />
+                  <Input placeholder="Oauth's provider" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+      
+          <FormField
+            control={form.control}
+            name="codeVerifier"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>CodeVerifier</FormLabel>
+                <FormControl>
+                  <Input placeholder="Oauth's codeVerifier" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+      
+          <FormField
+            control={form.control}
+            name="codeChallenge"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>CodeChallenge</FormLabel>
+                <FormControl>
+                  <Input placeholder="Oauth's codeChallenge" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+      
+          <FormField
+            control={form.control}
+            name="codeChallengeMethod"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>CodeChallengeMethod</FormLabel>
+                <FormControl>
+                  <Input placeholder="Oauth's codeChallengeMethod" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+      
+          <FormField
+            control={form.control}
+            name="accessToken"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>AccessToken</FormLabel>
+                <FormControl>
+                  <Input placeholder="Oauth's accessToken" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+      
+          <FormField
+            control={form.control}
+            name="refreshToken"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>RefreshToken</FormLabel>
+                <FormControl>
+                  <Input placeholder="Oauth's refreshToken" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+      
+          <FormField
+            control={form.control}
+            name="storeId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>StoreId</FormLabel>
+                <FormControl>
+                  <Input placeholder="Oauth's storeId" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -81,78 +163,19 @@ export function StoreForm({ id, closeDialog }: Props) {
 
           <FormField
             control={form.control}
-            name="slug"
+            name="userId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Slug</FormLabel>
+                <FormLabel>MP user_id</FormLabel>
                 <FormControl>
-                  <Input placeholder="Slug" {...field} />
+                  <Input placeholder="Oauth's MP user_id" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           
-      
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Image</FormLabel>
-                <FormControl>
-                  <Input placeholder="Store's image" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input placeholder="Description" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
-      
-          <FormField
-            control={form.control}
-            name="igHandle"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>IgHandle</FormLabel>
-                <FormControl>
-                  <Input placeholder="Store's igHandle" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          <FormField
-            control={form.control}
-            name="mpRedirectUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>MP Redirect URL</FormLabel>
-                <FormControl>
-                  <Input placeholder="MP Redirect URL" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-      
         <div className="flex justify-end">
             <Button onClick={() => closeDialog()} type="button" variant={"secondary"} className="w-32">Cancel</Button>
             <Button type="submit" className="w-32 ml-2">
@@ -165,18 +188,18 @@ export function StoreForm({ id, closeDialog }: Props) {
   )
 }
 
-export function DeleteStoreForm({ id, closeDialog }: Props) {
+export function DeleteOauthForm({ id, closeDialog }: Props) {
   const [loading, setLoading] = useState(false)
 
   async function handleDelete() {
     if (!id) return
     setLoading(true)
-    deleteStoreAction(id)
+    deleteOauthAction(id)
     .then(() => {
-      toast({ title: "Store deleted" })
+      toast({title: "Oauth deleted" })
     })
     .catch((error) => {
-      toast({ title: "Error", description: error.message, variant: "destructive" })
+      toast({title: "Error", description: error.message, variant: "destructive"})
     })
     .finally(() => {
       setLoading(false)

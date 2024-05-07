@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, ListChecks, Megaphone, Receipt, User } from "lucide-react"
+import { LayoutDashboard, ListChecks, Megaphone, Receipt, ScanEye, User } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -22,7 +22,12 @@ const data= [
       icon: User,
       text: "Users"
     },
-  ]
+    {
+        href: `/admin/oauths`,
+        icon: ScanEye, 
+        text: "Oauths"
+    },
+    ]
 
 export default function MenuAdmin() {
     const path= usePathname()

@@ -10,6 +10,7 @@ export type StoreDAO = {
 	image: string | undefined
 	igHandle: string | undefined
   description: string | undefined
+  mpRedirectUrl: string | undefined
 	ownerId: string | undefined
   owner: UserDAO | undefined
   categories: CategoryDAO[]
@@ -23,6 +24,7 @@ export const storeSchema = z.object({
 	image: z.string().optional(),
 	igHandle: z.string().optional(),
   description: z.string().optional(),
+  mpRedirectUrl: z.string().optional(),
 })
 
 export type StoreFormValues = z.infer<typeof storeSchema>

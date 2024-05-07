@@ -1,17 +1,22 @@
 import * as z from "zod"
 import { prisma } from "@/lib/db"
 import { OrderDAO } from "./order-services"
-import { ProductDAO } from "./product-services"
+import { ProductDAO, getProductDAO } from "./product-services"
 
 export type OrderItemDAO = {
 	id: string
+  quantity: number
+	soldUnitPrice: number
+  soldName: string
+	soldCategory: string
+  soldImage: string
 	order: OrderDAO
 	orderId: string
-	product: ProductDAO
 	productId: string
 }
 
 export const orderItemSchema = z.object({
+  quantity: z.number().min(1, "quantity is required."),
 	orderId: z.string().min(1, "orderId is required."),
 	productId: z.string().min(1, "productId is required."),
 })
@@ -38,9 +43,19 @@ export async function getOrderItemDAO(id: string) {
 }
     
 export async function createOrderItem(data: OrderItemFormValues) {
-  // TODO: implement createOrderItem
+  const product= await getProductDAO(data.productId)
+  if (!product) {
+    throw new Error("Product not found")
+  }
+  const soldImage= product.images.length > 0 ? product.images[0].url : ""
   const created = await prisma.orderItem.create({
-    data
+    data: {
+      ...data,
+      soldUnitPrice: product.price,
+      soldName: product.name,
+      soldCategory: product.category.name,
+      soldImage,
+    },
   })
   return created
 }
@@ -72,7 +87,6 @@ export async function getFullOrderItemsDAO() {
     },
     include: {
 			order: true,
-			product: true,
 		}
   })
   return found as OrderItemDAO[]
@@ -85,7 +99,6 @@ export async function getFullOrderItemDAO(id: string) {
     },
     include: {
 			order: true,
-			product: true,
 		}
   })
   return found as OrderItemDAO

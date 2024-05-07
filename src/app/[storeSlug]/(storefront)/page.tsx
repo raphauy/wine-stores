@@ -25,11 +25,12 @@ export default async function StoreFrontHome({ params }: Props) {
 
   const store= await getStoreDAOBySlug(storeSlug)
 
-  const categories= store.categories
 
   if (!store || !store.image) {
     return <div>No se ha encontrado el Store</div>
   }
+  const categories= store.categories
+
   return (
     <>
       <MaxWidthWrapper>

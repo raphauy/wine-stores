@@ -3,6 +3,8 @@ import { twMerge } from "tailwind-merge"
 import { auth } from "./auth"
 import { Metadata } from "next"
 import { UserRole } from "@prisma/client"
+import { format, isThisWeek, isToday, isYesterday, parseISO } from "date-fns"
+import { es } from "date-fns/locale"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -107,4 +109,21 @@ export function constructMetadata({
 
 export function getAdminRoles() {
   return [UserRole.ADMIN, UserRole.STORE_OWNER, UserRole.STORE_ADMIN]
+}
+
+export function formatWhatsAppStyle(date: Date | string): string {
+  let parsedDate = typeof date === 'string' ? parseISO(date) : date;
+
+  // todo timezone
+  
+  if (isToday(parsedDate)) {
+    // return "hoy"
+    return format(parsedDate, 'HH:mm')
+  } else if (isYesterday(parsedDate)) {
+    return 'Ayer'
+  } else if (isThisWeek(parsedDate)) {
+    return format(parsedDate, 'eeee', { locale: es })
+  } else {
+    return format(parsedDate, 'dd/MM/yyyy')
+  }
 }

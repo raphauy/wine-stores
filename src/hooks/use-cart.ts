@@ -10,12 +10,22 @@ type CartState = {
   items: CartItem[]
   addItem: (product: ProductDAO) => void
   removeItem: (productId: string) => void
+  removeAllOf: (productId: string) => void
   clearCart: () => void
+  email: string
+  phone: string
+  address: string
+  setEmail: (email: string) => void
+  setPhone: (phone: string) => void
+  setAddress: (address: string) => void
 }
 
 export const useCart = create<CartState>()(
   persist(
     (set) => ({
+      email: '',
+      phone: '',
+      address: '',
       items: [],
       addItem: (product) =>
         set((state) => {
@@ -34,7 +44,15 @@ export const useCart = create<CartState>()(
             }
             return state;
           }),
+      removeAllOf: (productId) =>
+        set((state) => {
+          const newItems = state.items.filter(item => item.product.id !== productId);
+          return { items: newItems };
+        }),
         clearCart: () => set({ items: [] }),
+      setEmail: (email) => set({ email }),
+      setPhone: (phone) => set({ phone }),
+      setAddress: (address) => set({ address }),
     }),
     {
       name: 'cart-storage',
