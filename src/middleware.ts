@@ -80,6 +80,10 @@ function getHostRewrite(host: string) {
     
         case 'bodega-familiar.tinta.wine': 
             return 'bodega-familiar'
+
+        case 'libro.uruguayenvinos.com':
+            return 'uruguayenvinos'
+            
         default:
             return ""
     }
