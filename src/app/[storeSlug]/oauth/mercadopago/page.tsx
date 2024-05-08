@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import { OauthFormValues, createOauth, createVerifierAndChallenge, getOauthDAOByStoreId, refreshMercadopagoAccessToken } from '@/services/oauth-services';
 import { getStoreDAOBySlug } from "@/services/store-services";
+import { UserRole } from "@prisma/client";
 import { format } from 'date-fns';
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
@@ -12,6 +14,15 @@ type Props= {
 }
 export default async function MercadoPagoPage({ params }: Props) {
 
+    const session = await auth();
+    const currentRole: UserRole| undefined = session?.user?.role as UserRole | undefined
+    const isAdmin= currentRole === UserRole.ADMIN || currentRole === UserRole.STORE_OWNER || currentRole === UserRole.STORE_ADMIN
+    if (!isAdmin) {
+        // private url
+        console.log("someone is trying to access a page that is not admin")    
+        return <div className="mt-10 text-lg">You are not authorized to access this page</div>
+      }
+      
     const storeSlug= params.storeSlug
 
     const store= await getStoreDAOBySlug(storeSlug)
