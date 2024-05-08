@@ -48,6 +48,7 @@ export default async function MercadoPagoPage({ params }: Props) {
                 <form action={refreshToken}>
                     <Button className='mt-10'>Refresh token</Button>
                 </form>
+                <p>Productioin URL: {vercelProjectProductionURL}</p>
             </div>
         )
     } else {
