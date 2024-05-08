@@ -12,6 +12,8 @@ type Props= {
 }
 export default async function MercadoPagoPage({ params }: Props) {
 
+    const vercelProjectProductionURL= process.env.VERCEL_PROJECT_PRODUCTION_URL
+
     const storeSlug= params.storeSlug
 
     const store= await getStoreDAOBySlug(storeSlug)
@@ -78,6 +80,8 @@ export default async function MercadoPagoPage({ params }: Props) {
                 <Link href={authUrl}>
                     <Button>Autorizar en MercadoPago</Button>                
                 </Link>
+
+                <p>Productioin URL: {vercelProjectProductionURL}</p>
             </div>
         )    
     }
