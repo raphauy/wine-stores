@@ -12,17 +12,16 @@ type Props= {
 }
 export default async function MercadoPagoPage({ params }: Props) {
 
-    const vercelProjectProductionURL= process.env.VERCEL_PROJECT_PRODUCTION_URL
-
     const storeSlug= params.storeSlug
 
     const store= await getStoreDAOBySlug(storeSlug)
 
     if (!store)
         return <div>Store not found</div>
+    const storeRedirectUrl= store.mpRedirectUrl
 
     const appId= process.env.MERCADOPAGO_APP_ID
-	let redirectUrl = `${process.env.MERCADOPAGO_OAUTH_HOST}/${store.slug}/oauth/mp-callback`
+	let redirectUrl = `${storeRedirectUrl}/oauth/mp-callback`
 
     let oauth= await getOauthDAOByStoreId(store.id, "MercadoPago")
 
@@ -48,7 +47,7 @@ export default async function MercadoPagoPage({ params }: Props) {
                 <form action={refreshToken}>
                     <Button className='mt-10'>Refresh token</Button>
                 </form>
-                <p>Productioin URL: {vercelProjectProductionURL}</p>
+                <p>URL: {storeRedirectUrl}</p>
             </div>
         )
     } else {
@@ -82,7 +81,7 @@ export default async function MercadoPagoPage({ params }: Props) {
                     <Button>Autorizar en MercadoPago</Button>                
                 </Link>
 
-                <p>Productioin URL: {vercelProjectProductionURL}</p>
+                <p>URL: {storeRedirectUrl}</p>
             </div>
         )    
     }
