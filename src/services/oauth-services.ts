@@ -170,14 +170,14 @@ export async function setAccessToken(storeSlug: string, provider: string, access
   }
 }
 
-export async function getMercadopagoAccessToken(code: string, codeVerifier: string, storeSlug: string){
+export async function getMercadopagoAccessToken(code: string, codeVerifier: string, mpRedirectUrl: string){
   try {
     const bodyParams = {
       client_id: process.env.MERCADOPAGO_APP_ID,
       client_secret: process.env.MERCADOPAGO_APP_SECRET,
       code,
       grant_type: "authorization_code",
-      redirect_uri: `${process.env.MERCADOPAGO_OAUTH_HOST}/${storeSlug}/oauth/mp-callback`,
+      redirect_uri: `${mpRedirectUrl}/oauth/mp-callback`,
       code_verifier: codeVerifier,
     }
 

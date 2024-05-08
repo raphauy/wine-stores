@@ -1,4 +1,5 @@
 import { getMercadopagoAccessToken, getOauthDAOByStoreSlug, setAccessToken } from "@/services/oauth-services"
+import { getStoreDAOBySlug } from "@/services/store-services"
 
 type Props= {
     params: {
@@ -19,9 +20,13 @@ export default async function MPCallbackPage({ params, searchParams }: Props) {
     return <div>Invalid code</div>
 
   const storeSlug= params.storeSlug
+  const store= await getStoreDAOBySlug(storeSlug)
+  if (!store || !store.mpRedirectUrl)
+    return <div>Store not found or no mpRedirectUrl</div>
+
   const oauth= await getOauthDAOByStoreSlug(storeSlug, "MercadoPago")
 
-  const data= await getMercadopagoAccessToken(code, oauth.codeVerifier, storeSlug)
+  const data= await getMercadopagoAccessToken(code, oauth.codeVerifier, store.mpRedirectUrl)
 
   const accessToken= data.access_token
   const refreshToken= data.refresh_token
