@@ -31,9 +31,20 @@ export default async function AdminLayout({ children, params }: Props) {
   console.log("currentRole", currentRole)  
   console.log("isAdmin", isAdmin)
   
-  if (!isAdmin && !pathName?.endsWith("/oauth/mp-callback")) {
+  if (!isAdmin && pathName?.endsWith("/oauth/mp-callback")) {
+    // public url only for MP
+    return children
+  }
+
+  if (!isAdmin && pathName?.includes("/oauth")) {
+    // private url
     console.log("someone is trying to access a page that is not admin and not the MP oauth callback")    
     return <div className="mt-10 text-lg">You are not authorized to access this page</div>
+  }
+
+  if (!isAdmin) {
+    // public url
+    return children
   }
 
   return (
