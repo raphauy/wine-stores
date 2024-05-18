@@ -4,6 +4,7 @@ import {MercadoPagoConfig, Payment} from "mercadopago";
 import { setOrderStatus } from "@/services/order-services";
 import { OrderStatus } from "@prisma/client";
 import { getOauthDAOByUserId } from "@/services/oauth-services";
+import { processOrderConfirmation } from "@/services/email-services";
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
 
@@ -37,7 +38,8 @@ export async function POST(request: NextRequest) {
     const externalReference= payment.external_reference
     console.log("externalReference", externalReference)
     
-    
+    await processOrderConfirmation(orderId)
+
     const updated= await setOrderStatus(orderId, OrderStatus.Paid)
     if (!updated) {
       return Response.json({success: false});
