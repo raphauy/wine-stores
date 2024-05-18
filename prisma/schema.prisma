@@ -72,6 +72,8 @@ model Store {
   orders        Order[]     @relation("StoreToOrder")     // gennext: skip.list
 
   oauth         Oauth[]
+
+  inventoryItems InventoryItem[]
 }
 
 model Category {
@@ -110,6 +112,9 @@ model Product {
 
   images      Image[]                           // gennext: skip.list
   orderItems  OrderItem[]                       // gennext: skip.list
+
+  inventoryItem   InventoryItem?
+  inventoryItemId String? @unique
 
   @@index([storeId])                            // gennext: show.list skip.zod
   @@index([categoryId])                         // gennext: show.list skip.zod
@@ -204,4 +209,38 @@ model Oauth {
 
   store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
   storeId     String
+}
+
+enum MovementType {
+  ENTRADA   // Indica un ingreso de stock
+  SALIDA  // Indica una salida de stock
+}
+
+model InventoryItem {
+  id          String    @id @default(cuid())
+  quantity    Int       @default(0)              // gennext: show.column
+
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   String    @unique
+ 
+  store       Store     @relation(fields: [storeId], references: [id])
+  storeId     String
+
+  stockMovements StockMovement[] @relation("StockToInventoryItem")
+
+  createdAt   DateTime    @default(now())        // gennext: skip.zod
+  updatedAt   DateTime    @updatedAt             // gennext: skip.zod
+}
+
+model StockMovement {
+  id          String    @id @default(cuid())
+  type        MovementType                       // gennext: show.column
+  quantity    Int                                // gennext: show.column
+  comment     String?                            // gennext: show.column
+
+  inventoryItem InventoryItem @relation("StockToInventoryItem", fields: [inventoryItemId], references: [id])
+  inventoryItemId String
+
+  createdAt   DateTime    @default(now())        // gennext: skip.zod
+  updatedAt   DateTime    @updatedAt             // gennext: skip.zod
 }

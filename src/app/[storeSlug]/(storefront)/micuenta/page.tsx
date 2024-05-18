@@ -6,8 +6,12 @@ type Props = {
   params: {
     storeSlug: string
   }
+  searchParams: {
+    email: string
+    storeId: string
+  }
 }
-export default async function MiCuentaPage({ params }: Props) {
+export default async function MiCuentaPage({ params, searchParams }: Props) {
     const storeSlug = params.storeSlug
     const store= await getStoreDAOBySlug(storeSlug)
 
@@ -15,7 +19,11 @@ export default async function MiCuentaPage({ params }: Props) {
     const user= session?.user
 
     if (!session || !store || !user) {
-        return redirect("/auth/login")
+      if (searchParams.email && searchParams.storeId) {
+        const params= `?email=${searchParams.email}&storeId=${searchParams.storeId}`
+        return redirect(`/auth/login${params}`)
+      }
+      return redirect("/auth/login")
     }
 
     return (

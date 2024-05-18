@@ -42,10 +42,21 @@ export default function PagoConfirmadoPage() {
   return (
     <div className=''>
       <div className='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
-        <h1 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
-          Pago finalizado con éxito!!!
-        </h1>
-        <p>Status: {status}</p>
+        {
+          status === "approved" ? 
+          <h1 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
+            Pago finalizado con éxito!!!
+          </h1>
+        :
+        status === "pending" ? 
+          <h1 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
+            Pago pendiente...
+          </h1>
+        :
+          <h1 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
+            Algo salió mal con el pago.
+          </h1>
+        }
       </div>
     </div>
   )

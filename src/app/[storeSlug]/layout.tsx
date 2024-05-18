@@ -55,7 +55,7 @@ export default async function AdminLayout({ children, params }: Props) {
             <div className="flex justify-between items-center">
               <Logo />
               <Selectors />
-              <Logged />
+              <Logged isSubdomain={isSubdomain} />
             </div>
             <Menu isSubdomain={isSubdomain} />
           </div>

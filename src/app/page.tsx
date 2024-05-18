@@ -41,6 +41,9 @@ export default async function Home() {
   if (role?.startsWith("STORE"))
     redirect(`/${storeSlug}`)
 
+  if (role === "CLIENT")
+    redirect("/micuenta")
+
   const stores= await getFullStoresDAO()
 
   return (

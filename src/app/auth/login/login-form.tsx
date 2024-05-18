@@ -16,7 +16,11 @@ import { LoginSchema } from "@/services/login-services";
 import { loginAction } from "./actions";
 
 
-export function LoginForm() {
+type Props = {
+  requestedEmail?: string
+  storeName?: string
+}
+export function LoginForm({ requestedEmail, storeName }: Props) {
 
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
@@ -32,7 +36,7 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
+      email: requestedEmail || "",      
     },
   });
 
@@ -75,7 +79,7 @@ export function LoginForm() {
       >
         <div className="mb-7 w-full text-muted-foreground">
           <div className="flex items-center justify-center gap-2 mb-2"><p className="font-bold text-4xl text-center">Login</p><p className="text-2xl">🔐</p></div>
-          <p className="font-bold text-center mb-10">Bienvenido a Wine Stores</p>
+          <p className="font-bold text-center mb-10">Bienvenido a {storeName ? "la tienda de " + storeName : "Wine Stores"}</p>
           {showOTP && (
             <FormField
               control={form.control}

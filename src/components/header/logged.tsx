@@ -4,7 +4,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "../ui/button"
 import Link from "next/link"
 
-export default async function Logged() {
+type Props= {
+    isSubdomain: boolean   
+}
+
+export default async function Logged({ isSubdomain }: Props) {
 
     const user= await getCurrentUser()
     if (!user) {
@@ -21,7 +25,7 @@ export default async function Logged() {
           <Button variant="ghost">{user.email}</Button>
         </PopoverTrigger>
         <PopoverContent className="rounded-2xl border py-3 w-fit bg-white shadow-xl mr-3">
-            <PopOverUserHandler user={user}/>
+            <PopOverUserHandler user={user} isSubdomain={isSubdomain} />
         </PopoverContent>
         </Popover>
 

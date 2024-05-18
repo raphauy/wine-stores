@@ -4,6 +4,9 @@ import { StoreDAO } from "./store-services"
 import { CategoryDAO } from "./category-services"
 import { ImageDAO } from "./image-services"
 import { QueryValidator, TQueryValidator } from "@/components/query-validator"
+import { InventoryItemFormValues, createInventoryItem, getInventoryItemDAOByProductId } from "./inventoryitem-services"
+import { MovementType } from "@prisma/client"
+import { StockMovementFormValues, createStockMovement } from "./stockmovement-services"
 
 export type ProductDAO = {
 	id: string
@@ -20,17 +23,21 @@ export type ProductDAO = {
 	categoryId: string
 	category: CategoryDAO
   images: ImageDAO[]
+  inventoryItemId: string
 }
 
 export const productSchema = z.object({
 	name: z.string().min(1, "nombre es obligatorio."),
   slug: z.string().min(1, "slug es obligatorio."),
   description: z.string().optional(),
-  price: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
+  price: z.string()
+    .refine((val) => !isNaN(Number(val)), { message: "debe ser un número" })
+    .refine((val) => Number(val) > 0, { message: "el precio debe ser mayor que cero" }),  
   images: z.object({ url: z.string() }).array(),
   isFeatured: z.boolean(),
   isArchived: z.boolean(),	
 	categoryId: z.string().min(1, "categoría es obligatorio."),
+  initialQuantity: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 })
 
 export type ProductFormValues = z.infer<typeof productSchema>
@@ -105,6 +112,20 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
     },
   })
 
+  const inventoryForm: InventoryItemFormValues = {
+    storeId,
+    productId: created.id,
+    quantity: data.initialQuantity,
+  }
+  const inventoryCreated = await createInventoryItem(inventoryForm)
+  const stockMovementForm: StockMovementFormValues = {
+    inventoryItemId: inventoryCreated.id,
+    type: MovementType.ENTRADA,
+    quantity: data.initialQuantity,
+    comment: "Cantidad inicial",
+  }
+  await createStockMovement(stockMovementForm)
+
   return created
 }
 
@@ -144,10 +165,40 @@ export async function updateProduct(id: string, data: ProductFormValues) {
     },
   })
 
+  if (updated.inventoryItemId === null) {
+    const inventoryForm: InventoryItemFormValues = {
+      storeId: updated.storeId,
+      productId: id,
+      quantity: data.initialQuantity,
+    }
+    console.log("inventoryForm", inventoryForm)
+    
+    const inventoryCreated = await createInventoryItem(inventoryForm)
+    const stockMovementForm: StockMovementFormValues = {
+      inventoryItemId: inventoryCreated.id,
+      type: MovementType.ENTRADA,
+      quantity: data.initialQuantity,
+      comment: "Cantidad inicial",
+    }
+    await createStockMovement(stockMovementForm)  
+  }
+
   return updated
 }
 
 export async function deleteProduct(id: string) {
+  const inventoryItem= await getInventoryItemDAOByProductId(id)
+  const stockMovments= inventoryItem.stockMovements
+  if (stockMovments.length > 0) {
+    throw new Error("No se puede borrar un producto que tiene stock.")
+  } else {
+    // disconnect the inventory item from the product
+    await prisma.inventoryItem.delete({
+      where: {
+        id: inventoryItem.id
+      }
+    })
+  }
   const deleted = await prisma.product.delete({
     where: {
       id

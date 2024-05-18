@@ -111,6 +111,7 @@ export async function getFullOrderDAO(id: string) {
     },
     include: {
 			store: true,
+      orderItems: true,
 		}
   })
   return found as OrderDAO

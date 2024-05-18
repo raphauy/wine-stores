@@ -38,23 +38,6 @@ export default auth((req) => {
     } else {
         console.log('no hostRewrite')        
     }
-    
-    // if (subdomain && host !== publicUrl) {
-    //     const searchParams = nextUrl.searchParams.toString()
-    //     const path = nextUrl.pathname
-    //     if (path.startsWith("/auth"))
-    //         return
-        
-    //     const newPath = "/" + path.split('/').filter(Boolean).slice(0).join('/')
-    //     console.log('newPath', newPath)        
-    //     const pathWithSearchParams = `${newPath}${searchParams.length > 0 ? `?${searchParams}` : ''}`
-    //     // console.log('pathWithSearchParams', pathWithSearchParams)
-
-    //     subdomain= subdomain.substring(0, subdomain.length - 1)
-    //     console.log("path:", path, 'subdomain:', subdomain, pathWithSearchParams)
-    //     return NextResponse.rewrite(new URL(`/${subdomain}${pathWithSearchParams}`, req.url))
-    // }
-    
 
     return
 })

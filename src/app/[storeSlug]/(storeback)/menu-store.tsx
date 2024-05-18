@@ -3,12 +3,10 @@
 import { useAdminRoles } from "@/app/admin/users/use-roles"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { CreditCard, ListChecks, ShoppingBasket, Store, Tag, User } from "lucide-react"
+import { BadgeDollarSign, Box, CreditCard, ListChecks, ShoppingBasket, Store, Tag, User } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
-
-const publicUrl= process.env.NEXT_PUBLIC_URL!
 
 type Props= {
   isSubdomain: boolean
@@ -19,8 +17,6 @@ export default function MenuStore({ isSubdomain }: Props) {
     const userRole= user?.role
     const alowedRoles= useAdminRoles()
 
-    const clientSlug= useParams().clientSlug
-    
     const path= usePathname()
     const params= useParams()
 
@@ -30,9 +26,6 @@ export default function MenuStore({ isSubdomain }: Props) {
     const storeSlug= params.storeSlug
     if (!storeSlug)
         return <div>Store not found</div>
-
-    if (clientSlug)
-        return <div></div>
 
     const basePath= isSubdomain ? "" : `/${storeSlug}` 
     
@@ -62,15 +55,15 @@ export default function MenuStore({ isSubdomain }: Props) {
             roles: alowedRoles
         },
         {
-            href: `${basePath}/orders`,
-            icon: ListChecks, 
-            text: "Ordenes",
+            href: `${basePath}/inventory`,
+            icon: ListChecks,  
+            text: "Inventario",
             roles: alowedRoles
         },
         {
-            href: `${basePath}/oauth/mercadopago`,
-            icon: CreditCard,  
-            text: "Mercado Pago",
+            href: `${basePath}/orders`,
+            icon: BadgeDollarSign, 
+            text: "Ventas",
             roles: alowedRoles
         },
     ]

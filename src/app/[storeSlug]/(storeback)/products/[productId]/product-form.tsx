@@ -54,7 +54,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     price: "0",
     categoryId: '',
     isFeatured: false,
-    isArchived: false,    
+    isArchived: false,
+    initialQuantity: "0",
   }
 
   const form = useForm<ProductFormValues>({
@@ -245,6 +246,21 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="initialQuantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cantidad inicial</FormLabel>
+                  <FormControl>
+                    <Input type="number" disabled={loading} placeholder="10" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}

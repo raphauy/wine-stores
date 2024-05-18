@@ -8,6 +8,7 @@ import { format } from "date-fns"
 import { DeleteProductDialog } from "./product-dialogs"
 import Link from "next/link"
 import Image from "next/image"
+import { InventoryItemDialog } from "../inventory/inventoryitem-dialogs"
 
 
 export const columns: ColumnDef<ProductDAO>[] = [
@@ -23,7 +24,7 @@ export const columns: ColumnDef<ProductDAO>[] = [
       const firstImage = data.images[0].url;
       return (
         <div className="flex items-center justify-center">
-          <Image src={firstImage} alt="product-image" width={20} height={20} />
+          <Image src={firstImage} alt="product-image" width={40} height={40} />
         </div>
       );
     }
@@ -42,7 +43,7 @@ export const columns: ColumnDef<ProductDAO>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <Link href={`/${data.store.slug}/products/${data.id}`} >
+        <Link href={`/products/${data.id}`} >
           <Button variant="link">
             {data.name}
           </Button>
