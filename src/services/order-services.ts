@@ -188,7 +188,9 @@ async function processOrderMercadoPago(order: OrderDAO) {
         success: redirectUrl,
         failure: redirectUrl,
         pending: redirectUrl,
-      }
+      },
+      marketplace: process.env.MP_PUBLIC_KEY,
+      marketplace_fee: 10,
     }
   })
 
