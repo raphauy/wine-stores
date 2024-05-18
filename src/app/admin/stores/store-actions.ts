@@ -43,6 +43,7 @@ export async function createStoreWithIgHandleAction(igHandle: string): Promise<S
       image,
       igHandle,
       description: igProfile.biography,
+      mpMarketplaceFee: "10",
     }
 
     const created= await createStore(data)
