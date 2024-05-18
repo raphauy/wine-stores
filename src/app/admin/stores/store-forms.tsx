@@ -49,7 +49,13 @@ export function StoreForm({ id, closeDialog }: Props) {
     if (id) {
       getStoreDAOAction(id).then((data) => {
         if (data) {
-          form.reset(data)
+          form.setValue("name", data.name)
+          form.setValue("slug", data.slug)
+          form.setValue("image", data.image)
+          form.setValue("igHandle", data.igHandle)
+          form.setValue("description", data.description)
+          form.setValue("mpRedirectUrl", data.mpRedirectUrl)
+          form.setValue("mpMarketplaceFee", data.mpMarketplaceFee.toString())
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {
@@ -152,6 +158,19 @@ export function StoreForm({ id, closeDialog }: Props) {
             )}
           />
           
+          <FormField
+            control={form.control}
+            name="mpMarketplaceFee"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>MP Marketplace percentage fee (%)</FormLabel>
+                <FormControl>
+                  <Input placeholder="ej: 10" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
       
         <div className="flex justify-end">
             <Button onClick={() => closeDialog()} type="button" variant={"secondary"} className="w-32">Cancel</Button>

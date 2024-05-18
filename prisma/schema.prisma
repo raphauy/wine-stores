@@ -59,6 +59,7 @@ model Store {
   igHandle      String?                    // gennext: show.column
 
   mpRedirectUrl String?                    // gennext: show.column
+  mpMarketplaceFee Float @default(10)      // gennext: show.column
 
   createdAt DateTime @default(now())           // gennext: skip.zod
   updatedAt DateTime @updatedAt                // gennext: skip.zod

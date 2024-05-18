@@ -151,7 +151,12 @@ export async function processOrder(id: string) {
 
 
 async function processOrderMercadoPago(order: OrderDAO) {
-  
+
+  const mpMarketplaceFeePerc= order.store.mpMarketplaceFee
+  const totalOrderValue= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
+  const mpFee= Number((totalOrderValue * mpMarketplaceFeePerc / 100).toFixed(2))
+  console.log("feePerc:", mpMarketplaceFeePerc, " value:", totalOrderValue, " totalFee:", mpFee)
+
   const oauth= await getOauthDAOByStoreId(order.storeId, "MercadoPago")
   console.log("oauth", oauth)
   
@@ -163,7 +168,7 @@ async function processOrderMercadoPago(order: OrderDAO) {
 	let redirectUrl = order.store.mpRedirectUrl?.endsWith("/") ? order.store.mpRedirectUrl.slice(0, -1) : order.store.mpRedirectUrl
   redirectUrl += `/checkout/pago-confirmado`
 
-  const preference = new Preference(client);
+  const preference = new Preference(client)
 
   const preferenceResponse = await preference.create({
     body: {
@@ -186,7 +191,7 @@ async function processOrderMercadoPago(order: OrderDAO) {
         pending: redirectUrl,
       },
       marketplace: process.env.MP_PUBLIC_KEY,
-      marketplace_fee: 10,
+      marketplace_fee: mpFee,
     }
   })
 
@@ -206,6 +211,7 @@ async function processOrderMercadoPago(order: OrderDAO) {
 
   return initPoint
 }
+
 
 async function processOrderTransferenciaBancaria(order: Order) {
 

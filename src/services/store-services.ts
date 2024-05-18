@@ -11,6 +11,7 @@ export type StoreDAO = {
 	igHandle: string | undefined
   description: string | undefined
   mpRedirectUrl: string | undefined
+  mpMarketplaceFee: number
 	ownerId: string | undefined
   owner: UserDAO | undefined
   categories: CategoryDAO[]
@@ -25,6 +26,7 @@ export const storeSchema = z.object({
 	igHandle: z.string().optional(),
   description: z.string().optional(),
   mpRedirectUrl: z.string().optional(),
+  mpMarketplaceFee: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" })
 })
 
 export type StoreFormValues = z.infer<typeof storeSchema>
@@ -61,19 +63,26 @@ export async function getStoreDAOBySlug(slug: string) {
 }
     
 export async function createStore(data: StoreFormValues) {
-  // TODO: implement createStore
+  const mpMarketplaceFee= Number(data.mpMarketplaceFee)
   const created = await prisma.store.create({
-    data
+    data: {
+      ...data,
+      mpMarketplaceFee,
+    }
   })
   return created
 }
 
 export async function updateStore(id: string, data: StoreFormValues) {
+  const mpMarketplaceFee= Number(data.mpMarketplaceFee)
   const updated = await prisma.store.update({
     where: {
       id
     },
-    data
+    data: {
+      ...data,
+      mpMarketplaceFee,
+    }
   })
   return updated
 }
