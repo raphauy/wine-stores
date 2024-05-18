@@ -49,9 +49,9 @@ export default function UserAccountNav({ user }: Props) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href='#'>
-            <Button variant="ghost" className='px-1 w-full gap-2 justify-start' disabled>
-              <ShoppingBag className='w-5 h-5' /> Mis ordenes
+          <Link href='/micuenta'>
+            <Button variant="ghost" className='px-1 w-full gap-2 justify-start'>
+              <ShoppingBag className='w-5 h-5' /> Mis compras
             </Button>
           </Link>
         </DropdownMenuItem>

@@ -7,4 +7,4 @@ async function main() {
     await processOrderConfirmation(orderId)
 }
 
-main()
+//main()

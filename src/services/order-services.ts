@@ -231,3 +231,19 @@ export async function setOrderStatus(orderId: string, status: OrderStatus) {
   })
   return updated
 }
+
+export async function getFullOrdersDAOByEmail(email: string, storeSlug: string) {
+  const found = await prisma.order.findMany({
+    where: {
+      email,
+      store: {
+        slug: storeSlug
+      }
+    },
+    include: {
+			store: true,
+      orderItems: true,
+		}
+  })
+  return found as OrderDAO[]
+}
