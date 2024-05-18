@@ -1,13 +1,18 @@
 import { sendOrderConfirmationEmail } from "@/lib/mail";
 import { getFullOrderDAO } from "./order-services";
 import { StockMovementFormValues, createStockMovement } from "./stockmovement-services";
-import { MovementType } from "@prisma/client";
+import { MovementType, OrderStatus } from "@prisma/client";
 import { getProductDAO } from "./product-services";
 import { getInventoryItemDAOByProductId } from "./inventoryitem-services";
 
 
 export async function processOrderConfirmation(orderId: string) {
     const order = await getFullOrderDAO(orderId)
+    const status= order.status
+    if (status === OrderStatus.Paid) {
+        console.log("Order already paid")
+        return
+    }
     const email = order.email
     const store = order.store
 
