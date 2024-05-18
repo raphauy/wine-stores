@@ -150,10 +150,6 @@ export async function processOrder(id: string) {
 }
 
 
-//const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN! });
-
-
-
 async function processOrderMercadoPago(order: OrderDAO) {
   
   const oauth= await getOauthDAOByStoreId(order.storeId, "MercadoPago")
@@ -196,7 +192,7 @@ async function processOrderMercadoPago(order: OrderDAO) {
 
   console.log("collector_id", preferenceResponse.collector_id)
 
-  const updated = await prisma.order.update({
+  await prisma.order.update({
     where: {
       id: order.id
     },
@@ -205,7 +201,10 @@ async function processOrderMercadoPago(order: OrderDAO) {
     }
   })
 
-  return preferenceResponse.sandbox_init_point!
+  const isProduction= process.env.MP_SANDBOX === "false"
+  const initPoint= isProduction ? preferenceResponse.init_point! : preferenceResponse.sandbox_init_point!
+
+  return initPoint
 }
 
 async function processOrderTransferenciaBancaria(order: Order) {
