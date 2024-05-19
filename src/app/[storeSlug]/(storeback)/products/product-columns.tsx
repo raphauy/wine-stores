@@ -7,6 +7,7 @@ import { ArchiveX, ArrowUpDown, CircleCheck, Pencil } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { DeleteProductDialog } from "./product-dialogs"
+import ProductLink from "./product-link"
 
 
 export const columns: ColumnDef<ProductDAO>[] = [
@@ -132,19 +133,16 @@ export const columns: ColumnDef<ProductDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       const deleteDescription= `Do you want to delete Product ${data.id}?`
-      const host= window ? window.location.host : ""
-      const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
-      const isSubdomain= hostUrl !== host
-      const slug= data.store.slug
  
       return (
         <div className="flex items-center justify-end gap-2">
 
-          <Link href={`${isSubdomain ? `/products/${data.id}` : `/${slug}/products/${data.id}`}`} >
+          {/* <Link href={`${isSubdomain ? `/products/${data.id}` : `/${slug}/products/${data.id}`}`} >
             <Button variant="ghost">
                 <Pencil />
             </Button>
-          </Link>
+          </Link> */}
+          <ProductLink productId={data.id} storeSlug={data.store.slug} />
 
           <DeleteProductDialog description={deleteDescription} id={data.id} />
         </div>
