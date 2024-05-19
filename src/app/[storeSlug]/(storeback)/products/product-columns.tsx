@@ -9,6 +9,7 @@ import { DeleteProductDialog } from "./product-dialogs"
 import Link from "next/link"
 import Image from "next/image"
 import { InventoryItemDialog } from "../inventory/inventoryitem-dialogs"
+import ProductLink from "./product-link"
 
 
 export const columns: ColumnDef<ProductDAO>[] = [
@@ -42,8 +43,12 @@ export const columns: ColumnDef<ProductDAO>[] = [
     )},
     cell: ({ row }) => {
       const data = row.original;
+      const host= window.location.host
+      const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+      const isSubdomain= hostUrl !== host
+      const slug= data.store.slug
       return (
-        <Link href={`/products/${data.id}`} >
+        <Link href={`${isSubdomain ? `/products/${data.id}` : `/${slug}/products/${data.id}`}`} >
           <Button variant="link">
             {data.name}
           </Button>
@@ -129,17 +134,21 @@ export const columns: ColumnDef<ProductDAO>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data= row.original
-
       const deleteDescription= `Do you want to delete Product ${data.id}?`
+      const host= window.location.host
+      const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+      const isSubdomain= hostUrl !== host
+      const slug= data.store.slug
  
       return (
         <div className="flex items-center justify-end gap-2">
 
-          <Link href={`/products/${data.id}`} >
+          <Link href={`${isSubdomain ? `/products/${data.id}` : `/${slug}/products/${data.id}`}`} >
             <Button variant="ghost">
-              <Pencil />
+                <Pencil />
             </Button>
           </Link>
+
           <DeleteProductDialog description={deleteDescription} id={data.id} />
         </div>
 

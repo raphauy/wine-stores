@@ -18,23 +18,8 @@ export const columns: ColumnDef<InventoryItemDAO>[] = [
     accessorKey: "category",
     header: ({ column }) => {
       return null
-        return (
-          <Button variant="ghost" className="pl-0 dark:text-white"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Categoria
-            <ArrowUpDown className="w-4 h-4 ml-1" />
-          </Button>
-    )},
+    },
     // cell: ({ row }) => {
-    //   const data= row.original
-    //   const category: CategoryDAO= data.product.category
-      
-    //   return (
-    //     <div>
-    //       <p>{category?.name}</p>
-    //     </div>
-    //   )
-    // },
     filterFn: (row, id, value) => {
       const product: ProductDAO= row.getValue("product")
 
@@ -56,8 +41,12 @@ export const columns: ColumnDef<InventoryItemDAO>[] = [
       const data= row.original
       const product: ProductDAO= data.product
       const firstImage = product.images[0].url;
+      const host= window.location.host
+      const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+      const isSubdomain= hostUrl !== host
+      const slug= data.store.slug
       return (
-        <Link href={`/inventory/${data.product.id}`}>
+        <Link href={`${isSubdomain ? `/inventory/${product.id}` : `/${slug}/inventory/${product.id}`}`} >
           <div className="flex items-center">
             <Image src={firstImage} alt="product-image" width={56} height={56} />
             <div>
