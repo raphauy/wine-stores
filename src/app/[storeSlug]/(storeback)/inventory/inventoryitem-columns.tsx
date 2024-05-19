@@ -41,12 +41,8 @@ export const columns: ColumnDef<InventoryItemDAO>[] = [
       const data= row.original
       const product: ProductDAO= data.product
       const firstImage = product.images[0].url;
-      const host= window ? window.location.host : ""
-      const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
-      const isSubdomain= hostUrl !== host
-      const slug= data.store.slug
       return (
-        <Link href={`${isSubdomain ? `/inventory/${product.id}` : `/${slug}/inventory/${product.id}`}`} >
+        <Link href={`/inventory/${product.id}`}>
           <div className="flex items-center">
             <Image src={firstImage} alt="product-image" width={56} height={56} />
             <div>

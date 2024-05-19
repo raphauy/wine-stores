@@ -64,7 +64,7 @@ const onSubmit = async (data: TestEnvioFormValues) => {
         toast({ title: "Email de prueba enviado" })
         closeDialog()
     } catch (error: any) {
-        toast({ title: "Error", description: "Verifica que el Newsletter hasya sido guardado.", variant: "destructive" })
+        toast({ title: "Error", description: error.message, variant: "destructive" })
     } finally {
         setLoading(false)
     }
