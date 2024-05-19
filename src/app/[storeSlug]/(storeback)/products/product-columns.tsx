@@ -40,7 +40,7 @@ export const columns: ColumnDef<ProductDAO>[] = [
     )},
     cell: ({ row }) => {
       const data = row.original;
-      const host= window.location.host
+      const host= window ? window.location.host : ""
       const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
       const isSubdomain= hostUrl !== host
       const slug= data.store.slug
@@ -132,7 +132,7 @@ export const columns: ColumnDef<ProductDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       const deleteDescription= `Do you want to delete Product ${data.id}?`
-      const host= window.location.host
+      const host= window ? window.location.host : ""
       const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
       const isSubdomain= hostUrl !== host
       const slug= data.store.slug
