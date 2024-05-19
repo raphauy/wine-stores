@@ -23,8 +23,11 @@ export default async function StoreFrontHome({ params }: Props) {
   }
 
   const host= headers().get('host')
-  const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
-  const isSubdomain= hostUrl !== host
+  // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+  // const isSubdomain= hostUrl !== host
+  const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")
+  const isServer= serverUrls.some((serverUrl) => host ===serverUrl)
+  const isSubdomain= !isServer
 
   return (
     <>

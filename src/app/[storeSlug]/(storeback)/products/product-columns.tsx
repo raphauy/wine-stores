@@ -40,8 +40,12 @@ export const columns: ColumnDef<ProductDAO>[] = [
     )},
     cell: ({ row }) => {
       const data = row.original;
+      const host= window ? window.location.host : ""
+      const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")
+      const isServer= serverUrls.some((serverUrl) => host ===serverUrl)
+    
       return (
-        <Link href={`/products/${data.id}`}>
+        <Link href={`${isServer ? `/${data.store.slug}/products/${data.id}` : `/products/${data.id}`}`}>
           <Button variant="link">
             {data.name}
           </Button>
@@ -128,11 +132,15 @@ export const columns: ColumnDef<ProductDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       const deleteDescription= `Do you want to delete Product ${data.id}?`
- 
+
+      const host= window ? window.location.host : ""
+      const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")
+      const isServer= serverUrls.some((serverUrl) => host ===serverUrl)
+    
       return (
         <div className="flex items-center justify-end gap-2">
 
-          <Link href={`/products/${data.id}`}>
+          <Link href={`${isServer ? `/${data.store.slug}/products/${data.id}` : `/products/${data.id}`}`}>
             <Button variant="ghost">
                 <Pencil />
             </Button>

@@ -1,13 +1,10 @@
-//import AddToCartButton from '@/components/AddToCartButton'
 import AddToCartButton from '@/components/AddToCartButton'
 import ImageSlider from '@/components/ImageSlider'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
 import { Button } from '@/components/ui/button'
-//import { PRODUCT_CATEGORIES } from '@/config'
-//import { getPayloadClient } from '@/get-payload'
 import { formatPrice } from '@/lib/utils'
-import { getProductDAO, getProductDAOBySlug } from '@/services/product-services'
+import { getProductDAOBySlug } from '@/services/product-services'
 import { Check, Shield } from 'lucide-react'
 import { headers } from 'next/headers'
 import Link from 'next/link'
@@ -33,8 +30,11 @@ export default async function ProductoPage({ params }: PageProps) {
   if (!product) return notFound()
 
   const host= headers().get('host')
-  const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
-  const isSubdomain= hostUrl !== host
+  // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
+  // const isSubdomain= hostUrl !== host
+  const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")
+  const isServer= serverUrls.some((serverUrl) => host ===serverUrl)
+  const isSubdomain= !isServer
 
   const categoryHref= isSubdomain ? `/${categorySlug}` : `/${storeSlug}/${categorySlug}` 
   const homeHref= isSubdomain ? `/` : `/${storeSlug}`
