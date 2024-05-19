@@ -39,22 +39,10 @@ export default async function StoreFrontHome({ params }: Props) {
           <h1 className='text-3xl mt-4 font-bold tracking-tight text-gray-900 sm:text-5xl'>
             {store.name}
           </h1>
-          <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
-            Bienvenido a la tienda de <span className='font-bold'>{store.name}</span>.             
-          </p>
-          <p className='text-lg max-w-prose text-muted-foreground'>
-            {store.description}
-          </p>
-          {/* <div className='flex flex-col sm:flex-row gap-4 mt-6'>
-            <Link
-              href='/productos'
-              className={buttonVariants()}>
-              Explora lo Más Vendido
-            </Link>
-            <Button variant='ghost'>
-              Nuestra promesa de calidad &rarr;
-            </Button>
-          </div> */}
+          <div className='text-lg max-w-prose text-muted-foreground mt-5'>
+            {/* { description is html, render it as html } */}
+            <div dangerouslySetInnerHTML={{ __html: store.description || '' }} />
+          </div>
         </div>
         {
           categories && categories.map((category) => (

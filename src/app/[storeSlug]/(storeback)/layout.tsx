@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { getCurrentRole, getCurrentUser } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
@@ -30,6 +31,7 @@ export default async function AdminLayout({ children, params }: Props) {
   return (
     <div className="flex px-3 sm:px-4 md:px-5 flex-col items-center flex-grow p-1 w-full max-w-[1350px]">
       {children}
+      <Toaster />
     </div>
   )
 }

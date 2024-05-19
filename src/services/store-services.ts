@@ -12,6 +12,8 @@ export type StoreDAO = {
   description: string | undefined
   mpRedirectUrl: string | undefined
   mpMarketplaceFee: number
+  emailFrom: string | undefined
+  emailConfirmationHtml: string | undefined
 	ownerId: string | undefined
   owner: UserDAO | undefined
   categories: CategoryDAO[]
@@ -30,6 +32,21 @@ export const storeSchema = z.object({
 })
 
 export type StoreFormValues = z.infer<typeof storeSchema>
+
+export const generalConfigSchema = z.object({
+	name: z.string({required_error: "name is required."}),
+	image: z.string().optional(),
+  description: z.string().optional(),
+})
+
+export type GeneralConfigFormValues = z.infer<typeof generalConfigSchema>
+
+export const emailConfigSchema = z.object({
+  emailFrom: z.string().optional(),
+  emailConfirmationHtml: z.string().optional(),
+})
+
+export type EmailConfigFormValues = z.infer<typeof emailConfigSchema>
 
 
 export async function getStoresDAO() {
@@ -82,6 +99,20 @@ export async function updateStore(id: string, data: StoreFormValues) {
     data: {
       ...data,
       mpMarketplaceFee,
+    }
+  })
+  return updated
+}
+
+export async function updateConfigs(id: string, data: GeneralConfigFormValues | EmailConfigFormValues) {
+  console.log("updateConfigs", data)
+  
+  const updated = await prisma.store.update({
+    where: {
+      id
+    },
+    data: {
+      ...data,
     }
   })
   return updated

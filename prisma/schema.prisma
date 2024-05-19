@@ -61,6 +61,9 @@ model Store {
   mpRedirectUrl String?                    // gennext: show.column
   mpMarketplaceFee Float @default(10)      // gennext: show.column
 
+  emailFrom     String?
+  emailConfirmationHtml   String?
+
   createdAt DateTime @default(now())           // gennext: skip.zod
   updatedAt DateTime @updatedAt                // gennext: skip.zod
 

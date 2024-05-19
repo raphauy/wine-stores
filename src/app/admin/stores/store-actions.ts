@@ -1,10 +1,11 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { StoreDAO, StoreFormValues, createStore, updateStore, getFullStoreDAO, deleteStore, setOwner } from "@/services/store-services"
+import { StoreDAO, StoreFormValues, createStore, updateStore, getFullStoreDAO, deleteStore, setOwner, GeneralConfigFormValues, EmailConfigFormValues, updateConfigs, getStoreDAO } from "@/services/store-services"
 import { getIgProfile } from "@/services/instagram-services"
 import { generateSlug } from "@/lib/utils"
 import { uploadFileWithUrl } from "@/services/upload-file-service"
+import { sendEmailConfirmation } from "@/services/email-services"
 
 
 export async function getStoreDAOAction(id: string): Promise<StoreDAO | null> {
@@ -20,6 +21,14 @@ export async function createOrUpdateStoreAction(id: string | null, data: StoreFo
     }     
 
     revalidatePath("/admin/stores")
+
+    return updated as StoreDAO
+}
+
+export async function updateConfigsAction(id: string, data: GeneralConfigFormValues | EmailConfigFormValues): Promise<StoreDAO | null> {
+    const updated= await updateConfigs(id, data)
+
+    revalidatePath("[storeSlug]/config", "page")
 
     return updated as StoreDAO
 }
@@ -67,4 +76,14 @@ export async function setOwnerAction(storeId: string, userId: string): Promise<S
     revalidatePath("/admin/agencies")
 
     return updated as StoreDAO
+}
+
+export async function sendConfirmationTestEmailAction(storeId: string, emailTo: string): Promise<boolean> {    
+    const store= await getStoreDAO(storeId)
+  
+    const res= await sendEmailConfirmation(store.id, emailTo)
+
+    revalidatePath("[storeSlug]/config", "page")
+
+    return res
 }

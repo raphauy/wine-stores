@@ -3,7 +3,7 @@
 import { useAdminRoles } from "@/app/admin/users/use-roles"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { BadgeDollarSign, Box, CreditCard, ListChecks, ShoppingBasket, Store, Tag, User } from "lucide-react"
+import { BadgeDollarSign, Box, CreditCard, ListChecks, Settings, ShoppingBasket, Store, Tag, User } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
@@ -66,6 +66,12 @@ export default function MenuStore({ isSubdomain }: Props) {
             text: "Ventas",
             roles: alowedRoles
         },
+        {
+            href: `${basePath}/config`,
+            icon: Settings,
+            text: "Configuración",
+            roles: alowedRoles
+        },
     ]
         
     return (
@@ -79,7 +85,7 @@ export default function MenuStore({ isSubdomain }: Props) {
                             <Link href={item.href}>
                                 <Button variant="ghost">
                                     <item.icon className="w-4 h-4 mr-1 mb-0.5" />
-                                    {item.text}
+                                    <p className={cn("hidden lg:block")}>{item.text}</p>
                                 </Button>
                             </Link>
                         </li>
