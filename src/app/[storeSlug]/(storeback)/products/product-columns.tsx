@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button"
 import { ProductDAO } from "@/services/product-services"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArchiveX, ArrowUpDown, CircleCheck, Pencil } from "lucide-react"
-import { format } from "date-fns"
-import { DeleteProductDialog } from "./product-dialogs"
-import Link from "next/link"
 import Image from "next/image"
-import { InventoryItemDialog } from "../inventory/inventoryitem-dialogs"
-import ProductLink from "./product-link"
+import Link from "next/link"
+import { DeleteProductDialog } from "./product-dialogs"
 
 
 export const columns: ColumnDef<ProductDAO>[] = [
