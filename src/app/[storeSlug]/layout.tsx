@@ -19,7 +19,7 @@ interface Props {
 export default async function AdminLayout({ children, params }: Props) {
 
   const currentHost= headers().get("x-forwarded-host")
-  const isSubdomain= currentHost !== process.env.NEXT_PUBLIC_URL?.split("//")[1]
+  const isSubdomain= currentHost !== process.env.NEXT_PUBLIC_URL?.split("//")[1] && currentHost !== "ecommerce.tinta.wine"
 
   const session = await auth();
   const currentRole: UserRole| undefined = session?.user?.role as UserRole | undefined
