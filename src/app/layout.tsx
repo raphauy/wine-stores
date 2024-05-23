@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -42,7 +43,8 @@ export default async function RootLayout({ children }: Props) {
         <Providers session={session}>            
           <div className="flex flex-col items-center flex-1 w-full bg-slate-50 dark:bg-black">
             {children}
-          </div>
+            <Analytics />
+         </div>
           <Footer />
         </Providers>
       </body>
