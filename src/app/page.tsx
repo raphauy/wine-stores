@@ -66,7 +66,7 @@ export default async function Home() {
             {
               stores.map(store => {
                 return (
-                  <Link key={store.id} href={`/${store.slug}`}>
+                  <Link key={store.id} href={store.mpRedirectUrl || `/${store.slug}`} target="_blank">
                     <Button variant="ghost" className="whitespace-nowrap min-w-[230px]">
                       <div className="flex items-center gap-2">
                         { store.image && <Image src={store.image} alt={store.name} width={20} height={20} className="rounded-full" />}
