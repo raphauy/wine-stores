@@ -1,12 +1,10 @@
 "use server"
 
 import { CartItem } from "@/hooks/use-cart"
-import { prisma } from "@/lib/db"
-import { OrderDAO, OrderFormValues, createOrder, processOrder } from "@/services/order-services"
+import { OrderFormValues, createOrder, processOrder } from "@/services/order-services"
 import { OrderItemFormValues, createOrderItem } from "@/services/orderitem-services"
 import { getStoreDAOBySlug } from "@/services/store-services"
-import { Order, OrderStatus, PaymentMethod } from "@prisma/client"
-import MercadoPagoConfig, { Preference } from "mercadopago"
+import { PaymentMethod } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
@@ -15,9 +13,9 @@ type OrderItem= {
     productId: string
 }
 
-export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug: string, items: CartItem[], email: string, phone: string, address: string) {
+export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug: string, items: CartItem[], email: string, name: string, address: string, phone: string) {
     console.log("createOrder", paymentMethod)
-    console.log(email, phone, address)
+    console.log(email, name, address, phone)
     console.log("items:", items)
 
     const store= await getStoreDAOBySlug(storeSlug)
@@ -27,8 +25,9 @@ export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug:
         paymentMethod,
         storeId: store.id,
         email,
-        phone,
+        name,
         address,
+        phone,
     }
 
     const orderCreated= await createOrder(orderForm)

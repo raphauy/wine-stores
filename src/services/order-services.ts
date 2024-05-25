@@ -12,8 +12,9 @@ export type OrderDAO = {
   paymentMethod: PaymentMethod
 	status: OrderStatus
   email: string
-	phone: string
+	name: string
 	address: string
+	phone: string
 	createdAt: Date
 	updatedAt: Date
 	store: StoreDAO
@@ -25,17 +26,19 @@ export const orderSchema = z.object({
   paymentMethod: z.nativeEnum(PaymentMethod),
   storeId: z.string().min(1, "necesitamos un id para asociar este pedido."),
   email: z.string().email("necesitamos un email para asociar este pedido."),
-	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
+	name: z.string().min(1, "necesitamos el nombre del destinatario para poder enviar tu pedido."),
 	address: z.string().min(1, "necesitamos una dirección para poder enviar tu pedido."),
+	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
 })
 
 export type OrderFormValues = z.infer<typeof orderSchema>
 
 
 export const datosEnvioSchema = z.object({
-  email: z.string().email("necesitamos un email para asociar este pedido."),
-	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
-	address: z.string().min(1, "necesitamos una dirección para poder enviar tu pedido."),
+  email: z.string().email("necesitamos un email para asociar a este pedido."),
+  name: z.string().min(1, "necesitamos el nombre del destinatario para poder enviar tu pedido."),
+	address: z.string().min(1, "necesitamos la dirección del destinatario para poder enviar tu pedido."),
+	phone: z.string().min(1, "necesitamos un teléfono de contacto."),
 })
 
 export type DatosEnvioFormValues = z.infer<typeof datosEnvioSchema>
@@ -219,6 +222,15 @@ async function processOrderTransferenciaBancaria(order: Order) {
   const store= await getFullStoreDAO(order.storeId)
 
   const bankDataUrl= `${store.mpRedirectUrl}/checkout/datos-bancarios`
+
+  await prisma.order.update({
+    where: {
+      id: order.id
+    },
+    data: {
+      status: OrderStatus.Pending
+    }
+  })
 
   return bankDataUrl
 }

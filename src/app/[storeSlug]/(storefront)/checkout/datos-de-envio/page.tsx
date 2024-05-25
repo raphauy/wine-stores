@@ -9,14 +9,15 @@ import OrderSummary from '../order-summary'
 
 
 export default function Page() { 
-  const { items, setEmail, setPhone, setAddress } = useCart()
+  const { items, setEmail, setName, setAddress, setPhone } = useCart()
 
   const router= useRouter()
 
   function setData(data: DatosEnvioFormValues) {
     setEmail(data.email)
-    setPhone(data.phone || '')
+    setName(data.name)
     setAddress(data.address)
+    setPhone(data.phone || '')
 
     router.push('/checkout/medio-de-pago')
   }

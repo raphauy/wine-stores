@@ -13,19 +13,22 @@ type CartState = {
   removeAllOf: (productId: string) => void
   clearCart: () => void
   email: string
-  phone: string
+  name: string
   address: string
+  phone: string
   setEmail: (email: string) => void
-  setPhone: (phone: string) => void
+  setName: (name: string) => void
   setAddress: (address: string) => void
+  setPhone: (phone: string) => void
 }
 
 export const useCart = create<CartState>()(
   persist(
     (set) => ({
       email: '',
-      phone: '',
+      name: '',
       address: '',
+      phone: '',
       items: [],
       addItem: (product) =>
         set((state) => {
@@ -51,8 +54,9 @@ export const useCart = create<CartState>()(
         }),
         clearCart: () => set({ items: [] }),
       setEmail: (email) => set({ email }),
-      setPhone: (phone) => set({ phone }),
+      setName: (name) => set({ name }),
       setAddress: (address) => set({ address }),
+      setPhone: (phone) => set({ phone }),
     }),
     {
       name: 'cart-storage',

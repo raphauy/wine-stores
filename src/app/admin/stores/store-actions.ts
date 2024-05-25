@@ -1,7 +1,7 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { StoreDAO, StoreFormValues, createStore, updateStore, getFullStoreDAO, deleteStore, setOwner, GeneralConfigFormValues, EmailConfigFormValues, updateConfigs, getStoreDAO } from "@/services/store-services"
+import { StoreDAO, StoreFormValues, createStore, updateStore, getFullStoreDAO, deleteStore, setOwner, GeneralConfigFormValues, EmailConfigFormValues, updateConfigs, getStoreDAO, getStoreDAOBySlug } from "@/services/store-services"
 import { getIgProfile } from "@/services/instagram-services"
 import { generateSlug } from "@/lib/utils"
 import { uploadFileWithUrl } from "@/services/upload-file-service"
@@ -10,6 +10,10 @@ import { sendEmailConfirmation } from "@/services/email-services"
 
 export async function getStoreDAOAction(id: string): Promise<StoreDAO | null> {
     return getFullStoreDAO(id)
+}
+
+export async function getStoreDAOBySlugAction(slug: string): Promise<StoreDAO | null> {
+    return getStoreDAOBySlug(slug)
 }
 
 export async function createOrUpdateStoreAction(id: string | null, data: StoreFormValues): Promise<StoreDAO | null> {       

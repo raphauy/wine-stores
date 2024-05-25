@@ -146,8 +146,9 @@ model Order {
   id            String    @id @default(cuid())
   status        OrderStatus   @default(Created)          // gennext: show.column
   email         String                                   // gennext: show.column
-  phone         String                                   // gennext: show.column
+  name          String                                   // gennext: show.column
   address       String                                   // gennext: show.column
+  phone         String                                   // gennext: show.column
 
   paymentMethod PaymentMethod                            // gennext: show.column
 

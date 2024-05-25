@@ -18,14 +18,15 @@ type Props= {
 }
 
 export function OrderForm({ setData }: Props) {
-  const { email, phone, address } = useCart() 
+  const { email, name, address, phone } = useCart()  
 
   const form = useForm<DatosEnvioFormValues>({
     resolver: zodResolver(datosEnvioSchema),
     defaultValues: {
       email,
-      phone,
+      name,
       address,
+      phone,
     },
     mode: "onChange",
   })
@@ -59,6 +60,36 @@ export function OrderForm({ setData }: Props) {
 
           <FormField
             control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre del destinatario</FormLabel>
+                <FormControl>
+                  <Input placeholder="Juan Pérez" {...field} />
+                </FormControl>
+                <FormDescription>Tu nombre</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dirección del destinatario</FormLabel>
+                <FormControl>
+                  <Input placeholder="Garzón 1214" {...field} />
+                </FormControl>
+                <FormDescription>La dirección a la que quieres que se te envíe tu compra</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
             name="phone"
             render={({ field }) => (
               <FormItem>
@@ -67,21 +98,6 @@ export function OrderForm({ setData }: Props) {
                   <Input placeholder="ej: 099..." {...field} />
                 </FormControl>
                 <FormDescription>Un celular de contacto (opcional pero recomendado)</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Dirección</FormLabel>
-                <FormControl>
-                  <Input placeholder="Dirección" {...field} />
-                </FormControl>
-                <FormDescription>La dirección a la que quieres que se te envíe tu compra</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
