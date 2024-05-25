@@ -53,11 +53,11 @@ export default async function Home() {
           <Logo />
         </div>
         <div className='py-10 mx-auto text-center flex flex-col items-center max-w-3xl'>
-          <h1 className='text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl'>
+          <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl'>
           Conectamos a <span className='text-blue-600'>pequeños productores</span> con el mundo digital.
           </h1>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
-            Bienvenido a latidio.com. Cada botella en nuestra plataforma es cuidadosamente seleccionada por nuestro equipo para garantizar los más altos estándares de calidad.
+          Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.
           </p>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
             Explora nuestras tiendas:
