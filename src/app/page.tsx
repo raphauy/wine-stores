@@ -54,10 +54,10 @@ export default async function Home() {
         </div>
         <div className='py-10 mx-auto text-center flex flex-col items-center max-w-3xl'>
           <h1 className='text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl'>
-            Tu mercado de <span className='text-blue-600'>vinos uruguayos</span>.
+          Conectamos a <span className='text-blue-600'>pequeños productores</span> con el mundo digital.
           </h1>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
-            Bienvenido a Wine Store. Cada botella en nuestra plataforma es cuidadosamente seleccionada por nuestro equipo para garantizar los más altos estándares de calidad.
+            Bienvenido a latidio.com. Cada botella en nuestra plataforma es cuidadosamente seleccionada por nuestro equipo para garantizar los más altos estándares de calidad.
           </p>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
             Explora nuestras tiendas:

@@ -78,6 +78,7 @@ model Store {
   oauth         Oauth[]
 
   inventoryItems InventoryItem[]
+  bankData      BankData[]
 }
 
 model Category {
@@ -247,4 +248,16 @@ model StockMovement {
 
   createdAt   DateTime    @default(now())        // gennext: skip.zod
   updatedAt   DateTime    @updatedAt             // gennext: skip.zod
+}
+
+model BankData {
+  id          String    @id @default(cuid())
+  name        String                                      // gennext: show.column
+  info        String                                      // gennext: show.column
+
+  createdAt   DateTime    @default(now())                 // gennext: skip.zod
+  updatedAt   DateTime    @updatedAt                      // gennext: skip.zod
+
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId     String
 }
