@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db"
 import * as z from "zod"
 import { UserDAO } from "./user-services"
 import { CategoryDAO } from "./category-services"
+import { BankDataDAO } from "./bankdata-services"
 
 export type StoreDAO = {
 	id: string
@@ -17,6 +18,7 @@ export type StoreDAO = {
 	ownerId: string | undefined
   owner: UserDAO | undefined
   categories: CategoryDAO[]
+  bankData: BankDataDAO[]
 	createdAt: Date
 	updatedAt: Date
 }
@@ -146,7 +148,8 @@ export async function getFullStoreDAO(id: string) {
       id
     },
     include: {
-      owner: true
+      owner: true,
+      bankData: true,
 		}
   })
   return found as StoreDAO

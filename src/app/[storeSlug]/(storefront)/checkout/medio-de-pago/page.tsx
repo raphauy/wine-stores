@@ -18,14 +18,27 @@ export default function Page() {
   const storeSlug = params.storeSlug as string
 
   const { items, email, phone, address } = useCart()
-  const [loading, setLoading] = useState(false)
+  const [loadingMP, setLoadingMP] = useState(false)
+  const [loadingTB, setLoadingTB] = useState(false)
+  const [loadingRC, setLoadingRC] = useState(false)
+
 
   function handleCheckout(paymentMethod: PaymentMethod) {
     if (!storeSlug) {
       toast({ title: 'Store no encontrado', description: 'Ocurrió un error, por favor intenta nuevamente.' }) 
       return
     }
-    setLoading(true)
+    switch (paymentMethod) {
+      case PaymentMethod.MercadoPago:
+        setLoadingMP(true)
+        break
+      case PaymentMethod.TransferenciaBancaria:
+        setLoadingTB(true)
+        break
+      case PaymentMethod.RedesDeCobranza:
+        setLoadingRC(true)
+        break
+    }
     createOrderAction(paymentMethod, storeSlug, items, email, phone, address)
     .then(() => {
         toast({ title: 'Estamos procesando su pedido...' })
@@ -34,7 +47,9 @@ export default function Page() {
         toast({ title: 'Hubo un error', description: err.message })
     })
     .finally(() => {
-        setLoading(false)
+        setLoadingMP(false)
+        setLoadingTB(false)
+        setLoadingRC(false)
     })
   }
 
@@ -53,7 +68,7 @@ export default function Page() {
               </p>
               <Button variant="outline" className="h-16 w-full" onClick={() => handleCheckout(PaymentMethod.MercadoPago)}>
                   {
-                      loading ? 
+                      loadingMP ? 
                       <Loader className="animate-spin" /> 
                       :
                       <Image src="/version-horizontal-large.png" alt="mercadopago" width={200} height={50} />                       
@@ -61,7 +76,7 @@ export default function Page() {
               </Button>
               <Button variant="outline" className="h-16 w-full gap-2" onClick={() => handleCheckout(PaymentMethod.TransferenciaBancaria)}>
                 {
-                    loading ?
+                    loadingTB ?
                     <Loader className="animate-spin" />
                     :
                     <>
@@ -72,7 +87,7 @@ export default function Page() {
               </Button>
               <Button variant="outline" className="h-16 w-full gap-2" onClick={() => handleCheckout(PaymentMethod.RedesDeCobranza)}>
                 {
-                    loading ?
+                    loadingRC ?
                     <Loader className="animate-spin" />
                     :
                     <>

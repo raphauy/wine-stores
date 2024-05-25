@@ -52,8 +52,8 @@ export default async function Home() {
         <div className="flex justify-center">
           <Logo />
         </div>
-        <div className='py-10 mx-auto text-center flex flex-col items-center max-w-3xl'>
-          <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl'>
+        <div className='py-10 mx-auto text-center flex flex-col items-center max-w-4xl'>
+          <h1 className='text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl'>
           Conectamos a <span className='text-blue-600'>pequeños productores</span> con el mundo digital.
           </h1>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db"
 import { Order, OrderStatus, PaymentMethod } from "@prisma/client"
 import * as z from "zod"
 import { OrderItemDAO } from "./orderitem-services"
-import { StoreDAO } from "./store-services"
+import { StoreDAO, getFullStoreDAO } from "./store-services"
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { redirect } from "next/navigation"
 import { getOauthDAOByStoreId } from "./oauth-services"
@@ -138,11 +138,10 @@ export async function processOrder(id: string) {
       return await processOrderMercadoPago(found as OrderDAO)
 
     case PaymentMethod.TransferenciaBancaria:
-      await processOrderTransferenciaBancaria(found)
-      break
+      return await processOrderTransferenciaBancaria(found as OrderDAO)
+
     case PaymentMethod.RedesDeCobranza:
-      await processOrderRedesDeCobranza(found)
-      break
+      return await processOrderRedesDeCobranza(found as OrderDAO)
 
     default:
       return "no soportado"
@@ -217,8 +216,11 @@ async function processOrderTransferenciaBancaria(order: Order) {
 
 	console.log("processOrderTransferenciaBancaria", order)
 
-  // MP_ACCESS_TOKEN
+  const store= await getFullStoreDAO(order.storeId)
 
+  const bankDataUrl= `${store.mpRedirectUrl}/checkout/datos-bancarios`
+
+  return bankDataUrl
 }
 
 async function processOrderRedesDeCobranza(order: Order) {

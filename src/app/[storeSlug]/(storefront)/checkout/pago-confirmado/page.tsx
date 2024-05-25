@@ -1,16 +1,8 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
 import { useCart } from '@/hooks/use-cart'
-import { PaymentMethod } from '@prisma/client'
-import { Loader } from 'lucide-react'
-import Image from 'next/image'
 import { useParams, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { createOrderAction } from '../actions'
-import OrderSummary from '../order-summary'
-import SendData from '../send-data'
 
 export default function PagoConfirmadoPage() { 
 
