@@ -76,6 +76,7 @@ export async function getStoreDAOBySlug(slug: string) {
     },
     include: {
       categories: true,
+      bankData: true,
     }
   })
   return found as StoreDAO
