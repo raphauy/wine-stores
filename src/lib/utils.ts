@@ -65,8 +65,8 @@ export function formatPrice(price: number | string, options: CurrencyOptions = {
 
 
 export function constructMetadata({
-  title = 'Wine Store - el lugar para encontrar tu vino', 
-  description = 'Wine Store es un sitio web para encontrar y reservar tu vino. ¡Disfruta de la experiencia!',
+  title = 'Latidio - Conectamos a pequeños productores con el mundo digital', 
+  description = 'Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.',
   image = '/thumbnail.png',
   icons = '/favicon.ico',
   noIndex = false,
@@ -97,7 +97,7 @@ export function constructMetadata({
       creator: '@tinta.wine',
     },
     icons,
-    metadataBase: new URL('https://agency-planner.com'),
+    metadataBase: new URL('https://latidio.com'),
     ...(noIndex && {
       robots: {
         index: false,

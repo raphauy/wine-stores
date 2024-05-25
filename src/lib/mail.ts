@@ -25,7 +25,7 @@ export async function sendNodeMailerEmail(to: string, subject: string, html: str
 
 export async function sendCodeEmail(email: string, code: string) {
   
-    await sendNodeMailerEmail(email, "Código de acceso", `<p>Código de acceso para Wine Store: <span>${code}</span></p>`);
+    await sendNodeMailerEmail(email, "Código de acceso", `<p>Código de acceso para Latidio: <span>${code}</span></p>`);
 }
 
 export async function sendOrderConfirmationEmail(email: string, order: OrderDAO, url: string) {
