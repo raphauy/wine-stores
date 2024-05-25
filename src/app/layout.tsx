@@ -11,19 +11,19 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Wine Store",
-  description: "A nice and simple Store for small businesses",
+  title: "Latidio",
+  description: "Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.",
   openGraph: {
-    title: "Wine Store",
-    description: "A nice and simple Store for small businesses",
+    title: "Latidio",
+    description: "Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.",
     type: "website",
-    url: "https://wine-stores.com",
+    url: "https://latidio.com",
     images: [
       {
-        url: "https://wine-stores.com/wine-stores-logo.png",
+        url: "https://latidio.com/wine-stores-logo.png",
         width: 282,
         height: 45,
-        alt: "Wine Stores Logo",
+        alt: "Latidio Logo",
       },
     ],
   },
