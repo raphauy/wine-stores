@@ -57,11 +57,13 @@ function getHostRewrite(host: string) {
             return 'gimenez-mendez'
         case 'gimenez-mendez.tunnel.tinta.wine':
             return 'gimenez-mendez'
+        case 'gimenez-mendez.latidio.com': 
+            return 'gimenez-mendez'
 
         case 'cerro-chapeu.tunnel.tinta.wine':
             return 'cerro-chapeu'
     
-        case 'bodega-familiar.tinta.wine': 
+        case 'bodega-familiar.latidio.com': 
             return 'bodega-familiar'
 
         case 'libro.uruguayenvinos.com':
