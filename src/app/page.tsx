@@ -59,7 +59,7 @@ export default async function Home() {
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
           Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.
           </p>
-          <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
+          {/* <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
             Explora nuestras tiendas:
           </p>
           <div className='flex flex-col sm:flex-row gap-4 mt-6'>
@@ -77,13 +77,8 @@ export default async function Home() {
       
               )})
             }
-          </div>
+          </div> */}
         </div>
-        {/* <ProductReel
-          query={{ sort: 'desc', limit: 4 }}
-          href='/products?sort=recent'
-          title='Brand new'
-        /> */}
       </MaxWidthWrapper>
 
       <section className='border-t border-gray-200 bg-gray-50 dark:bg-black dark:text-white'>
