@@ -13,9 +13,9 @@ type OrderItem= {
     productId: string
 }
 
-export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug: string, items: CartItem[], email: string, name: string, address: string, phone: string) {
+export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug: string, items: CartItem[], email: string, name: string, address: string, city: string, phone: string) {
     console.log("createOrder", paymentMethod)
-    console.log(email, name, address, phone)
+    console.log(email, name, address, city, phone)
     console.log("items:", items)
 
     const store= await getStoreDAOBySlug(storeSlug)
@@ -27,6 +27,7 @@ export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug:
         email,
         name,
         address,
+        city,
         phone,
     }
 

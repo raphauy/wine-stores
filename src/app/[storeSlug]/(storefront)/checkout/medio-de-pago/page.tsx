@@ -17,7 +17,7 @@ export default function Page() {
   const params = useParams()
   const storeSlug = params.storeSlug as string
 
-  const { items, email, name, address, phone } = useCart()
+  const { items, email, name, address, city, phone } = useCart()
   const [loadingMP, setLoadingMP] = useState(false)
   const [loadingTB, setLoadingTB] = useState(false)
   const [loadingRC, setLoadingRC] = useState(false)
@@ -39,7 +39,7 @@ export default function Page() {
         setLoadingRC(true)
         break
     }
-    createOrderAction(paymentMethod, storeSlug, items, email, name, address, phone)
+    createOrderAction(paymentMethod, storeSlug, items, email, name, address, city, phone)
     .then(() => {
         toast({ title: 'Estamos procesando su pedido...' })
     })

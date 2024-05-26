@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { sendConfirmationTestEmailAction } from "./store-actions"
+import { sendReactEmailTestAction } from "./store-actions"
 import { toast } from "@/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -23,7 +23,7 @@ type TestProps= {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="whitespace-nowrap">Enviar email de prueba</Button>
+          <Button variant="outline" className="whitespace-nowrap">Confirmación de compra vía Mercadopago</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -60,7 +60,7 @@ const [loading, setLoading] = useState(false)
 const onSubmit = async (data: TestEnvioFormValues) => {
     setLoading(true)
     try {
-        await sendConfirmationTestEmailAction(storeId, data.mailTo)
+        await sendReactEmailTestAction(storeId, data.mailTo)
         toast({ title: "Email de prueba enviado" })
         closeDialog()
     } catch (error: any) {

@@ -18,7 +18,7 @@ type Props= {
 }
 
 export function OrderForm({ setData }: Props) {
-  const { email, name, address, phone } = useCart()  
+  const { email, name, address, city, phone } = useCart()  
 
   const form = useForm<DatosEnvioFormValues>({
     resolver: zodResolver(datosEnvioSchema),
@@ -26,6 +26,7 @@ export function OrderForm({ setData }: Props) {
       email,
       name,
       address,
+      city,
       phone,
     },
     mode: "onChange",
@@ -83,6 +84,21 @@ export function OrderForm({ setData }: Props) {
                   <Input placeholder="Garzón 1214" {...field} />
                 </FormControl>
                 <FormDescription>La dirección a la que quieres que se te envíe tu compra</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ciudad</FormLabel>
+                <FormControl>
+                  <Input placeholder="ej: Montevideo" {...field} />
+                </FormControl>
+                <FormDescription>La ciudad a la que quieres que se te envíe tu compra</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

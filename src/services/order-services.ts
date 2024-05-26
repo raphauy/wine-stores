@@ -14,6 +14,7 @@ export type OrderDAO = {
   email: string
 	name: string
 	address: string
+  city: string
 	phone: string
 	createdAt: Date
 	updatedAt: Date
@@ -28,6 +29,7 @@ export const orderSchema = z.object({
   email: z.string().email("necesitamos un email para asociar este pedido."),
 	name: z.string().min(1, "necesitamos el nombre del destinatario para poder enviar tu pedido."),
 	address: z.string().min(1, "necesitamos una dirección para poder enviar tu pedido."),
+  city: z.string().min(1, "necesitamos una ciudad para poder enviar tu pedido."),
 	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
 })
 
@@ -38,6 +40,7 @@ export const datosEnvioSchema = z.object({
   email: z.string().email("necesitamos un email para asociar a este pedido."),
   name: z.string().min(1, "necesitamos el nombre del destinatario para poder enviar tu pedido."),
 	address: z.string().min(1, "necesitamos la dirección del destinatario para poder enviar tu pedido."),
+  city: z.string().min(1, "necesitamos la ciudad del destinatario para poder enviar tu pedido."),
 	phone: z.string().min(1, "necesitamos un teléfono de contacto."),
 })
 
@@ -111,6 +114,22 @@ export async function getFullOrderDAO(id: string) {
   const found = await prisma.order.findUnique({
     where: {
       id
+    },
+    include: {
+			store: true,
+      orderItems: true,
+		}
+  })
+  return found as OrderDAO
+}
+
+export async function getLastOrderDAO(storeId: string) {
+  const found = await prisma.order.findFirst({
+    where: {
+      storeId
+    },
+    orderBy: {
+      createdAt: 'desc'
     },
     include: {
 			store: true,

@@ -15,10 +15,12 @@ type CartState = {
   email: string
   name: string
   address: string
+  city: string
   phone: string
   setEmail: (email: string) => void
   setName: (name: string) => void
   setAddress: (address: string) => void
+  setCity: (city: string) => void
   setPhone: (phone: string) => void
 }
 
@@ -28,6 +30,7 @@ export const useCart = create<CartState>()(
       email: '',
       name: '',
       address: '',
+      city: '',
       phone: '',
       items: [],
       addItem: (product) =>
@@ -56,6 +59,7 @@ export const useCart = create<CartState>()(
       setEmail: (email) => set({ email }),
       setName: (name) => set({ name }),
       setAddress: (address) => set({ address }),
+      setCity: (city) => set({ city }),
       setPhone: (phone) => set({ phone }),
     }),
     {

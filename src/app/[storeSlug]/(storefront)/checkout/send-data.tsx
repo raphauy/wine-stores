@@ -5,7 +5,7 @@ import { useCart } from '@/hooks/use-cart'
 
 export default function SendData() {
 
-  const { email, name, address, phone } = useCart()
+  const { email, name, address, city, phone } = useCart()
 
   return (
     <section className='mt-8 rounded-lg border bg-white px-4 py-6 sm:p-6'>
@@ -21,6 +21,10 @@ export default function SendData() {
       <div className='flex items-center'>
         <p className='w-20'>Dirección:  </p>
         <p className='font-bold'>{address}</p>
+      </div>
+      <div className='flex items-center'>
+        <p className='w-20'>Ciudad:  </p>
+        <p className='font-bold'>{city}</p>
       </div>
       <div className='flex items-center'>
         <p className='w-20'>Teléfono:  </p>

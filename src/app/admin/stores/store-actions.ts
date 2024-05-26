@@ -5,7 +5,8 @@ import { StoreDAO, StoreFormValues, createStore, updateStore, getFullStoreDAO, d
 import { getIgProfile } from "@/services/instagram-services"
 import { generateSlug } from "@/lib/utils"
 import { uploadFileWithUrl } from "@/services/upload-file-service"
-import { sendEmailConfirmation } from "@/services/email-services"
+import { sendMLConfirmationEmail } from "@/services/email-services"
+import { getLastOrderDAO } from "@/services/order-services"
 
 
 export async function getStoreDAOAction(id: string): Promise<StoreDAO | null> {
@@ -82,10 +83,14 @@ export async function setOwnerAction(storeId: string, userId: string): Promise<S
     return updated as StoreDAO
 }
 
-export async function sendConfirmationTestEmailAction(storeId: string, emailTo: string): Promise<boolean> {    
-    const store= await getStoreDAO(storeId)
+
+export async function sendReactEmailTestAction(storeId: string, testEmailTo: string) {
+    const lastOrder= await getLastOrderDAO(storeId)
+    if (!lastOrder) {
+        throw new Error("No hay ordenes en el store")
+    }
   
-    const res= await sendEmailConfirmation(store.id, emailTo)
+    const res= await sendMLConfirmationEmail(lastOrder.id, testEmailTo)
 
     revalidatePath("[storeSlug]/config", "page")
 

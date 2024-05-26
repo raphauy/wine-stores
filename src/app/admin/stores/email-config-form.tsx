@@ -9,7 +9,7 @@ import { Loader } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { getStoreDAOAction, sendConfirmationTestEmailAction, updateConfigsAction } from "./store-actions"
+import { getStoreDAOAction, updateConfigsAction } from "./store-actions"
 import { toast } from "@/components/ui/use-toast"
 import Tiptap from "./tiptap"
 import { TestConfirmatioinEmailDialog } from "./test-email"
@@ -23,7 +23,6 @@ export function EmailConfigForm({ id }: Props) {
     resolver: zodResolver(emailConfigSchema),
     defaultValues: {
       emailFrom: "",
-      emailConfirmationHtml: "",
     },
     mode: "onChange",
   })
@@ -48,7 +47,6 @@ export function EmailConfigForm({ id }: Props) {
       getStoreDAOAction(id).then((data) => {
         if (data) {
           form.setValue("emailFrom", data.emailFrom)
-          form.setValue("emailConfirmationHtml", data.emailConfirmationHtml)
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {
@@ -58,18 +56,6 @@ export function EmailConfigForm({ id }: Props) {
       })
     }
   }, [form, id])
-
-  async function handleTestEmail() {
-    setLoading(true)
-    try {
-      await sendConfirmationTestEmailAction(id, "test@test.com")
-      toast({ title: "Email enviado" })
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message, variant: "destructive" })
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <div className="p-4 rounded-md">
@@ -85,32 +71,11 @@ export function EmailConfigForm({ id }: Props) {
                 <FormControl>
                   <Input placeholder="Tienda <tienda@mibodega.com>" {...field} />
                 </FormControl>
-                <FormDescription>Se enviará el email de confirmación de compra desde esta casilla.</FormDescription>
+                <FormDescription>Los emails enviados al cliente se enviarán desde esta casilla.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="emailConfirmationHtml"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contenido:</FormLabel>
-                <FormControl>
-                  <Tiptap value={field.value || ""} fieldName={field.name} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <p>Variables que puedes utilizar:</p>
-          <div className="flex items-center gap-2">
-            <p className='font-bold'>LINK_MI_CUENTA:</p>
-            <p>Este texto insertará en el contenido del mail el link a la cuenta del usuario.</p>
-          </div>
-
 
           <div className="flex justify-end">
             <Button onClick={() => router.back()} type="button" variant={"secondary"} className="w-32">Cancelar</Button>

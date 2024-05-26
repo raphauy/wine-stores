@@ -62,7 +62,6 @@ model Store {
   mpMarketplaceFee Float @default(10)      // gennext: show.column
 
   emailFrom     String?
-  emailConfirmationHtml   String?
 
   createdAt DateTime @default(now())           // gennext: skip.zod
   updatedAt DateTime @updatedAt                // gennext: skip.zod
@@ -148,6 +147,7 @@ model Order {
   email         String                                   // gennext: show.column
   name          String                                   // gennext: show.column
   address       String                                   // gennext: show.column
+  city          String                                   // gennext: show.column
   phone         String                                   // gennext: show.column
 
   paymentMethod PaymentMethod                            // gennext: show.column

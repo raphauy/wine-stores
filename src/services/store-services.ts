@@ -14,7 +14,6 @@ export type StoreDAO = {
   mpRedirectUrl: string | undefined
   mpMarketplaceFee: number
   emailFrom: string | undefined
-  emailConfirmationHtml: string | undefined
 	ownerId: string | undefined
   owner: UserDAO | undefined
   categories: CategoryDAO[]
@@ -45,7 +44,6 @@ export type GeneralConfigFormValues = z.infer<typeof generalConfigSchema>
 
 export const emailConfigSchema = z.object({
   emailFrom: z.string().optional(),
-  emailConfirmationHtml: z.string().optional(),
 })
 
 export type EmailConfigFormValues = z.infer<typeof emailConfigSchema>

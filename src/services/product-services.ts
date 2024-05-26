@@ -165,7 +165,9 @@ export async function updateProduct(id: string, data: ProductFormValues) {
     },
   })
 
-  if (updated.inventoryItemId === null) {
+  const inventoryItem= await getInventoryItemDAOByProductId(id)
+
+  if (inventoryItem === null) {
     const inventoryForm: InventoryItemFormValues = {
       storeId: updated.storeId,
       productId: id,

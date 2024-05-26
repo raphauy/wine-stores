@@ -56,7 +56,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
           <p>Email: {data.email}</p>
           <p>Name: {data.name}</p>
           <p>Phone: {data.phone}</p>
-          <p>Address: {data.address}</p>          
+          <p>Address: {data.address} ({data.city})</p>
         </div>
       )
     },

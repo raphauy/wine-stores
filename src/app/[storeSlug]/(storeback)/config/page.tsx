@@ -31,7 +31,7 @@ export default async function ConfigPage({ params }: Props) {
                     <div>
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="bank-data">Datos Bancarios</TabsTrigger>
-                        {/* <TabsTrigger value="email-confirmacion">Confirmación de compra</TabsTrigger> */}
+                        <TabsTrigger value="email">Email</TabsTrigger>
                     </div>
                 </TabsList>
                 <TabsContent value="general">
@@ -45,10 +45,11 @@ export default async function ConfigPage({ params }: Props) {
                     </div>
                 </TabsContent>
 
-                <TabsContent value="email-confirmacion">
+                <TabsContent value="email">
                     <div className=" bg-white mb-4 p-3 py-4 border rounded-md dark:text-white dark:bg-gray-800">
                         <EmailConfigForm id={store.id} />
                     </div>
+                    <p className='font-bold mb-4'>Emails de prueba:</p>
                     <TestConfirmatioinEmailDialog storeId={store.id} type="confirmation" />
                 </TabsContent>
             </Tabs>
