@@ -1,10 +1,9 @@
 'use client'
 
-import { ProductQuantity } from '@/components/Cart'
+import { FEE, ProductQuantity } from '@/components/Cart'
 import { useCart } from '@/hooks/use-cart'
 import { formatPrice } from '@/lib/utils'
 
-export const FEE = 250
 
 export default function OrderSummary() {
 
