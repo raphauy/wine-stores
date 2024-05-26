@@ -240,11 +240,9 @@ async function processOrderMercadoPago(order: OrderDAO) {
 
 async function processOrderTransferenciaBancaria(order: Order) {
 
-	console.log("processOrderTransferenciaBancaria", order)
-
   const store= await getFullStoreDAO(order.storeId)
 
-  const bankDataUrl= `${store.mpRedirectUrl}/checkout/validar-email?email=${order.email}`
+  const bankDataUrl= `/${store.slug}/checkout/validar-email?email=${order.email}`
 
   await prisma.order.update({
     where: {

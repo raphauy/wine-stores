@@ -24,7 +24,7 @@ export default async function Navbar({ storeSlug, categories, featuredProducts, 
   const user= session?.user
 
   const store= await getStoreDAOBySlug(storeSlug)
-  if (!store) return <div></div>
+  if (!store) return <div>No se ha encontrado el store</div>
 
   return (
     <div className='sticky z-50 top-0 inset-x-0 h-16 bg-red-50 w-full '>

@@ -1,55 +1,31 @@
-'use client'
-
 import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { useCart } from '@/hooks/use-cart'
+import { getCurrentUser } from "@/lib/utils"
 import { StoreDAO } from "@/services/store-services"
 import { Loader } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-export default function DatosBancariosPage() {
+type Props = {
+  params: {
+    storeSlug: string
+  }
+}
+export default async function DatosBancariosPage({ params }: Props) {
 
-  const { clearCart } = useCart()
-  const user= useSession()?.data?.user
-  const params= useParams()
-
-  const storeSlug= params.storeSlug as string
-
-  const [store, setStore] = useState<StoreDAO | null>(null)
-
-  useEffect(() => {
-    getStoreDAOBySlugAction(storeSlug)
-      .then((store) => {
-        setStore(store)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }, [storeSlug])
-
-  useEffect(() => {
-    clearCart()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  if (!store) {
-    return <Loader className="h-7 w-7 animate-spin" />
+  const user= await getCurrentUser()
+  if (!user) {
+    return <div>Para continuar debes confirmar tu email</div>
   }
 
-  if (!user) {
-    return (
-      <div className="w-full flex flex-col items-center justify-center mt-10">
-        <p>Para continuar debes confirmar tu email</p>
-        <Link href="/auth/login">
-          <Button variant="outline">Confirmar email</Button>
-        </Link>
-      </div>
-    )
+  const store= await getStoreDAOBySlugAction(params.storeSlug)
+  if (!store) {
+    return <div>No se encontró el store</div>
   }
 
   const bankData= store.bankData
