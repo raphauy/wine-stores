@@ -1,6 +1,6 @@
 import { EmailConfigForm } from '@/app/admin/stores/email-config-form'
 import { GeneralConfigForm } from '@/app/admin/stores/general-config-form'
-import { TestConfirmatioinEmailDialog } from '@/app/admin/stores/test-email'
+import { TestEmailDialog } from '@/app/admin/stores/test-email'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getStoreDAOBySlug } from '@/services/store-services'
 import React from 'react'
@@ -50,7 +50,10 @@ export default async function ConfigPage({ params }: Props) {
                         <EmailConfigForm id={store.id} />
                     </div>
                     <p className='font-bold mb-4'>Emails de prueba:</p>
-                    <TestConfirmatioinEmailDialog storeId={store.id} type="confirmation" />
+                    <div className='flex gap-2'>
+                        <TestEmailDialog storeId={store.id} type="confirmation" />
+                        <TestEmailDialog storeId={store.id} type="bank-data" />
+                    </div>
                 </TabsContent>
             </Tabs>
 

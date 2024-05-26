@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { sendReactEmailTestAction } from "./store-actions"
+import { sendTestEmailAction } from "./store-actions"
 import { toast } from "@/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -14,23 +14,24 @@ import { Loader } from "lucide-react"
 
 type TestProps= {
     storeId: string
-    type: "confirmation" | "general"
+    type: "confirmation" | "bank-data"
 }
   
-  export function TestConfirmatioinEmailDialog({ storeId, type }: TestProps) {
+  export function TestEmailDialog({ storeId, type }: TestProps) {
     const [open, setOpen] = useState(false);
   
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="whitespace-nowrap">Confirmación de compra vía Mercadopago</Button>
+          <Button variant="outline" className="whitespace-nowrap">
+            {type === "confirmation" ? "Confirmación de compra" : "Datos bancarios para realizar el pago"}
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Enviar email de prueba</DialogTitle>
           </DialogHeader>
-          { type === "confirmation" && <TestConfirmatioinEmailForm closeDialog={() => setOpen(false)} storeId={storeId} /> }
-          
+          <TestEmailForm closeDialog={() => setOpen(false)} storeId={storeId} type={type} />          
         </DialogContent>
       </Dialog>
     )
@@ -40,9 +41,10 @@ type TestProps= {
 type TestFormProps= {
     storeId: string
     closeDialog: () => void
+    type: "confirmation" | "bank-data"
 }
 
-export function TestConfirmatioinEmailForm({ storeId, closeDialog }: TestFormProps) {
+export function TestEmailForm({ storeId, closeDialog, type }: TestFormProps) {
 const testEnvioSchema = z.object({
     mailTo: z.string().email({ message: "Invalid email" }),
 })
@@ -60,7 +62,7 @@ const [loading, setLoading] = useState(false)
 const onSubmit = async (data: TestEnvioFormValues) => {
     setLoading(true)
     try {
-        await sendReactEmailTestAction(storeId, data.mailTo)
+        await sendTestEmailAction(storeId, data.mailTo, type)
         toast({ title: "Email de prueba enviado" })
         closeDialog()
     } catch (error: any) {

@@ -18,7 +18,7 @@ type Props = {
   totalPrice: number
   finalText: string
 }
-export default function OrderEmail({ storeName="Latidio", storeId, orderEmail="test@test.com", orderId="clvwozc58000135igexu0egeu", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0, finalText="Texto final" }: Props) {
+export default function PaymentConfirmationEmail({ storeName="Latidio", storeId, orderEmail="test@test.com", orderId="clvwozc58000135igexu0egeu", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0, finalText="Texto final" }: Props) {
     return (
   <Html>
     <Head />
@@ -175,7 +175,10 @@ export default function OrderEmail({ storeName="Latidio", storeId, orderEmail="t
           </Row>
         </Section>
         <Hr style={{margin: "0 0 20px 0"}} />
-        <Text style={finalTextStyle}>{finalText}</Text>
+        <Text style={finalTextStyle}>
+          {finalText}
+          {"\nGracias por la compra,\n" + storeName}
+        </Text>
       </Container>
     </Body>
   </Html>

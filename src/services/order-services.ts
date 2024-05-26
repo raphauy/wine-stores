@@ -116,7 +116,11 @@ export async function getFullOrderDAO(id: string) {
       id
     },
     include: {
-			store: true,
+			store: {
+        include: {
+          bankData: true
+        }
+      },
       orderItems: true,
 		}
   })

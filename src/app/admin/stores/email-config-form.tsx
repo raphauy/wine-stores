@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { getStoreDAOAction, updateConfigsAction } from "./store-actions"
 import { toast } from "@/components/ui/use-toast"
 import Tiptap from "./tiptap"
-import { TestConfirmatioinEmailDialog } from "./test-email"
+import { TestEmailDialog } from "./test-email"
 
 type Props= {
   id: string
