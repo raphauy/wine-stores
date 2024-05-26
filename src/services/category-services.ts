@@ -26,6 +26,11 @@ export async function getCategorysDAO(storeSlug: string) {
     where: {
       store: {
         slug: storeSlug
+      },
+      products: {
+        some: {
+          isArchived: false
+        }
       }
     },
     orderBy: {
