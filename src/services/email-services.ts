@@ -64,7 +64,7 @@ export async function sendMLConfirmationEmail(orderId: string, testEmailTo?: str
 En breve nos pondremos en contacto contigo para brindarte información sobre el envío.
 
 Gracias por la compra,
-Gabi
+${store.name}
 `
 
   const resend = new Resend(process.env.RESEND_API_KEY);
