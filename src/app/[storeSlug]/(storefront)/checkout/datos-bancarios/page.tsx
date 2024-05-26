@@ -1,17 +1,16 @@
 'use client'
 
-import { StoreDAO, getStoreDAOBySlug } from "@/services/store-services"
-import { useCart } from '@/hooks/use-cart'
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import { getStoreDAOAction, getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
-import { Button } from "@/components/ui/button"
+import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { useCart } from '@/hooks/use-cart'
+import { StoreDAO } from "@/services/store-services"
 import { Loader } from "lucide-react"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 import Link from "next/link"
-
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function DatosBancariosPage() {
 
@@ -38,6 +37,10 @@ export default function DatosBancariosPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  if (!store) {
+    return <Loader className="h-7 w-7 animate-spin" />
+  }
+
   if (!user) {
     return (
       <div className="w-full flex flex-col items-center justify-center mt-10">
@@ -47,10 +50,6 @@ export default function DatosBancariosPage() {
         </Link>
       </div>
     )
-  }
-
-  if (!store) {
-    return <Loader className="h-7 w-7 animate-spin" />
   }
 
   const bankData= store.bankData

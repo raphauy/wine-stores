@@ -26,7 +26,7 @@ export default async function MiCuentaPage({ params, searchParams }: Props) {
         const params= `?email=${searchParams.email}&storeId=${searchParams.storeId}`
         return redirect(`/auth/login${params}`)
       }
-      return redirect("/auth/login")
+      return redirect(`/auth/login?storeId=${store.id}`)
     }
 
     const data= await getFullOrdersDAOByEmail(user.email, storeSlug)
