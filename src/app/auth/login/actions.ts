@@ -5,6 +5,7 @@ import { sendCodeEmail } from "@/lib/mail";
 import { LoginSchema, createOTPConfirmation, deleteOTPConfirmation, generateOTPCode, getOTPCodeByEmail, getOTPConfirmationByUserId, getUserByEmail, setUserAsVerified } from "@/services/login-services";
 import { UserFormValues, createUser } from "@/services/user-services";
 import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
 import * as z from "zod";
 
 
@@ -78,7 +79,7 @@ export async function loginAction(values: z.infer<typeof LoginSchema>, callbackU
     const ok= await signIn("credentials", {
       email,
       code
-    })
+    }, callbackUrl)
 
   } catch (error) {
     if (error instanceof AuthError) {
