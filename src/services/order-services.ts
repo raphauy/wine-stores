@@ -143,6 +143,23 @@ export async function getLastOrderDAO(storeId: string) {
   return found as OrderDAO
 }
 
+export async function getLastOrderDAOOfUser(storeId:string, email: string) {
+  const found = await prisma.order.findFirst({
+    where: {
+      storeId,
+      email
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    include: {
+			store: true,
+      orderItems: true,
+		}
+  })
+  return found as OrderDAO
+}
+
 export async function processOrder(id: string) {
   const found = await prisma.order.findUnique({
     where: {

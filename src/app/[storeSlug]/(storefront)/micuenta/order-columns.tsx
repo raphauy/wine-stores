@@ -6,6 +6,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CheckCircle } from "lucide-react"
 import { formatPrice, formatWhatsAppStyle } from "@/lib/utils"
 import ColumnItem from "../../(storeback)/orders/column-item"
+import { OrderStatus } from "@prisma/client"
+import { Badge } from "@/components/ui/badge"
+import MarkAsPaidButton from "./mark-as-paid-button"
 
 
 export const columns: ColumnDef<OrderDAO>[] = [
@@ -23,13 +26,16 @@ export const columns: ColumnDef<OrderDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       return (
-        <div className="ml-2">
-          {
-            data.status === "Paid" ?
-            <CheckCircle className="w-4 h-4 text-green-500" />
-            : 
-            <p>{data.status}</p>
-          }
+        <div className="ml-2 flex items-center gap-2">
+          <div>
+            {
+              data.status === "Paid" ?
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              : 
+              <Badge className="bg-orange-300 text-black">{getLabel(data.status)}</Badge>
+            }
+          </div>
+          <MarkAsPaidButton order={data} />
         </div>
       )
     },
@@ -113,3 +119,26 @@ export const columns: ColumnDef<OrderDAO>[] = [
 ]
 
 
+function getLabel(status: OrderStatus) {
+  switch (status) {
+    case OrderStatus.Created:
+      return "Creada"
+    case OrderStatus.Pending:
+      return "Pendiente de pago"
+    case OrderStatus.PaymentSent:
+      return "Pago enviado"
+    case OrderStatus.Paid:
+      return "Pagada"
+    case OrderStatus.Delivered:
+      return "Entregada"
+    case OrderStatus.Packing:
+      return "Preparando"
+    case OrderStatus.Refunded:
+      return "Reembolsada"
+    case OrderStatus.Cancelled:
+      return "Cancelada"
+    default:
+      return "Sin estado"
+  }
+  
+}
