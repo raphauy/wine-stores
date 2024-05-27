@@ -1,18 +1,19 @@
 "use client";
 
+import { getStoreDAOAction } from "@/app/admin/stores/store-actions";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { LoginSchema } from "@/services/login-services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { FormError } from "./_components/form-error";
 import { FormSuccess } from "./_components/form-success";
-import { LoginSchema } from "@/services/login-services";
 import { loginAction } from "./actions";
 
 
@@ -33,6 +34,7 @@ export function LoginForm({ requestedEmail, storeName }: Props) {
   const [isPending, startTransition] = useTransition();
   const [otpText, setOtpText] = useState("");
 
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -40,10 +42,23 @@ export function LoginForm({ requestedEmail, storeName }: Props) {
     },
   });
 
+  const storeId= searchParams.get("storeId")
+  console.log("storeId", storeId)
+  
+  useEffect(() => {
+    if (!storeId) return
+    getStoreDAOAction(storeId)
+      .then((store) => {
+        if (store) {
+          form.setValue("storeId", store.id)
+        }
+      })
+  }, [storeId, form])  
+
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setError("");
-    setSuccess("");
-    
+    setError("")
+    setSuccess("")
+
     startTransition(() => {
       if (showOTP && !values.code) {
         setError("Por favor ingrese el código de verificación")
@@ -67,7 +82,7 @@ export function LoginForm({ requestedEmail, storeName }: Props) {
             form.setValue("email", values.email)
           }
         })
-        .catch(() => setError("Something went wrong"));
+        .catch(() => setError("Algo salió mal"));
     });
   };
 

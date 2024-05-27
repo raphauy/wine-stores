@@ -6,6 +6,7 @@ export const LoginSchema = z.object({
         message: "Email is required",
     }),
     code: z.optional(z.string()),
+    storeId: z.string().optional(),
 });
   
 export async function getOTPConfirmationByUserId(userId: string) {

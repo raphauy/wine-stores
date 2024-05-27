@@ -1,16 +1,11 @@
 import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { useCart } from '@/hooks/use-cart'
 import { getCurrentUser } from "@/lib/utils"
-import { getLastOrderDAO, getLastOrderDAOOfUser } from "@/services/order-services"
-import { StoreDAO } from "@/services/store-services"
-import { Loader } from "lucide-react"
-import { useSession } from "next-auth/react"
+import { getLastOrderDAOOfUser } from "@/services/order-services"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import CleanCart from "./clean-cart"
 
 type Props = {
   params: {
@@ -75,7 +70,7 @@ export default async function DatosBancariosPage({ params }: Props) {
                     <p className="text-sm">{item.soldCategory}</p>
                   </div>
                 </div>
-              <p className="font-bold text-lg">{item.quantity > 1 ? `(${item.quantity} x)` : ""} ${item.soldUnitPrice}</p>
+              <p className="text-lg">{item.quantity > 1 ? `(${item.quantity} x)` : ""} ${item.soldUnitPrice}</p>
 
             </div>
             ))
@@ -91,6 +86,7 @@ export default async function DatosBancariosPage({ params }: Props) {
       <Link href={`/micuenta?storeId=${store.id}`}>
         <Button className="w-full">Mi cuenta</Button>
       </Link>
+      <CleanCart />
     </div>
   )
 }

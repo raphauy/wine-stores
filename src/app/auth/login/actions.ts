@@ -1,7 +1,7 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
-import { sendCodeEmail } from "@/lib/mail";
+import { sendCodeEmail } from "@/services/email-services";
 import { LoginSchema, createOTPConfirmation, deleteOTPConfirmation, generateOTPCode, getOTPCodeByEmail, getOTPConfirmationByUserId, getUserByEmail, setUserAsVerified } from "@/services/login-services";
 import { UserFormValues, createUser } from "@/services/user-services";
 import { AuthError } from "next-auth";
@@ -17,7 +17,7 @@ export async function loginAction(values: z.infer<typeof LoginSchema>, callbackU
     return { error: "Invalid fields!" };
   }
 
-  const { email, code } = validatedFields.data;
+  const { email, code, storeId } = validatedFields.data;
 
   let user = await getUserByEmail(email);
 
@@ -25,7 +25,7 @@ export async function loginAction(values: z.infer<typeof LoginSchema>, callbackU
     // create new user
     const data: UserFormValues= {
       email,
-      role: "CLIENT"
+      role: "CLIENT",
     }
     user = await createUser(data)
     if (!user) {
@@ -65,6 +65,7 @@ export async function loginAction(values: z.infer<typeof LoginSchema>, callbackU
     } else {
       const oTPCode = await generateOTPCode(user.email)
       await sendCodeEmail(
+        storeId,
         oTPCode.email,
         oTPCode.code,
       );

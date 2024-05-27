@@ -7,8 +7,6 @@ import { Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import { Toaster } from 'sonner'
 
-const inter = Inter({ subsets: ['latin'] })
-
 export const metadata = constructMetadata()
 
 type Props= {
@@ -23,8 +21,8 @@ export default async function RootLayout({ children, params }: Props) {
   const featuredProducts= await getFeaturedProducts(storeSlug)
 
   const store= await getStoreDAOBySlug(storeSlug)
-  metadata.title= `${store.name}`
-  metadata.description= htmlToText(store.description || '')
+  metadata.title= `${store?.name}`
+  metadata.description= htmlToText(store?.description || '')
 
   const host= headers().get('host')
   // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 

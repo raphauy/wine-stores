@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/db"
 import { Order, OrderStatus, PaymentMethod } from "@prisma/client"
+import { MercadoPagoConfig, Preference } from 'mercadopago'
 import * as z from "zod"
+import { getOauthDAOByStoreId } from "./oauth-services"
 import { OrderItemDAO } from "./orderitem-services"
 import { StoreDAO, getFullStoreDAO } from "./store-services"
-import { MercadoPagoConfig, Preference } from 'mercadopago';
-import { redirect } from "next/navigation"
-import { getOauthDAOByStoreId } from "./oauth-services"
+import { sendBankDataEmail } from "./email-services"
 
 export type OrderDAO = {
 	id: string
@@ -269,6 +269,7 @@ async function processOrderTransferenciaBancaria(order: Order) {
       status: OrderStatus.Pending
     }
   })
+  await sendBankDataEmail(order.id)
 
   return bankDataUrl
 }
@@ -292,6 +293,8 @@ export async function setOrderStatus(orderId: string, status: OrderStatus) {
 }
 
 export async function getFullOrdersDAOByEmail(email: string, storeSlug: string) {
+  console.log(email, storeSlug)
+  
   const found = await prisma.order.findMany({
     where: {
       email,
@@ -300,9 +303,16 @@ export async function getFullOrdersDAOByEmail(email: string, storeSlug: string) 
       }
     },
     include: {
-			store: true,
+			store: {
+        include: {
+          bankData: true
+        }
+      },
       orderItems: true,
-		}
+		},
+    orderBy: {
+      createdAt: "desc"
+    }
   })
   return found as OrderDAO[]
 }

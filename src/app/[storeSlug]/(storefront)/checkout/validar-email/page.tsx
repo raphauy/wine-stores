@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card"
 import { getCurrentUser } from "@/lib/utils"
 import { redirect } from "next/navigation"
 import { EmailValidationForm } from "./email-validation-form"

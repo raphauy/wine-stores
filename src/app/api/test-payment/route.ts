@@ -1,10 +1,9 @@
-import type {NextRequest} from "next/server";
+import type { NextRequest } from "next/server";
 
-import {MercadoPagoConfig, Payment} from "mercadopago";
+import { processOrderConfirmation } from "@/services/email-services";
 import { setOrderStatus } from "@/services/order-services";
 import { OrderStatus } from "@prisma/client";
-import { getOauthDAOByUserId } from "@/services/oauth-services";
-import { processOrderConfirmation } from "@/services/email-services";
+import { MercadoPagoConfig, Payment } from "mercadopago";
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
 

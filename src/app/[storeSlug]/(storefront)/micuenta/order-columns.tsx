@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { OrderDAO } from "@/services/order-services"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CheckCircle } from "lucide-react"
-import { formatPrice, formatWhatsAppStyle } from "@/lib/utils"
+import { cn, formatPrice, formatWhatsAppStyle } from "@/lib/utils"
 import ColumnItem from "../../(storeback)/orders/column-item"
 import { OrderStatus } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
@@ -26,16 +26,11 @@ export const columns: ColumnDef<OrderDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       return (
-        <div className="ml-2 flex items-center gap-2">
-          <div>
-            {
-              data.status === "Paid" ?
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              : 
-              <Badge className="bg-orange-300 text-black">{getLabel(data.status)}</Badge>
-            }
+        <div className="flex items-center gap-2">
+          <Badge className={cn("text-black whitespace-nowrap", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
+          <div className="w-full">
+            <MarkAsPaidButton order={data} />
           </div>
-          <MarkAsPaidButton order={data} />
         </div>
       )
     },
@@ -50,7 +45,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
         return (
           <Button variant="ghost" className="pl-0 dark:text-white"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Email
+            Envío
             <ArrowUpDown className="w-4 h-4 ml-1" />
           </Button>
     )},
@@ -58,9 +53,10 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const data= row.original
       return (
         <div>
-          <p>Email: {data.email}</p>
-          <p>Teléfono: {data.phone}</p>
+          <p>Nombre: {data.name}</p>
           <p>Dirección: {data.address}</p>          
+          <p>Ciudad: {data.city}</p>
+          <p>Teléfono: {data.phone}</p>
         </div>
       )
     },

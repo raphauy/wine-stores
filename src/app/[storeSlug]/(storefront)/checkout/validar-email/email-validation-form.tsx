@@ -67,7 +67,7 @@ export function EmailValidationForm({ requestedEmail, storeName }: Props) {
             form.setValue("email", values.email)
           }
         })
-        .catch(() => setError("Something went wrong"));
+        .catch(() => setError("Algo salió mal"));
     });
   };
 

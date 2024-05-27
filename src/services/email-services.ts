@@ -1,13 +1,13 @@
-import { sendOrderConfirmationEmail } from "@/lib/mail";
 import { MovementType, OrderStatus } from "@prisma/client";
 import { Resend } from "resend";
 import { getInventoryItemDAOByProductId } from "./inventoryitem-services";
 import { getFullOrderDAO } from "./order-services";
 import { StockMovementFormValues, createStockMovement } from "./stockmovement-services";
-import { getStoreDAO } from "./store-services";
 import PaymentConfirmationEmail from "@/components/email/payment-confirmation-email";
 import { format } from "date-fns";
 import BankDataEmail from "@/components/email/bank-data-email";
+import { getStoreDAO } from "./store-services";
+import CodeVerifyEmail from "@/components/email/verify-email";
 
 
 export async function processOrderConfirmation(orderId: string) {
@@ -40,7 +40,7 @@ export async function processOrderConfirmation(orderId: string) {
 
     console.log("processOrderConfirmation", order)    
 
-    await sendOrderConfirmationEmail(email, order, url)
+    await sendPaymentConfirmationEmail(order.id)
 }
 
   
@@ -153,4 +153,40 @@ Aquí abajo tienes el boton para hacerlo:
 
   return true
 
+}
+
+export async function sendCodeEmail(storeId: string | null | undefined, email: string, code: string) {
+  let storeName= "Latidio"
+  let from= process.env.DEFAULT_EMAIL_FROM!
+  const contactEmail= process.env.SUPPORT_EMAIL!
+
+  if (storeId) {
+    const store= await getStoreDAO(storeId)
+    if (store) {
+      storeName= store.name
+      from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
+    }
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { data, error } = await resend.emails.send({
+    from,
+    to: email,
+    subject: `Código de acceso a ${storeName}`,
+    react: CodeVerifyEmail({ 
+      validationCode: code,
+      sotreName: storeName, 
+      contactEmail,
+    }),
+  });
+
+  if (error) {
+    console.log("Error sending test email")    
+    console.log("error.name:", error.name)    
+    console.log("error.message:", error.message)
+    return false
+  } else {
+    console.log("email result: ", data)
+  }
 }
