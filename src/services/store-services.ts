@@ -73,7 +73,15 @@ export async function getStoreDAOBySlug(slug: string) {
       slug
     },
     include: {
-      categories: true,
+      categories: {
+        where: {
+          products: {
+            some: {
+              isArchived: false
+            }
+          }
+        }
+      },
       bankData: true,
     }
   })
