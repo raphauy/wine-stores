@@ -259,9 +259,24 @@ async function processOrderTransferenciaBancaria(order: Order) {
 
   const store= await getFullStoreDAO(order.storeId)
 
-  const bankDataUrl= `${store.mpRedirectUrl}/checkout/validar-email?email=${order.email}`
+  const bankDataUrl= `${store.mpRedirectUrl}/checkout/validar-email?email=${order.email}&storeId=${order.storeId}`
 
-  await prisma.order.update({
+
+  return bankDataUrl
+}
+
+export async function setOrderTransferenciaBancariaPending(orderId: string) {
+  const order= await getFullOrderDAO(orderId)
+  if (!order)
+    throw new Error("No se encontro la orden")
+  if (order.status !== OrderStatus.Created) {
+    console.log("order is not in status Created, status:", order.status)
+    return
+  } else {
+    console.log("setting order to status Pending")
+  }
+
+  const updated= await prisma.order.update({
     where: {
       id: order.id
     },
@@ -269,9 +284,10 @@ async function processOrderTransferenciaBancaria(order: Order) {
       status: OrderStatus.Pending
     }
   })
+
   await sendBankDataEmail(order.id)
 
-  return bankDataUrl
+  return updated
 }
 
 async function processOrderRedesDeCobranza(order: Order) {

@@ -85,7 +85,7 @@ export default function Page() {
                     </>  
                 }
               </Button>
-              <Button variant="outline" className="h-16 w-full gap-2" onClick={() => handleCheckout(PaymentMethod.RedesDeCobranza)}>
+              {/* <Button variant="outline" className="h-16 w-full gap-2" onClick={() => handleCheckout(PaymentMethod.RedesDeCobranza)}>
                 {
                     loadingRC ?
                     <Loader className="animate-spin" />
@@ -95,7 +95,7 @@ export default function Page() {
                       <p className="text-xl font-bold">Redes de cobranza</p>
                     </>
                   }
-              </Button>
+              </Button> */}
             </div>
           </div>
 

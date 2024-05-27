@@ -43,6 +43,10 @@ export function EmailValidationForm({ requestedEmail, storeName }: Props) {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
+    const storeId= searchParams.get("storeId")
+    if (storeId) {
+      values.storeId = storeId
+    }
     
     startTransition(() => {
       if (showOTP && !values.code) {

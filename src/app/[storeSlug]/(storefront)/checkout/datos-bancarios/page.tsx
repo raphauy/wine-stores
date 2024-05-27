@@ -2,7 +2,7 @@ import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { getCurrentUser } from "@/lib/utils"
-import { getLastOrderDAOOfUser } from "@/services/order-services"
+import { getLastOrderDAOOfUser, setOrderTransferenciaBancariaPending } from "@/services/order-services"
 import Image from "next/image"
 import Link from "next/link"
 import CleanCart from "./clean-cart"
@@ -32,6 +32,9 @@ export default async function DatosBancariosPage({ params }: Props) {
   if (!order) {
     return <div>No se encontró una orden para el mail: {user.email}</div>
   }
+
+  await setOrderTransferenciaBancariaPending(order.id)
+  
   const items= order.orderItems
   const totalValue= items.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
 

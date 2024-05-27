@@ -83,7 +83,7 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
         <Section style={productTitleTable}>
           <Text style={productsTitle}>Detalle de la compra:</Text>
         </Section>
-        {/* <Section>
+        <Section>
           {
           items.map((item, index) => (
             <Row key={index} style={ { marginBottom: "10px" } }>
@@ -113,8 +113,8 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
             </Row>
           ))
           }
-        </Section> */}
-        <Section>
+        </Section>
+        {/* <Section>
           <Row>
             <Column style={{ width: "64px" }}>
               <Img
@@ -140,7 +140,7 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
               <Text style={productPrice}>$1490</Text>
             </Column>
           </Row>
-        </Section>
+        </Section> */}
         <Hr style={productPriceLine} />
         <Section align="right">
           <Row>
