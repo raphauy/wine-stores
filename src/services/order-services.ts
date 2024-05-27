@@ -289,7 +289,7 @@ export async function setOrderTransferenciaBancariaPending(orderId: string) {
 
   return updated
 }
-export async function setOrderTransferenciaBancariaPaid(orderId: string) {
+export async function setOrderTransferenciaBancariaPaymentSent(orderId: string) {
   const order= await getFullOrderDAO(orderId)
   if (!order)
     throw new Error("No se encontro la orden")
@@ -303,7 +303,7 @@ export async function setOrderTransferenciaBancariaPaid(orderId: string) {
       id: order.id
     },
     data: {
-      status: OrderStatus.Paid
+      status: OrderStatus.PaymentSent
     }
   })
 

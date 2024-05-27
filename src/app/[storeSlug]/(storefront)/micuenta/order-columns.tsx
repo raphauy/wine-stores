@@ -17,7 +17,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
     accessorKey: "status",
     header: ({ column }) => {
         return (
-          <Button variant="ghost" className="pl-0 dark:text-white mx-auto"
+          <Button variant="ghost" className="dark:text-white justify-center"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
             Estado
             <ArrowUpDown className="w-4 h-4 ml-1" />
@@ -26,8 +26,8 @@ export const columns: ColumnDef<OrderDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       return (
-        <div className="flex items-center gap-2">
-          <Badge className={cn("text-black whitespace-nowrap", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
+        <div className="flex flex-col gap-4 w-full items-center">
+          <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
           <div className="w-full">
             <MarkAsPaidButton order={data} />
           </div>
@@ -120,9 +120,9 @@ function getLabel(status: OrderStatus) {
     case OrderStatus.Created:
       return "Creada"
     case OrderStatus.Pending:
-      return "Pendiente de pago"
+      return "Transferencia Pendiente"
     case OrderStatus.PaymentSent:
-      return "Pago enviado"
+      return "Transferencia enviada"
     case OrderStatus.Paid:
       return "Pagada"
     case OrderStatus.Delivered:

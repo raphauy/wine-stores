@@ -1,7 +1,7 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { OrderDAO, OrderFormValues, createOrder, updateOrder, getFullOrderDAO, deleteOrder, setOrderStatus, setOrderTransferenciaBancariaPaid } from "@/services/order-services"
+import { OrderDAO, OrderFormValues, createOrder, updateOrder, getFullOrderDAO, deleteOrder, setOrderStatus, setOrderTransferenciaBancariaPaymentSent } from "@/services/order-services"
 import { OrderStatus } from "@prisma/client"
 
 
@@ -30,8 +30,8 @@ export async function deleteOrderAction(id: string): Promise<OrderDAO | null> {
     return deleted as OrderDAO
 }
 
-export async function setOrderTransferenciaBancariaPaidAction(id: string): Promise<OrderDAO | null> {
-    const updated= await setOrderTransferenciaBancariaPaid(id)
+export async function setOrderTransferenciaBancariaPaymentSentAction(id: string): Promise<OrderDAO | null> {
+    const updated= await setOrderTransferenciaBancariaPaymentSent(id)
 
     revalidatePath("/[storeSlug]", "page")
 

@@ -18,8 +18,6 @@ export async function processOrderConfirmation(orderId: string) {
         console.log("Order already paid")
         return
     }
-    const email = order.email
-    const store = order.store
 
     const items= order.orderItems
     for (const item of items) {
@@ -33,15 +31,8 @@ export async function processOrderConfirmation(orderId: string) {
         await createStockMovement(stockMovement)
     }
     
-    let storeUrl= store.mpRedirectUrl
-    if (storeUrl?.endsWith("/")){
-        storeUrl= storeUrl.slice(0, -1) 
-    }
-    const url= `${storeUrl}/micuenta?email=${email}&storeId=${store.id}`
-
-    console.log("processOrderConfirmation", order)    
-
     await sendPaymentConfirmationEmail(order.id)
+    await sendNotifyPaymentEmail(order.id)
 }
 
   
@@ -67,9 +58,7 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
   }
   subject = subject.slice(0, -2)
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
-  const finalText= `
-En breve nos pondremos en contacto contigo para confirmarte la recepción de la transferencia.
-`
+  const finalText= "En breve nos pondremos en contacto contigo con información sobre el envío."
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
