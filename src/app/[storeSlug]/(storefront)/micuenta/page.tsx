@@ -35,7 +35,7 @@ export default async function MiCuentaPage({ params, searchParams }: Props) {
       <div className="w-full">      
         <h1 className="text-3xl text-center font-bold mt-10">Mis compras</h1>
   
-        <div className="container bg-white p-3 mt-8 py-4 mx-auto border rounded-md text-muted-foreground dark:text-white">
+        <div className="container bg-white p-3 mt-8 py-4 mx-auto border rounded-md text-muted-foreground dark:text-white dark:bg-black">
           <DataTable columns={columns} data={data} subject="Order"/>       
         </div>
       </div>

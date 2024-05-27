@@ -17,7 +17,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
     accessorKey: "status",
     header: ({ column }) => {
         return (
-          <Button variant="ghost" className="dark:text-white justify-center"
+          <Button variant="ghost" className="dark:text-white flex justify-center w-full"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
             Estado
             <ArrowUpDown className="w-4 h-4 ml-1" />
@@ -36,29 +36,6 @@ export const columns: ColumnDef<OrderDAO>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
-    },
-},
-
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-        return (
-          <Button variant="ghost" className="pl-0 dark:text-white"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Envío
-            <ArrowUpDown className="w-4 h-4 ml-1" />
-          </Button>
-    )},
-    cell: ({ row }) => {
-      const data= row.original
-      return (
-        <div>
-          <p>Nombre: {data.name}</p>
-          <p>Dirección: {data.address}</p>          
-          <p>Ciudad: {data.city}</p>
-          <p>Teléfono: {data.phone}</p>
-        </div>
-      )
     },
   },
 
@@ -92,6 +69,30 @@ export const columns: ColumnDef<OrderDAO>[] = [
       )
     },
   },
+  
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+        return (
+          <Button variant="ghost" className="pl-0 dark:text-white"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Envío
+            <ArrowUpDown className="w-4 h-4 ml-1" />
+          </Button>
+    )},
+    cell: ({ row }) => {
+      const data= row.original
+      return (
+        <div>
+          <p>Nombre: {data.name}</p>
+          <p>Dirección: {data.address}</p>          
+          <p>Ciudad: {data.city}</p>
+          <p>Teléfono: {data.phone}</p>
+        </div>
+      )
+    },
+  },
+
   {
     id: "createdAt",
     header: ({ column }) => {
