@@ -14,17 +14,30 @@ import { Loader } from "lucide-react"
 
 type TestProps= {
     storeId: string
-    type: "confirmation" | "bank-data"
+    type: "confirmation" | "bank-data" | "notify-payment"
 }
   
   export function TestEmailDialog({ storeId, type }: TestProps) {
     const [open, setOpen] = useState(false);
+
+    let title= "Enviar email de prueba"
+    switch (type) {
+        case "confirmation":
+            title= "Confirmación de compra"
+            break
+        case "bank-data":
+            title= "Datos bancarios para realizar el pago"
+            break
+        case "notify-payment":
+            title= "Notificación de pago"
+            break
+    }
   
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" className="whitespace-nowrap">
-            {type === "confirmation" ? "Confirmación de compra" : "Datos bancarios para realizar el pago"}
+            {title}
           </Button>
         </DialogTrigger>
         <DialogContent>
@@ -41,7 +54,7 @@ type TestProps= {
 type TestFormProps= {
     storeId: string
     closeDialog: () => void
-    type: "confirmation" | "bank-data"
+    type: "confirmation" | "bank-data" | "notify-payment"
 }
 
 export function TestEmailForm({ storeId, closeDialog, type }: TestFormProps) {
@@ -53,7 +66,9 @@ type TestEnvioFormValues = z.infer<typeof testEnvioSchema>
 
 const form = useForm<TestEnvioFormValues>({
     resolver: zodResolver(testEnvioSchema),
-    defaultValues: {},
+    defaultValues: {
+        mailTo: ""
+    },
     mode: "onChange",
 })
 const [loading, setLoading] = useState(false)

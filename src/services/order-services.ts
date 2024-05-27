@@ -5,7 +5,7 @@ import * as z from "zod"
 import { getOauthDAOByStoreId } from "./oauth-services"
 import { OrderItemDAO } from "./orderitem-services"
 import { StoreDAO, getFullStoreDAO } from "./store-services"
-import { sendBankDataEmail } from "./email-services"
+import { sendBankDataEmail, sendNotifyPaymentEmail } from "./email-services"
 
 export type OrderDAO = {
 	id: string
@@ -289,7 +289,28 @@ export async function setOrderTransferenciaBancariaPending(orderId: string) {
 
   return updated
 }
+export async function setOrderTransferenciaBancariaPaid(orderId: string) {
+  const order= await getFullOrderDAO(orderId)
+  if (!order)
+    throw new Error("No se encontro la orden")
+  if (order.status !== OrderStatus.Pending) {
+    console.log("order is not in status Pending, status:", order.status)
+    return order
+  }
 
+  const updated= await prisma.order.update({
+    where: {
+      id: order.id
+    },
+    data: {
+      status: OrderStatus.Paid
+    }
+  })
+
+  await sendNotifyPaymentEmail(order.id)
+
+  return updated
+}
 async function processOrderRedesDeCobranza(order: Order) {
 
 	console.log("processOrderRedesDeCobranza", order)
@@ -332,3 +353,4 @@ export async function getFullOrdersDAOByEmail(email: string, storeSlug: string) 
   })
   return found as OrderDAO[]
 }
+

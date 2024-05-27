@@ -1,15 +1,15 @@
 "use client"
 
 import { Button, buttonVariants } from '@/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { toast } from '@/components/ui/use-toast'
+import { cn } from '@/lib/utils'
 import { OrderDAO } from '@/services/order-services'
 import { OrderStatus } from '@prisma/client'
-import React, { useState } from 'react'
-import { setOrderStatusAction } from '../../(storeback)/orders/order-actions'
-import { useSession } from 'next-auth/react'
-import { toast } from '@/components/ui/use-toast'
 import { Loader } from 'lucide-react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import { setOrderTransferenciaBancariaPaidAction } from '../../(storeback)/orders/order-actions'
 
 type Props = {
     order: OrderDAO
@@ -23,7 +23,7 @@ export default function MarkAsPaidButton({ order }: Props) {
 
     function handleClick() {
         setLoading(true)
-        setOrderStatusAction(order.id, OrderStatus.Paid)
+        setOrderTransferenciaBancariaPaidAction(order.id)
         .then(() => {
             toast({ title: "Compra pagada", description: "La compra ha sido marcada como pagada"})
         })
@@ -35,7 +35,7 @@ export default function MarkAsPaidButton({ order }: Props) {
         })
     }
     if (status === OrderStatus.Paid) {
-        return <div className='max-w-[350px]'>En breve nos pondremos en contacto contigo para brindarte información sobre el envío</div>
+        return <div className='max-w-[350px]'>En breve nos pondremos en contacto contigo para confirmarte la recepción de la transferencia.</div>
     }
     if (status !== OrderStatus.Pending) {
         return null

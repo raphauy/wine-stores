@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import BankDataEmail from "@/components/email/bank-data-email";
 import { getStoreDAO } from "./store-services";
 import CodeVerifyEmail from "@/components/email/verify-email";
+import NotifyPaymentEmail from "@/components/email/notify-payment";
 
 
 export async function processOrderConfirmation(orderId: string) {
@@ -67,7 +68,7 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
   subject = subject.slice(0, -2)
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
   const finalText= `
-En breve nos pondremos en contacto contigo para brindarte información sobre el envío.
+En breve nos pondremos en contacto contigo para confirmarte la recepción de la transferencia.
 `
 
   const resend = new Resend(process.env.RESEND_API_KEY);
@@ -181,8 +182,6 @@ export async function sendCodeEmail(storeId: string | null | undefined, email: s
       reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
     }
   }
-  console.log("reply_to: ", reply_to)
-
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data, error } = await resend.emails.send({
@@ -205,4 +204,50 @@ export async function sendCodeEmail(storeId: string | null | undefined, email: s
   } else {
     console.log("email result: ", data)
   }
+}
+
+export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: string) {
+  const order = await getFullOrderDAO(orderId)
+  const store = order.store
+  if (!store || !store.emailFrom || !store.mpRedirectUrl) {
+    console.log("Error sending notify payment email, data validation failed. Probably emalFrom is not set.")
+    console.log("store: ", store)
+    
+    throw new Error("Error sending email confirmation")
+  }
+  let from= process.env.DEFAULT_EMAIL_FROM!
+  let reply_to= process.env.SUPPORT_EMAIL!
+  from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
+  reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
+  let to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
+
+  const subject = "Notificación de pago"
+  const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { data, error } = await resend.emails.send({
+    from,
+    to: testEmailTo ? testEmailTo : to,
+    reply_to,
+    subject,
+    react: NotifyPaymentEmail({ 
+      store: store,
+      buyerName: order.name,
+      buyerEmail: order.email,
+      paymentAmount: totalPrice,
+      paymentMethod: order.paymentMethod,
+    }),
+  });
+
+  if (error) {
+    console.log("Error sending test email")    
+    console.log("error.name:", error.name)    
+    console.log("error.message:", error.message)
+    return false
+  } else {
+    console.log("email result: ", data)
+  }
+
+  return true
 }
