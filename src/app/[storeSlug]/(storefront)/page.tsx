@@ -58,6 +58,17 @@ export default async function StoreFrontHome({ params }: Props) {
             />
           ))
         }
+
+        {
+          store.contactEmail &&
+          <p className='text-center text-muted-foreground'>
+            <Link href={`mailto:${extractEmail(store.contactEmail)}`}>
+              <Button variant="link">
+                Contacto: {extractEmail(store.contactEmail)}
+              </Button>
+            </Link>
+          </p>
+        }
       </MaxWidthWrapper>
 
 
@@ -70,4 +81,15 @@ export default async function StoreFrontHome({ params }: Props) {
       </section> */}
     </>
   )
+}
+
+function extractEmail(replyTo: string) {
+  // format: reply-to: Contact <email@example.com>
+
+  const match= replyTo.match(/<(.*)>/)
+  if (match) {
+    return match[1]
+  }
+  return null
+  
 }
