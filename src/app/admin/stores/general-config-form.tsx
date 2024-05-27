@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { GeneralConfigFormValues, generalConfigSchema } from "@/services/store-services"
@@ -78,6 +78,7 @@ export function GeneralConfigForm({ id }: Props) {
                 <FormControl>
                   <Input placeholder="Store's name" {...field} />
                 </FormControl>
+                <FormDescription>Este nombre aparecerá en la portada de la tienda</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -92,6 +93,7 @@ export function GeneralConfigForm({ id }: Props) {
                 <FormControl>
                   <Tiptap value={field.value || ""} fieldName="description" />
                 </FormControl>
+                <FormDescription>Esta descripción aparecerá en la portada de la tienda</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -104,8 +106,14 @@ export function GeneralConfigForm({ id }: Props) {
               <FormItem>
                 <FormLabel>Contact Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Contact Email" {...field} />
+                  <Input placeholder="Contacto <contacto@tutienda.com>" {...field} />
                 </FormControl>
+                <FormDescription>
+                  Este email aparecerá al final de la portada de la tienda para contacto.
+                </FormDescription>
+                <FormDescription>
+                  Formato: Soporte &lt;soporte@tutienda.com&gt;
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
