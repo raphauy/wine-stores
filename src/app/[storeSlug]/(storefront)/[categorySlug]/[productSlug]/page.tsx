@@ -88,11 +88,16 @@ export default async function ProductoPage({ params }: PageProps) {
             </div>
 
             <section className='mt-4'>
+              {
+                product.discountPrice &&
+                  <p className='font-medium dark:text-white text-red-500 line-through'>
+                    {formatPrice(product.price)}
+                  </p>
+              }
               <div className='flex items-center'>
                 <p className='font-medium text-gray-900 dark:text-white'>
-                  {formatPrice(product.price)}
+                  {formatPrice(product.discountPrice ? product.discountPrice : product.price)}
                 </p>
-
                 <div className='ml-4 border-l text-muted-foreground border-gray-300 pl-4'>
                   {product.category.name}
                 </div>

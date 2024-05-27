@@ -14,6 +14,7 @@ export type ProductDAO = {
   slug: string
   description?: string
 	price: number
+  discountPrice: number | undefined
 	isFeatured: boolean
 	isArchived: boolean
 	createdAt: Date
@@ -33,6 +34,7 @@ export const productSchema = z.object({
   price: z.string()
     .refine((val) => !isNaN(Number(val)), { message: "debe ser un número" })
     .refine((val) => Number(val) > 0, { message: "el precio debe ser mayor que cero" }),  
+  discountPrice: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
   images: z.object({ url: z.string() }).array(),
   isFeatured: z.boolean(),
   isArchived: z.boolean(),	
@@ -90,6 +92,7 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
   }
 
   const price= data.price ? Number(data.price) : 0
+  const discountPrice= data.discountPrice ? Number(data.discountPrice) : 0
 
   // create the product and connect with all images
   const created= await prisma.product.create({
@@ -98,6 +101,7 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
       description: data.description,
       slug: data.slug,
       price,
+      discountPrice,
       isFeatured: data.isFeatured,
       isArchived: data.isArchived,
       categoryId: data.categoryId,
@@ -131,6 +135,7 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
 
 export async function updateProduct(id: string, data: ProductFormValues) {
   const price= data.price ? Number(data.price) : 0
+  const discountPrice= data.discountPrice ? Number(data.discountPrice) : 0
 
   await prisma.product.update({
     where: {
@@ -141,6 +146,7 @@ export async function updateProduct(id: string, data: ProductFormValues) {
       description: data.description,
       slug: data.slug,
       price,
+      discountPrice,
       isFeatured: data.isFeatured,
       isArchived: data.isArchived,
       categoryId: data.categoryId,

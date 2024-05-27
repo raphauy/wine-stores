@@ -115,7 +115,7 @@ export default function Page() {
 
                             <div className='flex items-center justify-between max-w-56'>
                               <p className='text-sm font-medium text-gray-900'>
-                                {formatPrice(product.price)} {quantity > 1 ? `x ${quantity}` : ''}
+                                {formatPrice(product.discountPrice ? product.discountPrice : product.price)} {quantity > 1 ? `x ${quantity}` : ''}
                               </p>
 
                               <div className='flex items-center'>

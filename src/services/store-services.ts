@@ -10,6 +10,7 @@ export type StoreDAO = {
   slug: string
 	image: string | undefined
 	igHandle: string | undefined
+  contactEmail: string | undefined
   description: string | undefined
   mpRedirectUrl: string | undefined
   mpMarketplaceFee: number
@@ -27,6 +28,7 @@ export const storeSchema = z.object({
   slug: z.string({required_error: "slug is required."}),
 	image: z.string().optional(),
 	igHandle: z.string().optional(),
+  contactEmail: z.string().optional(),
   description: z.string().optional(),
   mpRedirectUrl: z.string().optional(),
   mpMarketplaceFee: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" })
@@ -38,6 +40,7 @@ export const generalConfigSchema = z.object({
 	name: z.string({required_error: "name is required."}),
 	image: z.string().optional(),
   description: z.string().optional(),
+  contactEmail: z.string().optional(),
 })
 
 export type GeneralConfigFormValues = z.infer<typeof generalConfigSchema>

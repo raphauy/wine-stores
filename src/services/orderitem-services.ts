@@ -51,7 +51,7 @@ export async function createOrderItem(data: OrderItemFormValues) {
   const created = await prisma.orderItem.create({
     data: {
       ...data,
-      soldUnitPrice: product.price,
+      soldUnitPrice: product.discountPrice ? product.discountPrice : product.price,
       soldName: product.name,
       soldCategory: product.category.name,
       soldImage,

@@ -65,6 +65,18 @@ export const columns: ColumnDef<StoreDAO>[] = [
   },
 
   {
+    accessorKey: "contactEmail",
+    header: ({ column }) => {
+        return (
+          <Button variant="ghost" className="pl-0 dark:text-white"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Contact Email
+            <ArrowUpDown className="w-4 h-4 ml-1" />
+          </Button>
+    )},
+  },
+
+  {
     accessorKey: "slug",
     header: ({ column }) => {
         return (

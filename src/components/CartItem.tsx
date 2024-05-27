@@ -78,7 +78,7 @@ export default function CartItem({ product: productQuantity }: Props) {
             </p>
           }
           <span className='ml-auto line-clamp-1 text-sm'>
-            {formatPrice(productQuantity.product.price)}
+            {formatPrice(productQuantity.product.discountPrice ? productQuantity.product.discountPrice : productQuantity.product.price)}
           </span>
         </div>
       </div>

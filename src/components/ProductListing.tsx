@@ -49,10 +49,22 @@ export default function ProductListing({ product, index, isSubdomain }: ProductL
           <p className='mt-1 text-sm text-gray-500 dark:text-white'>
             {product.category.name}
           </p>
-          <p className='mt-1 font-medium text-sm text-gray-900 dark:text-white'>
-            {formatPrice(product.price)}
-          </p>
-        </div>
+          {
+            product.discountPrice ?
+            <>
+              <p className='mt-1 font-medium text-sm line-through text-red-600 dark:text-white'>
+                {formatPrice(product.price)}
+              </p>
+              <p className='mt-1 font-medium text-sm text-gray-900 dark:text-white'>
+                {formatPrice(product.discountPrice)}
+              </p>
+            </>
+              :
+              <p className='mt-1 font-medium text-sm text-gray-900 dark:text-white'>
+                {formatPrice(product.price)}
+              </p>
+            }
+          </div>
       </Link>
     )
   }

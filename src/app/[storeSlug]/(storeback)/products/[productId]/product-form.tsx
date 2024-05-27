@@ -46,12 +46,14 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     ...initialData,
     description: initialData.description || "",
     price: String(initialData?.price),
+    discountPrice: String(initialData?.discountPrice),
   } : {
     name: '',
     slug: '',
     description: '',
     images: [],
     price: "0",
+    discountPrice: "0",
     categoryId: '',
     isFeatured: false,
     isArchived: false,
@@ -174,19 +176,36 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Precio</FormLabel>
-                  <FormControl>
-                    <Input type="number" disabled={loading} placeholder="9.99" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex items-center gap-2">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Precio</FormLabel>
+                    <FormControl>
+                      <Input type="number" disabled={loading} placeholder="9.99" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="discountPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Precio con descuento</FormLabel>
+                    <FormControl>
+                      <Input type="number" disabled={loading} placeholder="9.99" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+            </div>
             <FormField
               control={form.control}
               name="description"

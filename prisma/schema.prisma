@@ -57,6 +57,7 @@ model Store {
   image         String?                    // gennext: show.column
   description   String?                    // gennext: show.column
   igHandle      String?                    // gennext: show.column
+  contactEmail  String?                    // gennext: show.column
 
   mpRedirectUrl String?                    // gennext: show.column
   mpMarketplaceFee Float @default(10)      // gennext: show.column
@@ -102,6 +103,7 @@ model Product {
   slug        String                                      // gennext: show.column
   description String?
   price       Float                                       // gennext: show.column
+  discountPrice Float?                                    // gennext: show.column
   isFeatured  Boolean   @default(false)                   // gennext: show.column
   isArchived  Boolean   @default(false)                   // gennext: show.column
 

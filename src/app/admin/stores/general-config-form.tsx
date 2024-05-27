@@ -25,6 +25,7 @@ export function GeneralConfigForm({ id }: Props) {
       name: "",
       image: "",
       description: "",
+      contactEmail: "",
     },
     mode: "onChange",
   })
@@ -52,6 +53,7 @@ export function GeneralConfigForm({ id }: Props) {
           form.setValue("name", data.name)
           form.setValue("image", data.image)
           form.setValue("description", data.description)
+          form.setValue("contactEmail", data.contactEmail)
         }
         Object.keys(form.getValues()).forEach((key: any) => {
           if (form.getValues(key) === null) {
@@ -89,6 +91,20 @@ export function GeneralConfigForm({ id }: Props) {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Tiptap value={field.value || ""} fieldName="description" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="contactEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contact Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Contact Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

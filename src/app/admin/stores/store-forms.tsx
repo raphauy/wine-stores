@@ -26,6 +26,7 @@ export function StoreForm({ id, closeDialog }: Props) {
       igHandle: "",
       description: "",
       mpRedirectUrl: "",
+      contactEmail: "",
     },
     mode: "onChange",
   })
@@ -53,6 +54,7 @@ export function StoreForm({ id, closeDialog }: Props) {
           form.setValue("slug", data.slug)
           form.setValue("image", data.image)
           form.setValue("igHandle", data.igHandle)
+          form.setValue("contactEmail", data.contactEmail)
           form.setValue("description", data.description)
           form.setValue("mpRedirectUrl", data.mpRedirectUrl)
           form.setValue("mpMarketplaceFee", data.mpMarketplaceFee.toString())
@@ -138,6 +140,20 @@ export function StoreForm({ id, closeDialog }: Props) {
                 <FormLabel>IgHandle</FormLabel>
                 <FormControl>
                   <Input placeholder="Store's igHandle" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="contactEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contact Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Contact Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

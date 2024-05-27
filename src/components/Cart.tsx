@@ -31,7 +31,7 @@ const Cart = () => {
     setIsMounted(true)
   }, [])
 
-  const cartTotal = items.reduce((total, { product }) => total + product.price,0)
+  const cartTotal = items.reduce((total, { product }) => total + (product.discountPrice ? product.discountPrice : product.price),0)
 
   const uniqueProducts: ProductQuantity[] = []
 

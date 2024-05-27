@@ -70,7 +70,16 @@ export const columns: ColumnDef<ProductDAO>[] = [
       const data= row.original
       return (
         <div className="text-right mr-5">
-          <p>{data.price.toLocaleString("es-UY", {style: "currency",currency: "UYU",})}</p>
+          {
+            data.discountPrice ?
+            <>
+              <p className="line-through text-red-400">{data.price.toLocaleString("es-UY", {style: "currency",currency: "UYU",})}</p>
+              <p>{data.discountPrice.toLocaleString("es-UY", {style: "currency",currency: "UYU",})}</p>
+            </>            
+            :
+            <p>{data.price.toLocaleString("es-UY", {style: "currency",currency: "UYU",})}</p>
+          }
+          
         </div>
       )
     },
