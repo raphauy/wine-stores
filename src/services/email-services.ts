@@ -54,6 +54,11 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
     throw new Error("Error sending email confirmation")
   }
 
+  let from= process.env.DEFAULT_EMAIL_FROM!
+  let reply_to= process.env.SUPPORT_EMAIL!
+  from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
+  reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
+
   let subject = "Compraste "
   const items= order.orderItems
   for (const item of items) {
@@ -68,8 +73,9 @@ En breve nos pondremos en contacto contigo para brindarte información sobre el 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data, error } = await resend.emails.send({
-    from: store.emailFrom,
+    from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
+    reply_to,
     subject,
     react: PaymentConfirmationEmail({ 
       storeName: store.name, 
@@ -109,6 +115,10 @@ export async function sendBankDataEmail(orderId: string, testEmailTo?: string) {
     
     throw new Error("Error sending email confirmation")
   }
+  let from= process.env.DEFAULT_EMAIL_FROM!
+  let reply_to= process.env.SUPPORT_EMAIL!
+  from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
+  reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
 
   const subject = "Datos bancarios para realizar el pago"
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
@@ -121,8 +131,9 @@ Aquí abajo tienes el boton para hacerlo:
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data, error } = await resend.emails.send({
-    from: store.emailFrom,
+    from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
+    reply_to,
     subject,
     react: BankDataEmail({ 
       storeName: store.name, 
@@ -159,20 +170,25 @@ export async function sendCodeEmail(storeId: string | null | undefined, email: s
   let storeName= "Latidio"
   let from= process.env.DEFAULT_EMAIL_FROM!
   const contactEmail= process.env.SUPPORT_EMAIL!
+  let reply_to= process.env.SUPPORT_EMAIL!
+  
 
   if (storeId) {
     const store= await getStoreDAO(storeId)
     if (store) {
       storeName= store.name
       from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
+      reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
     }
   }
+  console.log("reply_to: ", reply_to)
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data, error } = await resend.emails.send({
     from,
     to: email,
+    reply_to,
     subject: `Código de acceso a ${storeName}`,
     react: CodeVerifyEmail({ 
       validationCode: code,
