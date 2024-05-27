@@ -1,7 +1,8 @@
 import Navbar from '@/components/Navbar'
-import { constructMetadata } from '@/lib/utils'
+import { constructMetadata, htmlToText } from '@/lib/utils'
 import { getCategorysDAO } from '@/services/category-services'
 import { getFeaturedProducts } from '@/services/product-services'
+import { getStoreDAO, getStoreDAOBySlug } from '@/services/store-services'
 import { Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import { Toaster } from 'sonner'
@@ -20,6 +21,10 @@ export default async function RootLayout({ children, params }: Props) {
   const storeSlug= params.storeSlug
   const categories= await getCategorysDAO(storeSlug)
   const featuredProducts= await getFeaturedProducts(storeSlug)
+
+  const store= await getStoreDAOBySlug(storeSlug)
+  metadata.title= `${store.name}`
+  metadata.description= htmlToText(store.description || '')
 
   const host= headers().get('host')
   // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 

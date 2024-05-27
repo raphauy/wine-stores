@@ -127,3 +127,37 @@ export function formatWhatsAppStyle(date: Date | string): string {
     return format(parsedDate, 'dd/MM/yyyy')
   }
 }
+
+/**
+ * Función que recibe un string HTML y devuelve solo el texto.
+ * @param htmlString - El string HTML de entrada.
+ * @returns El texto extraído del HTML.
+ */
+export function htmlToText(htmlString: string): string {
+  // Eliminar las etiquetas <h2>
+  htmlString = htmlString.replace(/<h2[^>]*>/g, '').replace(/<\/h2>/g, '');
+
+  // Eliminar las etiquetas <p>
+  htmlString = htmlString.replace(/<p[^>]*>/g, '').replace(/<\/p>/g, '');
+
+  // Eliminar las etiquetas <strong>
+  htmlString = htmlString.replace(/<strong[^>]*>/g, '').replace(/<\/strong>/g, '');
+
+  // Eliminar las etiquetas <em>
+  htmlString = htmlString.replace(/<em[^>]*>/g, '').replace(/<\/em>/g, '');
+
+  // Eliminar las etiquetas <u>
+  htmlString = htmlString.replace(/<u[^>]*>/g, '').replace(/<\/u>/g, '');
+
+  // Eliminar las etiquetas <li>
+  htmlString = htmlString.replace(/<li[^>]*>/g, '').replace(/<\/li>/g, '');
+
+  // Eliminar las etiquetas <ul> y <ol>
+  htmlString = htmlString.replace(/<ul[^>]*>/g, '').replace(/<\/ul>/g, '');
+  htmlString = htmlString.replace(/<ol[^>]*>/g, '').replace(/<\/ol>/g, '');
+
+  // Eliminar cualquier otra etiqueta HTML
+  htmlString = htmlString.replace(/<[^>]*>/g, '');
+
+  return htmlString;
+}

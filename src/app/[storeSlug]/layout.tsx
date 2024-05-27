@@ -8,6 +8,7 @@ import Menu from "@/components/header/menu";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { UserRole } from "@prisma/client";
+import { Metadata } from "next";
 
 interface Props {
   children: React.ReactNode

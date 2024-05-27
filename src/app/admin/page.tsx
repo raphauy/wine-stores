@@ -5,6 +5,7 @@ import { InstagramLogoIcon } from '@radix-ui/react-icons'
 import { formatDistanceToNow } from "date-fns"
 import Image from "next/image"
 import Link from "next/link"
+import { htmlToText } from "@/lib/utils"
 
 export default async function AdminPage() {
 
@@ -28,7 +29,7 @@ export default async function AdminPage() {
             </div>
             <Link href={`/${store.slug}`} prefetch={false} className="h-full flex flex-col justify-between">
               <CardContent className="p-0 line-clamp-3">
-              {store.description}
+              {htmlToText(store.description || '')}
               </CardContent>
               <p className="flex justify-end text-sm mt-2">{formatDistanceToNow(store.createdAt, { locale: es })}</p>
             </Link>
