@@ -71,7 +71,7 @@ export const NotifyPaymentEmail = ({
               <Link href={`${store.mpRedirectUrl}/orders`}
                 className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
                 >
-                Ventas en {store.name}
+                Dashboard de Ventas en {store.name}
               </Link>
             </Section>
           </Container>
