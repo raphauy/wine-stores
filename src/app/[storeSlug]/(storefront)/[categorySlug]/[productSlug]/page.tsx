@@ -4,13 +4,14 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
 import CheckoutButton from '@/components/checkout-button'
 import { Button } from '@/components/ui/button'
-import { cn, formatPrice } from '@/lib/utils'
+import { cn, constructMetadata, formatPrice } from '@/lib/utils'
 import { getProductDAOBySlug } from '@/services/product-services'
 import { Check, Shield } from 'lucide-react'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+export const metadata = constructMetadata()
 
 interface PageProps {
   params: {
@@ -28,7 +29,12 @@ export default async function ProductoPage({ params }: PageProps) {
 
   const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
 
+
   if (!product) return notFound()
+
+      // const store= await getStoreDAOBySlug(params.storeSlug)
+  metadata.title= product.name
+  metadata.description= product.description
 
   const host= headers().get('host')
   // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 

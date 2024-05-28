@@ -1,14 +1,13 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle, getLabel } from "@/lib/utils"
 import { OrderDAO } from "@/services/order-services"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, CheckCircle } from "lucide-react"
-import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle, getLabel } from "@/lib/utils"
+import { ArrowUpDown } from "lucide-react"
 import ColumnItem from "../../(storeback)/orders/column-item"
-import { OrderStatus } from "@prisma/client"
-import { Badge } from "@/components/ui/badge"
-import MarkAsPaidButton from "./mark-as-paid-button"
+import MarkAsPaymentSentButton from "./mark-as-payment-sent-button"
 
 
 export const columns: ColumnDef<OrderDAO>[] = [
@@ -29,7 +28,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
         <div className="flex flex-col gap-4 w-full items-center">
           <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
           <div className="w-full mx-auto">
-            <MarkAsPaidButton order={data} />
+            <MarkAsPaymentSentButton order={data} />
           </div>
         </div>
       )

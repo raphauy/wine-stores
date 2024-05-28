@@ -69,6 +69,9 @@ export async function getCategoryDAOBySlug(storeSlug: string, categorySlug: stri
         slug: storeSlug
       }
     },
+    include: {
+			store: true,
+		}
   })
   return found as CategoryDAO
 }

@@ -14,7 +14,7 @@ import { setOrderTransferenciaBancariaPaymentSentAction } from '../../(storeback
 type Props = {
     order: OrderDAO
 }
-export default function MarkAsPaidButton({ order }: Props) {
+export default function MarkAsPaymentSentButton({ order }: Props) {
     const [loading, setLoading] = useState(false)
     const status= order.status
     const user= useSession().data?.user
@@ -37,7 +37,7 @@ export default function MarkAsPaidButton({ order }: Props) {
     if (status === OrderStatus.PaymentSent) {
         return <div className='max-w-[350px] text-center mx-auto'>En breve nos pondremos en contacto contigo para confirmarte la recepción de la transferencia.</div>
     } else if (status === OrderStatus.Paid) {
-        return <div className='max-w-[350px] text-center'>En breve nos pondremos en contacto contigo con información del envío.</div>
+        return <div className='max-w-[350px] text-center mx-auto'>En breve nos pondremos en contacto contigo con información del envío.</div>
     }
 
     const bankDataStr= order.store.bankData.map((item) => item.name + "\n" + item.info).join("\n\n")

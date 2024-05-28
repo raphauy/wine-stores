@@ -2,10 +2,11 @@ import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { completeWithZeros, getCurrentUser } from "@/lib/utils"
-import { getLastOrderDAOOfUser, setOrderTransferenciaBancariaPending } from "@/services/order-services"
+import { getLastOrderDAOOfUser } from "@/services/order-services"
 import Image from "next/image"
 import Link from "next/link"
 import CleanCart from "./clean-cart"
+import { setOrderTransferenciaBancariaPending } from "@/services/core-logic"
 
 type Props = {
   params: {

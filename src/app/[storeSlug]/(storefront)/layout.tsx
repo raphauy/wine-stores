@@ -21,7 +21,7 @@ export default async function RootLayout({ children, params }: Props) {
   const featuredProducts= await getFeaturedProducts(storeSlug)
 
   const store= await getStoreDAOBySlug(storeSlug)
-  metadata.title= `${store?.name}`
+  metadata.title= `${store?.name || 'Tienda'}`
   metadata.description= htmlToText(store?.description || '')
 
   const host= headers().get('host')

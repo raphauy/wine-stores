@@ -1,9 +1,11 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
+import { constructMetadata } from '@/lib/utils'
 import { getCategoryDAOBySlug } from '@/services/category-services'
-import { getStoreDAOBySlug } from '@/services/store-services'
 import { headers } from 'next/headers'
-import Image from 'next/image'
+
+export const metadata = constructMetadata()
+
 type Props= {
   params: {
     storeSlug: string
@@ -21,6 +23,9 @@ export default async function StoreFrontHome({ params }: Props) {
   if (!category) {
     return <div></div>
   }
+
+  metadata.title= category.name
+  metadata.description= category.store.name
 
   const host= headers().get('host')
   // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 

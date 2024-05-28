@@ -8,6 +8,7 @@ import { DeleteOrderDialog } from "./order-dialogs"
 import ColumnItem from "./column-item"
 import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle, getLabel } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import MarkAsPaidButton from "./mark-as-paid-button"
 
 
 export const columns: ColumnDef<OrderDAO>[] = [
@@ -25,8 +26,11 @@ export const columns: ColumnDef<OrderDAO>[] = [
     cell: ({ row }) => {
       const data= row.original
       return (
-        <div className="ml-2">
+        <div className="flex flex-col gap-4 w-full items-center">
           <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
+          <div className="w-full mx-auto">
+            <MarkAsPaidButton order={data} />
+          </div>
         </div>
       )
     },

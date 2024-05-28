@@ -6,8 +6,9 @@ import * as React from "react"
 type Props = {
   storeName: string
   storeId: string
+  orderName: string
   orderEmail: string
-  orderId: string
+  storeOrderNumber: string;
   baseUrl: string
   formattedDate: string
   name: string
@@ -16,9 +17,8 @@ type Props = {
   phone: string
   items: OrderItem[]
   totalPrice: number
-  finalText: string
 }
-export default function PaymentConfirmationEmail({ storeName="Latidio", storeId, orderEmail="test@test.com", orderId="clvwozc58000135igexu0egeu", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0, finalText="Texto final" }: Props) {
+export default function PaymentConfirmationEmail({ storeName="Latidio", storeId, orderName="Alan Turing", orderEmail="test@test.com", storeOrderNumber="UV#00000123", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0 }: Props) {
     return (
   <Html>
     <Head />
@@ -85,9 +85,9 @@ export default function PaymentConfirmationEmail({ storeName="Latidio", storeId,
                     color: "#15c",
                     textDecoration: "underline",
                     }}
-                    href={`${baseUrl}/micuenta?email=${orderEmail}&storeId=${storeId}&orderId=${orderId}`}
+                    href={`${baseUrl}/micuenta?email=${orderEmail}&storeId=${storeId}`}
                 >
-                    {orderId}
+                    {storeOrderNumber}
                 </Link>
             </Column>
           </Row>
@@ -147,7 +147,7 @@ export default function PaymentConfirmationEmail({ storeName="Latidio", storeId,
               />
             </Column>
             <Column style={{ paddingLeft: "22px" }}>
-              <Text style={productTitle}>Uruguay en Vinos</Text>
+              <Text style={productTitle}>Producto de prueba (cambiar)</Text>
               <Text style={productCategory}>Libros</Text>
               <Link
                 href="#"
@@ -176,8 +176,10 @@ export default function PaymentConfirmationEmail({ storeName="Latidio", storeId,
         </Section>
         <Hr style={{margin: "0 0 20px 0"}} />
         <Text style={finalTextStyle}>
-          {finalText}
-          {"\nGracias por la compra,\n" + storeName}
+          {"Hola, " + orderName + ". Hemos recibido tu pago!\n"}
+          {"En breve nos pondremos en contacto contigo con información sobre el envío.\n"}
+          {"Gracias por la compra,\n"}
+          {storeName}
         </Text>
       </Container>
     </Body>

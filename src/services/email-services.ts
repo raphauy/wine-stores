@@ -12,29 +12,6 @@ import NotifyPaymentEmail from "@/components/email/notify-payment";
 import { completeWithZeros } from "@/lib/utils";
 
 
-export async function processOrderConfirmation(orderId: string) {
-    const order = await getFullOrderDAO(orderId)
-    const status= order.status
-    if (status === OrderStatus.Paid) {
-        console.log("Order already paid")
-        return
-    }
-
-    const items= order.orderItems
-    for (const item of items) {
-        const inventoryItem= await getInventoryItemDAOByProductId(item.productId)
-        const stockMovement: StockMovementFormValues = {
-            type: MovementType.SALIDA,
-            inventoryItemId: inventoryItem.id,
-            quantity: item.quantity.toString(),
-            comment: "Venta de " + item.soldName
-        }
-        await createStockMovement(stockMovement)
-    }
-    
-    await sendPaymentConfirmationEmail(order.id)
-    await sendNotifyPaymentEmail(order.id)
-}
 
   
 export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?: string) {
@@ -59,7 +36,8 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
   }
   subject = subject.slice(0, -2)
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
-  const finalText= "En breve nos pondremos en contacto contigo con información sobre el envío."
+
+  const storeOrderNumber= `${order.store.prefix}#${completeWithZeros(order.storeOrderNumber)}`
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -72,8 +50,9 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
     react: PaymentConfirmationEmail({ 
       storeName: store.name, 
       storeId: store.id, 
+      orderName: order.name,
       orderEmail: order.email, 
-      orderId: order.id,
+      storeOrderNumber,
       baseUrl: store.mpRedirectUrl,
       formattedDate: format(order.createdAt, "dd MMM yyyy"),
       name: order.name,
@@ -82,7 +61,6 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
       phone: order.phone,
       items: order.orderItems,
       totalPrice,
-      finalText
     }),
   });
 
@@ -112,7 +90,7 @@ export async function sendBankDataEmail(orderId: string, testEmailTo?: string) {
   from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
   reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
 
-  const subject = "Datos bancarios para realizar el pago"
+  const subject = "Datos bancarios para realizar el pago, orden: " + store.prefix + "#" + completeWithZeros(order.storeOrderNumber)
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
   const finalText= `
 Una vez que hayas realizado el pago, debes ingrear a 'Mi cuenta' y marcar la orden como pagada.
@@ -215,7 +193,7 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
   reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
   let to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
 
-  const subject = "Notificación de pago"
+  const subject = "Notificación de pago, orden: " + store.prefix + "#" + completeWithZeros(order.storeOrderNumber)
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
 
   const orderNumber= `${store.prefix}#${completeWithZeros(order.storeOrderNumber)}`

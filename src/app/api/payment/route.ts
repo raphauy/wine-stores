@@ -3,9 +3,9 @@ import type { NextRequest } from "next/server";
 import { setOrderStatus } from "@/services/order-services";
 import { OrderStatus } from "@prisma/client";
 import { MercadoPagoConfig, Payment } from "mercadopago";
-import { processOrderConfirmation } from "@/services/email-services";
 import { track } from "@vercel/analytics/server";
 import { completeWithZeros } from "@/lib/utils";
+import { processOrderConfirmation } from "@/services/core-logic";
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
 
@@ -42,12 +42,12 @@ export async function POST(request: NextRequest) {
   const externalReference= payment.external_reference
   console.log("externalReference", externalReference)
   
-  await processOrderConfirmation(orderId)
+  const updated= await processOrderConfirmation(orderId)
 
-  const updated= await setOrderStatus(orderId, OrderStatus.Paid)
   if (!updated) {
     return Response.json({success: false});
   }
+
   track("Payment_MP", {
     storeSlug: updated.store.slug,
     email: updated.email,

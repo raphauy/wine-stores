@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-import { processOrderConfirmation } from "@/services/email-services";
+import { processOrderConfirmation } from "@/services/core-logic";
 import { setOrderStatus } from "@/services/order-services";
 import { OrderStatus } from "@prisma/client";
 import { MercadoPagoConfig, Payment } from "mercadopago";
@@ -37,13 +37,12 @@ export async function POST(request: NextRequest) {
     const externalReference= payment.external_reference
     console.log("externalReference", externalReference)
     
-    await processOrderConfirmation(orderId)
+    const updated= await processOrderConfirmation(orderId)
 
-    const updated= await setOrderStatus(orderId, OrderStatus.Paid)
     if (!updated) {
       return Response.json({success: false});
     }
-
+  
     return Response.json({success: true});
   } catch (error) {
     console.log(error)

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getAdminRoles, getCurrentRole, getCurrentUser } from "@/lib/utils";
+import { constructMetadata, getAdminRoles, getCurrentRole, getCurrentUser, htmlToText } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Logo from "@/components/header/logo";
 import Selectors from "@/components/header/selectors/selectors";
@@ -9,6 +9,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { UserRole } from "@prisma/client";
 import { Metadata } from "next";
+import { getStoreDAOBySlug } from "@/services/store-services";
+
+export const metadata = constructMetadata()
 
 interface Props {
   children: React.ReactNode
@@ -27,11 +30,11 @@ export default async function AdminLayout({ children, params }: Props) {
   const isAdmin= currentRole === UserRole.ADMIN || currentRole === UserRole.STORE_OWNER || currentRole === UserRole.STORE_ADMIN
 
   const pathName= headers().get("next-url")
-  console.log("pathName", pathName)  
-  console.log("currentHost", currentHost)  
-  console.log("currentRole", currentRole)  
-  console.log("isAdmin", isAdmin)
-  
+
+  const store= await getStoreDAOBySlug(params.storeSlug)
+  metadata.title= `${store?.name || 'Tienda'}`
+  metadata.description= htmlToText(store?.description || '')
+
   if (!isAdmin && pathName?.endsWith("/oauth/mp-callback")) {
     // public url only for MP
     return children
