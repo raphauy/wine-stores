@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 import { extractEmail } from "@/lib/utils"
-import { getStoreDAO, getStoreDAOBySlug } from "@/services/store-services"
+import { getStoreDAOBySlug } from "@/services/store-services"
 
 type Props= {
   params: {
@@ -84,7 +84,7 @@ export default async function TerminosPage({ params }: Props) {
 
             <section>
                 <h2 className="text-2xl font-semibold mb-4">10. Contacto</h2>
-                <p>Si tiene alguna pregunta o inquietud sobre estos términos del servicio, por favor contáctenos en {extractEmail(store.contactEmail)}</p>
+                <p>Si tiene alguna pregunta o inquietud sobre estos términos del servicio, por favor contáctenos en {extractEmail(store.contactEmail || "Soporte <soporte@latidio.com>")}</p>
             </section>
             </div>
         </MaxWidthWrapper>

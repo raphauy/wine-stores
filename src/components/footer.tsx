@@ -23,17 +23,12 @@ export default function Footer(){
               <Link
                 href='/terminos'
                 className='text-sm text-muted-foreground hover:text-gray-600'>
-                Términos
+                Términos del servicio
               </Link>
               <Link
-                href='#'
+                href='/privacidad'
                 className='text-sm text-muted-foreground hover:text-gray-600'>
                 Política de privacidad
-              </Link>
-              <Link
-                href='#'
-                className='text-sm text-muted-foreground hover:text-gray-600'>
-                Política de cookies
               </Link>
               <LinealToggle isDevMode={isDevMode} />
             </div>
