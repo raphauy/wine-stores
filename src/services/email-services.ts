@@ -225,6 +225,7 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
   const { data, error } = await resend.emails.send({
     from,
     to: testEmailTo ? testEmailTo : to,
+    bcc: process.env.SUPPORT_EMAIL,
     reply_to,
     subject,
     react: NotifyPaymentEmail({ 
