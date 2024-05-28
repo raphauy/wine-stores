@@ -57,13 +57,3 @@ export function DeleteCategoryDialog({ id, description }: DeleteProps) {
     </Dialog>
   )
 }
-
-interface CollectionProps{
-  id: string
-  title: string
-}
-
-
-
-
-  

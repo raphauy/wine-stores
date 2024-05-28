@@ -17,7 +17,6 @@ type Props= {
   id?: string
   closeDialog: () => void
 }
-console.log("sssssssss");
 
 export function CategoryForm({ id, closeDialog }: Props) {
   const params= useParams()
@@ -50,6 +49,7 @@ export function CategoryForm({ id, closeDialog }: Props) {
       toast({ title: id ? "Category updated" : "Category created" })
       closeDialog()
     } catch (error: any) {
+      console.log(error)      
       toast({ title: "Error", description: error.message, variant: "destructive" })
     } finally {
       setLoading(false)

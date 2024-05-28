@@ -1,6 +1,7 @@
 import { getStoreDAOBySlug } from "@/services/store-services";
 import { ProductForm } from "./product-form";
 import { getProductDAO } from "@/services/product-services";
+import { getAllCategorysDAO } from "@/services/category-services";
 
 type Props= {
     params: {
@@ -14,8 +15,7 @@ export default async function NewProductPage({ params }: Props) {
 
     const product= productId ? await getProductDAO(productId) : null    
 
-    const store= await getStoreDAOBySlug(storeSlug);
-    const categories= store.categories
+    const categories= await getAllCategorysDAO(storeSlug)
 
     return ( 
         <div className="flex-col">

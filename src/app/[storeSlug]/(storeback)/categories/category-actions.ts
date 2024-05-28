@@ -10,10 +10,13 @@ export async function getCategoryDAOAction(id: string): Promise<CategoryDAO | nu
 }
 
 export async function createOrUpdateCategoryAction(id: string | null, data: CategoryFormValues): Promise<CategoryDAO | null> {       
+    console.log("createOrUpdateCategoryAction", id, data)
+    
     let updated= null
     if (id) {      
         updated= await updateCategory(id, data.name, data.slug)
     } else {
+        console.log("createCategory")
         const store= await getStoreDAOBySlug(data.storeSlug)
         if (!store) {
           throw new Error("store not found")

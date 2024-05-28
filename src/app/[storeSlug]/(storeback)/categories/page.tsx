@@ -1,4 +1,4 @@
-import { getCategorysDAO } from "@/services/category-services"
+import { getAllCategorysDAO, getCategorysDAO } from "@/services/category-services"
 import { CategoryDialog } from "./category-dialogs"
 import { DataTable } from "./category-table"
 import { columns } from "./category-columns"
@@ -12,7 +12,7 @@ type Props= {
 export default async function CategoriesPage({ params }: Props) {
   const storeSlug = params.storeSlug
   
-  const data= await getCategorysDAO(storeSlug)
+  const data= await getAllCategorysDAO(storeSlug)
 
   return (
     <div className="w-full">      
