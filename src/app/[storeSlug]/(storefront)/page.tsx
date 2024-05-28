@@ -8,6 +8,7 @@ import { ProductGridSection } from './bak_page'
 import { getFeaturedProducts } from '@/services/product-services'
 import ProductReel from '@/components/ProductReel'
 import { headers } from 'next/headers'
+import { extractEmail } from '@/lib/utils'
 type Props= {
   params: {
     storeSlug: string
@@ -83,13 +84,3 @@ export default async function StoreFrontHome({ params }: Props) {
   )
 }
 
-function extractEmail(replyTo: string) {
-  // format: reply-to: Contact <email@example.com>
-
-  const match= replyTo.match(/<(.*)>/)
-  if (match) {
-    return match[1]
-  }
-  return null
-  
-}

@@ -189,3 +189,12 @@ export function getLabel(status: OrderStatus) {
   }
   
 }
+
+export function extractEmail(replyTo: string) {
+  const match= replyTo.match(/<(.*)>/)
+  if (match) {
+    return match[1]
+  }
+  return null
+  
+}

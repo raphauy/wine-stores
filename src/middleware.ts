@@ -23,16 +23,14 @@ export default auth((req) => {
     const host= req.headers.get('host') || req.headers.get('x-forwarded-host')
     if (!host) return
 
-    console.log('host: ', host)
+    //console.log('host: ', host)
     
     const hostRewrite= getHostRewrite(host)
 
     if (hostRewrite) {
-        console.log('hostRewrite', hostRewrite)
         const searchParams = nextUrl.searchParams.toString()
         const path = nextUrl.pathname
         const newUrl= `/${hostRewrite}${path}${searchParams.length > 0 ? `?${searchParams}` : ''}`
-        console.log('newUrl', newUrl)
         
         return NextResponse.rewrite(new URL(newUrl, req.url))
     } else {

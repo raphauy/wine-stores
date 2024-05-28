@@ -1,15 +1,12 @@
-import { redirect } from "next/navigation";
-import { constructMetadata, getAdminRoles, getCurrentRole, getCurrentUser, htmlToText } from "@/lib/utils";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import Logo from "@/components/header/logo";
-import Selectors from "@/components/header/selectors/selectors";
 import Logged from "@/components/header/logged";
+import Logo from "@/components/header/logo";
 import Menu from "@/components/header/menu";
+import Selectors from "@/components/header/selectors/selectors";
 import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { UserRole } from "@prisma/client";
-import { Metadata } from "next";
+import { constructMetadata, htmlToText } from "@/lib/utils";
 import { getStoreDAOBySlug } from "@/services/store-services";
+import { UserRole } from "@prisma/client";
+import { headers } from "next/headers";
 
 export const metadata = constructMetadata()
 
@@ -32,6 +29,7 @@ export default async function AdminLayout({ children, params }: Props) {
   const pathName= headers().get("next-url")
 
   const store= await getStoreDAOBySlug(params.storeSlug)
+  
   metadata.title= `${store?.name || 'Tienda'}`
   metadata.description= htmlToText(store?.description || '')
 

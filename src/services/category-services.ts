@@ -22,7 +22,6 @@ export type CategoryFormValues = z.infer<typeof categorySchema>
 
 
 export async function getCategorysDAO(storeSlug: string) {
-  console.log("getCategorysDAO", storeSlug)
   
   const found = await prisma.category.findMany({
     where: {
@@ -39,8 +38,6 @@ export async function getCategorysDAO(storeSlug: string) {
       id: 'asc'
     },
   })
-  console.log("found", found)
-  
   return found as CategoryDAO[]
 }
 
@@ -56,7 +53,6 @@ export async function getAllCategorysDAO(storeSlug: string) {
       id: 'asc'
     },
   })
-  console.log("found", found)
   
   return found as CategoryDAO[]
 }
@@ -86,7 +82,6 @@ export async function getCategoryDAO(id: string) {
 }
     
 export async function createCategory(storeId: string, name: string, slug: string) {
-  console.log("createCategory", storeId, name, slug)
   
   const created = await prisma.category.create({
     data: {
