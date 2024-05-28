@@ -33,29 +33,6 @@ export const columns: ColumnDef<OrderDAO>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
-},
-
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-        return (
-          <Button variant="ghost" className="pl-0 dark:text-white"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Envío
-            <ArrowUpDown className="w-4 h-4 ml-1" />
-          </Button>
-    )},
-    cell: ({ row }) => {
-      const data= row.original
-      return (
-        <div>
-          <p>Email: {data.email}</p>
-          <p>Name: {data.name}</p>
-          <p>Phone: {data.phone}</p>
-          <p>Address: {data.address} ({data.city})</p>
-        </div>
-      )
-    },
   },
 
   {
@@ -89,6 +66,30 @@ export const columns: ColumnDef<OrderDAO>[] = [
       )
     },
   },
+
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+        return (
+          <Button variant="ghost" className="pl-0 dark:text-white"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Envío
+            <ArrowUpDown className="w-4 h-4 ml-1" />
+          </Button>
+    )},
+    cell: ({ row }) => {
+      const data= row.original
+      return (
+        <div>
+          <p>Email: {data.email}</p>
+          <p>Name: {data.name}</p>
+          <p>Phone: {data.phone}</p>
+          <p>Address: {data.address} ({data.city})</p>
+        </div>
+      )
+    },
+  },
+
   {
     id: "createdAt",
     header: ({ column }) => {
