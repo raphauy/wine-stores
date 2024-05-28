@@ -6,6 +6,7 @@ import { getOauthDAOByStoreId } from "./oauth-services"
 import { OrderItemDAO } from "./orderitem-services"
 import { StoreDAO, getFullStoreDAO } from "./store-services"
 import { sendBankDataEmail, sendNotifyPaymentEmail } from "./email-services"
+import { track } from "@vercel/analytics/server"
 
 export type OrderDAO = {
 	id: string
@@ -66,13 +67,19 @@ export async function getOrderDAO(id: string) {
   return found as OrderDAO
 }
     
-export async function createOrder(data: OrderFormValues) {
+export async function createOrder(data: OrderFormValues, storeSlug: string) {
   const created = await prisma.order.create({
     data: {
       ...data,
       storeOrderNumber: 0 // será sobreescrito por el trigger de postgres que genera el número de orden
     }
-  })  
+  })
+  if (created) {
+    track("createOrder", {
+      storeSlug,
+      email: data.email,
+    })
+  }
   
   return created  
 }

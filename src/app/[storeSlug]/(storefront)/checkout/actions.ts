@@ -31,7 +31,7 @@ export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug:
         phone,
     }
 
-    const orderCreated= await createOrder(orderForm)
+    const orderCreated= await createOrder(orderForm, storeSlug)
     const orderId= orderCreated.id
 
     const orderItems: OrderItem[]= []
