@@ -77,7 +77,8 @@ export async function createOrder(data: OrderFormValues, storeSlug: string) {
   if (created) {
     track("createOrder", {
       storeSlug,
-      email: data.email,
+      email: created.email,
+      order: created.storeOrderNumber
     })
   }
   
