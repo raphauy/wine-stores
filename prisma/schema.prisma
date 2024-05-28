@@ -146,6 +146,7 @@ enum OrderStatus {
 
 model Order {
   id            String    @id @default(cuid())
+  storeOrderNumber  Int                                  // gennext: show.column
   status        OrderStatus   @default(Created)          // gennext: show.column
   email         String                                   // gennext: show.column
   name          String                                   // gennext: show.column

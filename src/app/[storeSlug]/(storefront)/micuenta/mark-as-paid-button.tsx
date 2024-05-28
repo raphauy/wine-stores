@@ -3,7 +3,7 @@
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { toast } from '@/components/ui/use-toast'
-import { cn } from '@/lib/utils'
+import { cn, completeWithZeros } from '@/lib/utils'
 import { OrderDAO } from '@/services/order-services'
 import { OrderStatus } from '@prisma/client'
 import { Loader } from 'lucide-react'
@@ -35,7 +35,7 @@ export default function MarkAsPaidButton({ order }: Props) {
         })
     }
     if (status === OrderStatus.PaymentSent) {
-        return <div className='max-w-[350px] text-center'>En breve nos pondremos en contacto contigo para confirmarte la recepción de la transferencia.</div>
+        return <div className='max-w-[350px] text-center mx-auto'>En breve nos pondremos en contacto contigo para confirmarte la recepción de la transferencia.</div>
     } else if (status === OrderStatus.Paid) {
         return <div className='max-w-[350px] text-center'>En breve nos pondremos en contacto contigo con información del envío.</div>
     }
@@ -52,9 +52,12 @@ export default function MarkAsPaidButton({ order }: Props) {
                 </PopoverTrigger>
                 <PopoverContent className='w-full'>
                     <div className="p-4 bg-white rounded-md dark:bg-gray-800">
-                        <p className="text-lg font-bold">Datos bancarios</p>
+                        <p className="text-lg font-bold border-b">Datos bancarios</p>
                         <div className="mt-4 text-sm whitespace-pre-line">
                             {bankDataStr}
+                        </div>
+                        <div className="mt-4 text-sm whitespace-pre-line border-t font-bold pt-4">
+                            Asunto: Orden UV#{completeWithZeros(order.storeOrderNumber)}
                         </div>
                     </div>
                 </PopoverContent>

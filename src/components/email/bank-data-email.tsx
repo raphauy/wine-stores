@@ -215,7 +215,7 @@ const tableCell = { display: "table-cell" };
 const heading = {
   fontSize: "32px",
   fontWeight: "300",
-  color: "#888888",
+  color: "#000000",
 };
 
 const heading2 = {

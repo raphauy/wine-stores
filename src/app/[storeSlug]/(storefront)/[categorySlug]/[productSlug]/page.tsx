@@ -133,6 +133,11 @@ export default async function ProductoPage({ params }: PageProps) {
             <div>
               <div className='mt-10'>
                 <AddToCartButton product={product} />
+                <Link href={`/carrito`} className='w-full'>
+                  <Button className='w-full mt-4'>
+                    Ir al Checkout
+                  </Button>
+                </Link>
               </div>
               <div className='mt-6 text-center'>
                 <div className='group inline-flex text-sm text-medium'>

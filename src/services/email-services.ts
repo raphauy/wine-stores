@@ -65,6 +65,7 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
   const { data, error } = await resend.emails.send({
     from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
+    bcc: process.env.SUPPORT_EMAIL,
     reply_to,
     subject,
     react: PaymentConfirmationEmail({ 
@@ -124,6 +125,7 @@ Aquí abajo tienes el boton para hacerlo:
     from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
     reply_to,
+    bcc: process.env.SUPPORT_EMAIL,
     subject,
     react: BankDataEmail({ 
       storeName: store.name, 

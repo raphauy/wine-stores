@@ -9,6 +9,7 @@ import { sendBankDataEmail, sendNotifyPaymentEmail } from "./email-services"
 
 export type OrderDAO = {
 	id: string
+  storeOrderNumber: number
   paymentMethod: PaymentMethod
 	status: OrderStatus
   email: string
@@ -67,7 +68,10 @@ export async function getOrderDAO(id: string) {
     
 export async function createOrder(data: OrderFormValues) {
   const created = await prisma.order.create({
-    data
+    data: {
+      ...data,
+      storeOrderNumber: 0 // será sobreescrito por el trigger de postgres que genera el número de orden
+    }
   })  
   
   return created  

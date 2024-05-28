@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { OrderDAO } from "@/services/order-services"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CheckCircle } from "lucide-react"
-import { cn, formatPrice, formatWhatsAppStyle } from "@/lib/utils"
+import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle } from "@/lib/utils"
 import ColumnItem from "../../(storeback)/orders/column-item"
 import { OrderStatus } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
@@ -28,7 +28,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
       return (
         <div className="flex flex-col gap-4 w-full items-center">
           <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
-          <div className="w-full">
+          <div className="w-full mx-auto">
             <MarkAsPaidButton order={data} />
           </div>
         </div>
@@ -57,6 +57,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const showTotal= productsCount > 1
       return (
         <div className="">
+          <Badge>Orden: UV#{completeWithZeros(data.storeOrderNumber)}</Badge>
           <div className="w-full flex">
             {items.map((item) => {
               return <ColumnItem key={item.id} item={item} />

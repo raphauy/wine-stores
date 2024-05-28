@@ -161,3 +161,7 @@ export function htmlToText(htmlString: string): string {
 
   return htmlString;
 }
+
+export function completeWithZeros(number: number): string {
+  return number.toString().padStart(7, "0")
+}
