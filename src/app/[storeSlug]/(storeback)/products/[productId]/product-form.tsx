@@ -45,12 +45,14 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
   const defaultValues = initialData ? {
     ...initialData,
     description: initialData.description || "",
+    deliveryInfo: initialData.deliveryInfo || "Entrega rápida",
     price: String(initialData?.price),
     discountPrice: String(initialData?.discountPrice),
   } : {
     name: '',
     slug: '',
     description: '',
+    deliveryInfo: 'Entrega rápida',
     images: [],
     price: "0",
     discountPrice: "0",
@@ -219,6 +221,24 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="deliveryInfo"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Información de entrega</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Información de entrega" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Información que se mostrará debajo de la descripción del producto. Puedes dejar el campo vacío si no deseas que aparezca.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="isFeatured"

@@ -13,6 +13,7 @@ export type ProductDAO = {
 	name: string
   slug: string
   description?: string
+  deliveryInfo?: string
 	price: number
   discountPrice: number | undefined
 	isFeatured: boolean
@@ -31,6 +32,7 @@ export const productSchema = z.object({
 	name: z.string().min(1, "nombre es obligatorio."),
   slug: z.string().min(1, "slug es obligatorio."),
   description: z.string().optional(),
+  deliveryInfo: z.string().optional(),
   price: z.string()
     .refine((val) => !isNaN(Number(val)), { message: "debe ser un número" })
     .refine((val) => Number(val) > 0, { message: "el precio debe ser mayor que cero" }),  
@@ -99,6 +101,7 @@ export async function createProduct(storeId: string, data: ProductFormValues) {
     data: {
       name: data.name,
       description: data.description,
+      deliveryInfo: data.deliveryInfo,
       slug: data.slug,
       price,
       discountPrice,
@@ -144,6 +147,7 @@ export async function updateProduct(id: string, data: ProductFormValues) {
     data: {
       name: data.name,
       description: data.description,
+      deliveryInfo: data.deliveryInfo,
       slug: data.slug,
       price,
       discountPrice,

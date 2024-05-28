@@ -3,7 +3,7 @@ import ImageSlider from '@/components/ImageSlider'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
 import { Button } from '@/components/ui/button'
-import { formatPrice } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { getProductDAOBySlug } from '@/services/product-services'
 import { Check, Shield } from 'lucide-react'
 import { headers } from 'next/headers'
@@ -109,13 +109,13 @@ export default async function ProductoPage({ params }: PageProps) {
                 </p>
               </div>
 
-              <div className='mt-6 flex items-center'>
+              <div className={cn("mt-6 flex items-center", !product.deliveryInfo && "hidden")}>
                 <Check
                   aria-hidden='true'
                   className='h-5 w-5 flex-shrink-0 text-green-500'
                 />
                 <p className='ml-2 text-sm text-muted-foreground'>
-                  Entrega rápida
+                  {product.deliveryInfo}
                 </p>
               </div>
             </section>

@@ -80,7 +80,7 @@ export default function Page() {
                   return (
                     <li
                       key={product.id+index}
-                      className='flex py-6 sm:py-10'>
+                      className='flex py-6 sm:py-10 pl-4'>
                       <div className='flex-shrink-0'>
                         <div className='relative h-24 w-24'>
                           {image.url ? (
@@ -150,11 +150,11 @@ export default function Page() {
                           </div>
                         </div>
 
-                        <p className='mt-4 flex space-x-2 text-sm text-gray-700'>
+                        <p className={cn("mt-4 flex space-x-2 text-sm text-gray-700", !product.deliveryInfo && "hidden")}>
                           <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
 
                           <span>
-                            Entrega rápida
+                            {product.deliveryInfo}
                           </span>
                         </p>
                       </div>

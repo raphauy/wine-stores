@@ -102,6 +102,7 @@ model Product {
   name        String                                      // gennext: show.column
   slug        String                                      // gennext: show.column
   description String?
+  deliveryInfo String?
   price       Float                                       // gennext: show.column
   discountPrice Float?                                    // gennext: show.column
   isFeatured  Boolean   @default(false)                   // gennext: show.column
