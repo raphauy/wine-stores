@@ -6,7 +6,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CheckCircle } from "lucide-react"
 import { DeleteOrderDialog } from "./order-dialogs"
 import ColumnItem from "./column-item"
-import { formatPrice, formatWhatsAppStyle } from "@/lib/utils"
+import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle, getLabel } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 
 export const columns: ColumnDef<OrderDAO>[] = [
@@ -25,12 +26,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const data= row.original
       return (
         <div className="ml-2">
-          {
-            data.status === "Paid" ?
-            <CheckCircle className="w-4 h-4 text-green-500" />
-            : 
-            <p>{data.status}</p>
-          }
+          <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
         </div>
       )
     },
@@ -45,7 +41,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
         return (
           <Button variant="ghost" className="pl-0 dark:text-white"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Email
+            Envío
             <ArrowUpDown className="w-4 h-4 ml-1" />
           </Button>
     )},
@@ -80,6 +76,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const showTotal= productsCount > 1
       return (
         <div className="">
+          <Badge>Orden: {data.store.prefix}#{completeWithZeros(data.storeOrderNumber)}</Badge>
           <div className="w-full flex">
             {items.map((item) => {
               return <ColumnItem key={item.id} item={item} />

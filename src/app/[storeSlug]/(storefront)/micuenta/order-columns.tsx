@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { OrderDAO } from "@/services/order-services"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CheckCircle } from "lucide-react"
-import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle } from "@/lib/utils"
+import { cn, completeWithZeros, formatPrice, formatWhatsAppStyle, getLabel } from "@/lib/utils"
 import ColumnItem from "../../(storeback)/orders/column-item"
 import { OrderStatus } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
@@ -117,26 +117,3 @@ export const columns: ColumnDef<OrderDAO>[] = [
 ]
 
 
-function getLabel(status: OrderStatus) {
-  switch (status) {
-    case OrderStatus.Created:
-      return "Creada"
-    case OrderStatus.Pending:
-      return "Transferencia Pendiente"
-    case OrderStatus.PaymentSent:
-      return "Transferencia enviada"
-    case OrderStatus.Paid:
-      return "Pagada"
-    case OrderStatus.Delivered:
-      return "Entregada"
-    case OrderStatus.Packing:
-      return "Preparando"
-    case OrderStatus.Refunded:
-      return "Reembolsada"
-    case OrderStatus.Cancelled:
-      return "Cancelada"
-    default:
-      return "Sin estado"
-  }
-  
-}
