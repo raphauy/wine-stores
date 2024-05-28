@@ -7,6 +7,7 @@ import { OrderItemDAO } from "./orderitem-services"
 import { StoreDAO, getFullStoreDAO } from "./store-services"
 import { sendBankDataEmail, sendNotifyPaymentEmail } from "./email-services"
 import { track } from "@vercel/analytics/server"
+import { completeWithZeros } from "@/lib/utils"
 
 export type OrderDAO = {
 	id: string
@@ -72,13 +73,16 @@ export async function createOrder(data: OrderFormValues, storeSlug: string) {
     data: {
       ...data,
       storeOrderNumber: 0 // será sobreescrito por el trigger de postgres que genera el número de orden
+    },
+    include: {
+      store: true,
     }
   })
   if (created) {
     track("createOrder", {
       storeSlug,
       email: created.email,
-      order: created.storeOrderNumber
+      order: created.store.prefix + "#" + completeWithZeros(created.storeOrderNumber),
     })
   }
   
@@ -336,6 +340,9 @@ export async function setOrderStatus(orderId: string, status: OrderStatus) {
     },
     data: {
       status
+    },
+    include: {
+      store: true,
     }
   })
   return updated

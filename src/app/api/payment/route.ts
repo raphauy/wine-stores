@@ -4,6 +4,8 @@ import { setOrderStatus } from "@/services/order-services";
 import { OrderStatus } from "@prisma/client";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import { processOrderConfirmation } from "@/services/email-services";
+import { track } from "@vercel/analytics/server";
+import { completeWithZeros } from "@/lib/utils";
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
 
@@ -46,6 +48,11 @@ export async function POST(request: NextRequest) {
   if (!updated) {
     return Response.json({success: false});
   }
+  track("Payment_MP", {
+    storeSlug: updated.store.slug,
+    email: updated.email,
+    order: updated.store.prefix + "#" + completeWithZeros(updated.storeOrderNumber),
+});
 
   return Response.json({success: true});
 }
