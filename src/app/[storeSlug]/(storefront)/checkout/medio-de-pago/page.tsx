@@ -61,7 +61,7 @@ export default function Page() {
         </h1>
 
         <div className='mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16 '>
-          <div className="lg:col-span-7 bg-white p-10 border">
+          <div className="lg:col-span-7 bg-white p-10 border dark:bg-black dark:text-white">
             <div className='space-y-10'>
               <p className=''>
                   Selecciona el método de pago que desea utilizar para finalizar la compra:
@@ -80,8 +80,7 @@ export default function Page() {
                     <Loader className="animate-spin" />
                     :
                     <>
-                      <Image src="/bank-transfer.png" alt="transferencia bancaria" width={50} height={50} /> 
-                      <p className="text-xl font-bold">Transferencia bancaria</p>
+                      <p className="text-xl font-bold text-black dark:text-white">Transferencia bancaria</p>
                     </>  
                 }
               </Button>

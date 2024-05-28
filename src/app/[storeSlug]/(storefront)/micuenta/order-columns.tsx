@@ -57,7 +57,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const showTotal= productsCount > 1
       return (
         <div className="">
-          <Badge>Orden: UV#{completeWithZeros(data.storeOrderNumber)}</Badge>
+          <Badge>Orden: {data.store.prefix}#{completeWithZeros(data.storeOrderNumber)}</Badge>
           <div className="w-full flex">
             {items.map((item) => {
               return <ColumnItem key={item.id} item={item} />

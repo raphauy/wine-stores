@@ -21,6 +21,7 @@ export function StoreForm({ id, closeDialog }: Props) {
     resolver: zodResolver(storeSchema),
     defaultValues: {
       name: "",
+      prefix: "",
       slug: "",
       image: "",
       igHandle: "",
@@ -51,6 +52,7 @@ export function StoreForm({ id, closeDialog }: Props) {
       getStoreDAOAction(id).then((data) => {
         if (data) {
           form.setValue("name", data.name)
+          form.setValue("prefix", data.prefix)
           form.setValue("slug", data.slug)
           form.setValue("image", data.image)
           form.setValue("igHandle", data.igHandle)
@@ -81,6 +83,20 @@ export function StoreForm({ id, closeDialog }: Props) {
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Store's name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="prefix"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Prefix</FormLabel>
+                <FormControl>
+                  <Input placeholder="Store's prefix" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

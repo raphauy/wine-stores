@@ -7,6 +7,7 @@ import { BankDataDAO } from "./bankdata-services"
 export type StoreDAO = {
 	id: string
 	name: string
+  prefix: string
   slug: string
 	image: string | undefined
 	igHandle: string | undefined
@@ -25,6 +26,7 @@ export type StoreDAO = {
 
 export const storeSchema = z.object({
 	name: z.string({required_error: "name is required."}),
+  prefix: z.string({required_error: "prefix is required."}),
   slug: z.string({required_error: "slug is required."}),
 	image: z.string().optional(),
 	igHandle: z.string().optional(),

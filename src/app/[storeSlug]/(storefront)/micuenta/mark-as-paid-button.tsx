@@ -57,7 +57,7 @@ export default function MarkAsPaidButton({ order }: Props) {
                             {bankDataStr}
                         </div>
                         <div className="mt-4 text-sm whitespace-pre-line border-t font-bold pt-4">
-                            Asunto: Orden UV#{completeWithZeros(order.storeOrderNumber)}
+                            Asunto: Orden {order.store.prefix}#{completeWithZeros(order.storeOrderNumber)}
                         </div>
                     </div>
                 </PopoverContent>

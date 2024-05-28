@@ -1,7 +1,7 @@
 import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { getCurrentUser } from "@/lib/utils"
+import { completeWithZeros, getCurrentUser } from "@/lib/utils"
 import { getLastOrderDAOOfUser, setOrderTransferenciaBancariaPending } from "@/services/order-services"
 import Image from "next/image"
 import Link from "next/link"
@@ -39,7 +39,7 @@ export default async function DatosBancariosPage({ params }: Props) {
   const totalValue= items.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
 
   return (
-    <div className="max-w-2xl mt-5 mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-2xl mt-5 mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-black dark:text-white">
       <div className="flex items-center space-x-4 mb-6">
         <Avatar>
           <AvatarImage alt={store.name} src={store.image} />
@@ -52,12 +52,15 @@ export default async function DatosBancariosPage({ params }: Props) {
         <p className="text-lg mb-2 border rounded-md text-black bg-slate-50 px-3">Datos para realizar el pago vía transferencia bancaria:</p>
         {
           bankData.length > 0 && bankData.map((item) => (
-            <div key={item.id} className="mb-2 px-3">
+            <div key={item.id} className="mb-2 px-3 border-b">
               <p className="font-bold">{item.name}</p>
               <p className="whitespace-pre-line">{item.info}</p>
             </div>
           ))
         }
+            <div className="mt-5 px-3 text-black dark:text-white">
+              <p className="font-bold">Asunto: Orden {order.store.prefix}#{completeWithZeros(order.storeOrderNumber)}</p>
+            </div>
       </div>
       <div className="py-4 mb-6">
         <p className="text-lg mb-2 border rounded-md text-black bg-slate-50 px-3">Detalle de la compra:</p>

@@ -1,4 +1,4 @@
-import { generateSlug } from "@/lib/utils"
+import { completeWithZeros, generateSlug } from "@/lib/utils"
 import { BankDataDAO } from "@/services/bankdata-services"
 import { OrderItem } from "@prisma/client"
 import { Body, Container, Button, Column, Head, Hr, Html, Img, Link, Preview, Row, Section, Text } from "@react-email/components"
@@ -19,8 +19,9 @@ type Props = {
   totalPrice: number
   finalText: string
   bankData: BankDataDAO[]
+  storeOrderNumber: string
 }
-export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail="test@test.com", orderId="clvwozc58000135igexu0egeu", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0, finalText="Texto final", bankData=[] }: Props) {
+export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail="test@test.com", orderId="clvwozc58000135igexu0egeu", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0, finalText="Texto final", bankData=[], storeOrderNumber }: Props) {
     return (
   <Html>
     <Head />
@@ -57,7 +58,7 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
         <Section>
           {
           bankData.map((item, index) => (
-            <Row key={index} style={ { marginBottom: "10px" } }>
+            <Row key={index} style={ { marginBottom: "10px", borderBottom: "1px solid #eee" } }>
               <Column style={{ paddingLeft: "22px", verticalAlign: "top" }}>
                 <Text style={{ fontWeight: "bold", fontSize: "20px" }}>{item.name}</Text>
                 <Text style={{ whiteSpace: "pre-line" }}>
@@ -67,16 +68,11 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
             </Row>
           ))
           }
-            {/* <Row style={ { marginBottom: "1px" } }>
+            <Row style={ { marginBottom: "10px" } }>
               <Column style={{ paddingLeft: "22px", verticalAlign: "top" }}>
-                <Text style={{ fontWeight: "bold", fontSize: "20px" }}>BROU</Text>
-                <Text style={{ whiteSpace: "pre-line" }}>
-                  {"UYU (CA): 001197054-00001 (Fabio Raphael Carvalho)"}
-                  {"\nFormato viejo: CA, Suc: 151, Cuenta: 1274858"}
-                  {"\nUSD (CA): 001197054-00002 (Fabio Carvalho)"}
-                </Text>
+                <Text style={{ fontWeight: "bold", fontSize: "20px" }}>{storeOrderNumber}</Text>
               </Column>
-            </Row> */}
+            </Row>
         </Section>
 
         
@@ -126,7 +122,7 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
               />
             </Column>
             <Column style={{ paddingLeft: "22px" }}>
-              <Text style={productTitle}>Uruguay en Vinos</Text>
+              <Text style={productTitle}>Producto de prueba</Text>
               <Text style={productCategory}>Libros</Text>
               <Link
                 href="#"
@@ -167,6 +163,33 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
     </Body>
   </Html>
 )
+}
+
+BankDataEmail.PreviewProps = {
+  storeName: "Latidio",
+  storeId: "clvwozc58000135igexu0egeu",
+  orderEmail: "test@test.com",
+  orderId: "clvwozc58000135igexu0egeu",
+  baseUrl: "http://localhost:3000",
+  formattedDate: "18 enero 2024",
+  name: "Alan Turing",
+  address: "Garzón 1234",
+  city: "Montevideo",
+  phone: "0987654321",
+  items: [],
+  totalPrice: 0,
+  finalText: "Texto final",
+  bankData: [
+    {
+      name: "BROU",
+      info: "UYU (CA): 001197054-00001 (Fabio Raphael Carvalho)",
+    },
+    {
+      name: "Scotiabank",
+      info: "UYU (CA): 001197054-00002 (Fabio Carvalho)",
+    },
+  ],
+  storeOrderNumber: "Asunto: Orden UV#0000067",
 }
 
 const main = {
@@ -214,7 +237,7 @@ const tableCell = { display: "table-cell" };
 
 const heading = {
   fontSize: "32px",
-  fontWeight: "300",
+  fontWeight: "500",
   color: "#000000",
 };
 

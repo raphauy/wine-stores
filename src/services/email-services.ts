@@ -9,6 +9,7 @@ import BankDataEmail from "@/components/email/bank-data-email";
 import { getStoreDAO } from "./store-services";
 import CodeVerifyEmail from "@/components/email/verify-email";
 import NotifyPaymentEmail from "@/components/email/notify-payment";
+import { completeWithZeros } from "@/lib/utils";
 
 
 export async function processOrderConfirmation(orderId: string) {
@@ -118,6 +119,7 @@ Una vez que hayas realizado el pago, debes ingrear a 'Mi cuenta' y marcar la ord
 Aquí abajo tienes el boton para hacerlo:
 `
   const bankData= store.bankData
+  const storeOrderNumber= `Asunto: Orden ${order.store.prefix}#${completeWithZeros(order.storeOrderNumber)}`
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -141,7 +143,8 @@ Aquí abajo tienes el boton para hacerlo:
       items: order.orderItems,
       totalPrice,
       finalText,
-      bankData
+      bankData,
+      storeOrderNumber
     }),
   });
 
@@ -215,6 +218,8 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
   const subject = "Notificación de pago"
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
 
+  const orderNumber= `${store.prefix}#${completeWithZeros(order.storeOrderNumber)}`
+
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data, error } = await resend.emails.send({
@@ -228,6 +233,7 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
       buyerEmail: order.email,
       paymentAmount: totalPrice,
       paymentMethod: order.paymentMethod,
+      orderNumber,
     }),
   });
 

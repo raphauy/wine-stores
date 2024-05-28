@@ -53,6 +53,7 @@ model OTPConfirmation {
 model Store {
   id            String @id @default(cuid())
   name          String                     // gennext: show.column
+  prefix        String @default("LT")      // gennext: show.column
   slug          String @unique             // gennext: show.column
   image         String?                    // gennext: show.column
   description   String?                    // gennext: show.column

@@ -8,6 +8,7 @@ interface VercelInviteUserEmailProps {
   buyerEmail: string;
   paymentAmount: number;
   paymentMethod: string;
+  orderNumber: string;
 }
 
 const baseUrl = process.env.VERCEL_URL
@@ -20,6 +21,7 @@ export const NotifyPaymentEmail = ({
   buyerEmail,
   paymentAmount,
   paymentMethod,
+  orderNumber,
 }: VercelInviteUserEmailProps) => {
   const previewText = `Pago recibido`;
 
@@ -52,8 +54,11 @@ export const NotifyPaymentEmail = ({
               </Link>
               ) ha realizado un pago vía <strong>{paymentMethod}</strong>
             </Text>
-            <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-10">
-              Monto: <strong>$ {paymentAmount}</strong> {" "}
+            <Text className="text-black text-[20px] leading-[24px] text-center mt-10 mb-10">
+              Monto: <strong>$ {paymentAmount}</strong>
+            </Text>
+            <Text className="text-black text-[14px] leading-[24px] text-center mt-10 mb-5">
+              Orden: <strong>{orderNumber}</strong>
             </Text>
             <Section>
               <Row>
@@ -91,6 +96,7 @@ NotifyPaymentEmail.PreviewProps = {
   buyerEmail: "alan.turing@example.com",
   paymentAmount: 100,
   paymentMethod: "Transferencia bancaria",
+  orderNumber: "UV#00000123",
 } as VercelInviteUserEmailProps;
 
 export default NotifyPaymentEmail;
