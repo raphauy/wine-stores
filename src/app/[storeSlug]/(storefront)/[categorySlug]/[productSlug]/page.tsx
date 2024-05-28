@@ -2,6 +2,7 @@ import AddToCartButton from '@/components/AddToCartButton'
 import ImageSlider from '@/components/ImageSlider'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
+import CheckoutButton from '@/components/checkout-button'
 import { Button } from '@/components/ui/button'
 import { cn, formatPrice } from '@/lib/utils'
 import { getProductDAOBySlug } from '@/services/product-services'
@@ -131,13 +132,9 @@ export default async function ProductoPage({ params }: PageProps) {
           {/* add to cart part */}
           <div className='mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start'>
             <div>
-              <div className='mt-10'>
+              <div className='mt-10 h-24'>
                 <AddToCartButton product={product} />
-                <Link href={`/carrito`} className='w-full'>
-                  <Button className='w-full mt-4'>
-                    Ir al Checkout
-                  </Button>
-                </Link>
+                <CheckoutButton />
               </div>
               <div className='mt-6 text-center'>
                 <div className='group inline-flex text-sm text-medium'>

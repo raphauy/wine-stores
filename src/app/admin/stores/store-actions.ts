@@ -53,11 +53,12 @@ export async function createStoreWithIgHandleAction(igHandle: string): Promise<S
     const slug= generateSlug(igProfile.full_name)
     const data= {
       name: igProfile.full_name,
+      prefix: "LT",
       slug,
       image,
       igHandle,
       description: igProfile.biography,
-      mpMarketplaceFee: "10",
+      mpMarketplaceFee: "10",      
     }
 
     const created= await createStore(data)
