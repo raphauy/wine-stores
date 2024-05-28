@@ -5,9 +5,10 @@ import { StoreDAO, StoreFormValues, createStore, updateStore, getFullStoreDAO, d
 import { getIgProfile } from "@/services/instagram-services"
 import { generateSlug } from "@/lib/utils"
 import { uploadFileWithUrl } from "@/services/upload-file-service"
-import { sendBankDataEmail, sendNotifyPaymentEmail, sendPaymentConfirmationEmail } from "@/services/email-services"
+import { sendBankDataEmail, sendNotifyPaymentEmail, sendNotifyTransferSentEmail, sendPaymentConfirmationEmail } from "@/services/email-services"
 import { getLastOrderDAO } from "@/services/order-services"
 
+export type EmailType= "confirmation" | "bank-data" | "payment-received" | "transfer-sent"
 
 export async function getStoreDAOAction(id: string): Promise<StoreDAO | null> {
     return getFullStoreDAO(id)
@@ -85,7 +86,7 @@ export async function setOwnerAction(storeId: string, userId: string): Promise<S
 }
 
 
-export async function sendTestEmailAction(storeId: string, testEmailTo: string, type: "confirmation" | "bank-data" | "notify-payment") {
+export async function sendTestEmailAction(storeId: string, testEmailTo: string, type: EmailType) {
     const lastOrder= await getLastOrderDAO(storeId)
     if (!lastOrder) {
         throw new Error("No hay ordenes en el store")
@@ -97,8 +98,10 @@ export async function sendTestEmailAction(storeId: string, testEmailTo: string, 
         res= await sendPaymentConfirmationEmail(lastOrder.id, testEmailTo)
     } else if (type === "bank-data") {
         res= await sendBankDataEmail(lastOrder.id, testEmailTo)
-    } else if (type === "notify-payment") {
+    } else if (type === "payment-received") {
         res= await sendNotifyPaymentEmail(lastOrder.id, testEmailTo)
+    } else if (type === "transfer-sent") {
+        res= await sendNotifyTransferSentEmail(lastOrder.id, testEmailTo)
     }
 
     revalidatePath("[storeSlug]/config", "page")

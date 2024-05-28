@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { sendTestEmailAction } from "./store-actions"
+import { EmailType, sendTestEmailAction } from "./store-actions"
 import { toast } from "@/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -14,7 +14,7 @@ import { Loader } from "lucide-react"
 
 type TestProps= {
     storeId: string
-    type: "confirmation" | "bank-data" | "notify-payment"
+    type: "confirmation" | "bank-data" | "payment-received" | "transfer-sent"
 }
   
   export function TestEmailDialog({ storeId, type }: TestProps) {
@@ -28,8 +28,11 @@ type TestProps= {
         case "bank-data":
             title= "Datos bancarios para realizar el pago"
             break
-        case "notify-payment":
-            title= "Notificación de pago"
+        case "payment-received":
+            title= "Pago recibido"
+            break
+        case "transfer-sent":
+            title= "Transferencia enviada"
             break
     }
   
@@ -54,7 +57,7 @@ type TestProps= {
 type TestFormProps= {
     storeId: string
     closeDialog: () => void
-    type: "confirmation" | "bank-data" | "notify-payment"
+    type: EmailType
 }
 
 export function TestEmailForm({ storeId, closeDialog, type }: TestFormProps) {

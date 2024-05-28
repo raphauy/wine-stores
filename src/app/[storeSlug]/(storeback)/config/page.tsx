@@ -51,9 +51,10 @@ export default async function ConfigPage({ params }: Props) {
                     </div>
                     <p className='font-bold mb-4'>Emails de prueba:</p>
                     <div className='flex gap-2'>
-                        <TestEmailDialog storeId={store.id} type="confirmation" />
                         <TestEmailDialog storeId={store.id} type="bank-data" />
-                        <TestEmailDialog storeId={store.id} type="notify-payment" />
+                        <TestEmailDialog storeId={store.id} type="transfer-sent" />
+                        <TestEmailDialog storeId={store.id} type="payment-received" />
+                        <TestEmailDialog storeId={store.id} type="confirmation" />
                     </div>
                 </TabsContent>
             </Tabs>
