@@ -1,13 +1,12 @@
 import { prisma } from "@/lib/db"
+import { completeWithZeros } from "@/lib/utils"
 import { Order, OrderStatus, PaymentMethod } from "@prisma/client"
+import { track } from "@vercel/analytics/server"
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import * as z from "zod"
 import { getOauthDAOByStoreId } from "./oauth-services"
 import { OrderItemDAO } from "./orderitem-services"
 import { StoreDAO, getFullStoreDAO } from "./store-services"
-import { sendBankDataEmail, sendNotifyPaymentEmail } from "./email-services"
-import { track } from "@vercel/analytics/server"
-import { completeWithZeros } from "@/lib/utils"
 
 export type OrderDAO = {
 	id: string

@@ -1,15 +1,13 @@
-import { MovementType, OrderStatus } from "@prisma/client";
-import { Resend } from "resend";
-import { getInventoryItemDAOByProductId } from "./inventoryitem-services";
-import { getFullOrderDAO } from "./order-services";
-import { StockMovementFormValues, createStockMovement } from "./stockmovement-services";
-import PaymentConfirmationEmail from "@/components/email/payment-confirmation-email";
-import { format } from "date-fns";
 import BankDataEmail from "@/components/email/bank-data-email";
-import { getStoreDAO } from "./store-services";
-import CodeVerifyEmail from "@/components/email/verify-email";
 import NotifyPaymentEmail from "@/components/email/notify-payment";
+import PaymentConfirmationEmail from "@/components/email/payment-confirmation-email";
+import CodeVerifyEmail from "@/components/email/verify-email";
 import { completeWithZeros } from "@/lib/utils";
+import { format } from "date-fns";
+import { Resend } from "resend";
+import { getFullOrderDAO } from "./order-services";
+import { getStoreDAO } from "./store-services";
+import NotifyTransferEmail from "@/components/email/notify-transfer";
 
 
 
@@ -139,6 +137,56 @@ Aquí abajo tienes el boton para hacerlo:
 
 }
 
+export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: string) {
+  const order = await getFullOrderDAO(orderId)
+  const store = order.store
+  if (!store || !store.emailFrom || !store.mpRedirectUrl) {
+    console.log("Error sending notify payment email, data validation failed. Probably emalFrom is not set.")
+    console.log("store: ", store)
+    
+    throw new Error("Error sending email confirmation")
+  }
+  let from= process.env.DEFAULT_EMAIL_FROM!
+  let reply_to= process.env.SUPPORT_EMAIL!
+  from= store.emailFrom ? store.emailFrom : process.env.DEFAULT_EMAIL_FROM!
+  reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
+  let to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
+
+  const subject = "Pago recibido, orden: " + store.prefix + "#" + completeWithZeros(order.storeOrderNumber)
+  const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
+
+  const orderNumber= `${store.prefix}#${completeWithZeros(order.storeOrderNumber)}`
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { data, error } = await resend.emails.send({
+    from,
+    to: testEmailTo ? testEmailTo : to,
+    bcc: process.env.SUPPORT_EMAIL,
+    reply_to,
+    subject,
+    react: NotifyPaymentEmail({ 
+      store: store,
+      buyerName: order.name,
+      buyerEmail: order.email,
+      paymentAmount: totalPrice,
+      paymentMethod: order.paymentMethod,
+      orderNumber,
+    }),
+  });
+
+  if (error) {
+    console.log("Error sending test email")    
+    console.log("error.name:", error.name)    
+    console.log("error.message:", error.message)
+    return false
+  } else {
+    console.log("email result: ", data)
+  }
+
+  return true
+}
+
 export async function sendCodeEmail(storeId: string | null | undefined, email: string, code: string) {
   let storeName= "Latidio"
   let from= process.env.DEFAULT_EMAIL_FROM!
@@ -178,11 +226,11 @@ export async function sendCodeEmail(storeId: string | null | undefined, email: s
   }
 }
 
-export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: string) {
+export async function sendNotifyTransferSentEmail(orderId: string, testEmailTo?: string) {
   const order = await getFullOrderDAO(orderId)
   const store = order.store
   if (!store || !store.emailFrom || !store.mpRedirectUrl) {
-    console.log("Error sending notify payment email, data validation failed. Probably emalFrom is not set.")
+    console.log("Error sending notify transfer sent email, data validation failed. Probably emalFrom is not set.")
     console.log("store: ", store)
     
     throw new Error("Error sending email confirmation")
@@ -193,7 +241,7 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
   reply_to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
   let to= store.contactEmail ? store.contactEmail : process.env.SUPPORT_EMAIL!
 
-  const subject = "Notificación de pago, orden: " + store.prefix + "#" + completeWithZeros(order.storeOrderNumber)
+  const subject = "Transferencia enviada, orden: " + store.prefix + "#" + completeWithZeros(order.storeOrderNumber)
   const totalPrice= order.orderItems.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
 
   const orderNumber= `${store.prefix}#${completeWithZeros(order.storeOrderNumber)}`
@@ -206,7 +254,7 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
     bcc: process.env.SUPPORT_EMAIL,
     reply_to,
     subject,
-    react: NotifyPaymentEmail({ 
+    react: NotifyTransferEmail({ 
       store: store,
       buyerName: order.name,
       buyerEmail: order.email,

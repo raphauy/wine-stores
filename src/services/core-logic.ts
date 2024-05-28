@@ -2,7 +2,7 @@ import { MovementType, OrderStatus } from "@prisma/client"
 import { getFullOrderDAO, setOrderStatus } from "./order-services"
 import { getInventoryItemDAOByProductId } from "./inventoryitem-services"
 import { StockMovementFormValues, createStockMovement } from "./stockmovement-services"
-import { sendBankDataEmail, sendNotifyPaymentEmail, sendPaymentConfirmationEmail } from "./email-services"
+import { sendBankDataEmail, sendNotifyPaymentEmail, sendNotifyTransferSentEmail, sendPaymentConfirmationEmail } from "./email-services"
 
 export async function processOrderConfirmation(orderId: string) {
     const order = await getFullOrderDAO(orderId)
@@ -73,7 +73,7 @@ export async function setOrderTransferenciaBancariaPaymentSent(orderId: string) 
         return null
     }
 
-    await sendNotifyPaymentEmail(order.id)
+    await sendNotifyTransferSentEmail(order.id)
 
     return updated
 }
