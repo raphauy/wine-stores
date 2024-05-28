@@ -37,6 +37,8 @@ export default function MarkAsPaidButton({ order }: Props) {
     }
     if (status === OrderStatus.Paid) {
         return <div className='max-w-[350px] text-center mx-auto'>Momento de preparar el paquete.</div>
+    } else if (status === OrderStatus.Pending) {
+        return <div className='max-w-[350px] text-center mx-auto'>Hay que esperar a que el cliente marque la transferencia como enviada.</div>
     }
 
     return (
