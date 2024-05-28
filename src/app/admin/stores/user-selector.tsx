@@ -113,7 +113,7 @@ export default function UserSelector({ storeId, closeDialog }: Props) {
 
         <div className="flex justify-end">
           <Button className="w-32 ml-2" onClick={handleSubmit}>
-            {loading ? <Loader className="h-4 w-4 animate-spin" /> : <p>Save</p>}
+            {loading ? <Loader className="h-4 w-4 animate-spin" /> : <p>Guardar</p>}
           </Button>
         </div>
 

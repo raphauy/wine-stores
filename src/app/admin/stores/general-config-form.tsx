@@ -74,7 +74,7 @@ export function GeneralConfigForm({ id }: Props) {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel className="text-black dark:text-white font-bold">Nombre:</FormLabel>
                 <FormControl>
                   <Input placeholder="Store's name" {...field} />
                 </FormControl>
@@ -88,8 +88,8 @@ export function GeneralConfigForm({ id }: Props) {
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
+              <FormItem className="pt-10">
+                <FormLabel className="text-black dark:text-white font-bold">Descripción:</FormLabel>
                 <FormControl>
                   <Tiptap value={field.value || ""} fieldName="description" />
                 </FormControl>
@@ -103,13 +103,14 @@ export function GeneralConfigForm({ id }: Props) {
             control={form.control}
             name="contactEmail"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contact Email</FormLabel>
+              <FormItem className="pt-10">
+                <FormLabel className="text-black dark:text-white font-bold">Email de contacto:</FormLabel>
                 <FormControl>
                   <Input placeholder="Contacto <contacto@tutienda.com>" {...field} />
                 </FormControl>
                 <FormDescription>
-                  Este email aparecerá al final de la portada de la tienda para contacto.
+                  Este email aparecerá al final de la portada de la tienda para contacto y es donde recibirás las notificaciones de pagos de tus compradores.
+                  También será el mail al que tus clientes podrán responder.
                 </FormDescription>
                 <FormDescription>
                   Formato: Soporte &lt;soporte@tutienda.com&gt;
@@ -120,9 +121,9 @@ export function GeneralConfigForm({ id }: Props) {
           />
 
         <div className="flex justify-end">
-            <Button onClick={() => router.back()} type="button" variant={"secondary"} className="w-32">Cancel</Button>
+            <Button onClick={() => router.back()} type="button" variant={"secondary"} className="w-32">Cancelar</Button>
             <Button type="submit" className="w-32 ml-2">
-              {loading ? <Loader className="h-4 w-4 animate-spin" /> : <p>Save</p>}
+              {loading ? <Loader className="h-4 w-4 animate-spin" /> : <p>Guardar</p>}
             </Button>
           </div>
         </form>

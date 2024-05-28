@@ -71,7 +71,7 @@ export function EmailConfigForm({ id }: Props) {
                 <FormControl>
                   <Input placeholder="Tienda <tienda@mibodega.com>" {...field} />
                 </FormControl>
-                <FormDescription>Los emails enviados al cliente se enviarán desde esta casilla.</FormDescription>
+                <FormDescription>Los emails enviados a tus cliente se enviarán desde esta casilla.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
