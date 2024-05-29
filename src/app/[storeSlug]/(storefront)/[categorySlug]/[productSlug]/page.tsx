@@ -17,10 +17,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const storeSlug = params.storeSlug
   const categorySlug = params.categorySlug
   const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
+  const store= product?.category?.store
  
   return {
-    title: product?.name + ' - ' + product?.category.name + ' - ' + product?.category.store.name,
+    title: product?.name + ' - ' + product?.category.name + ' - ' + store?.name,
     description: product?.description,
+    openGraph: {
+      title: store?.name,
+      description: store?.description,
+      url: `${store?.mpRedirectUrl}`,
+      images: [
+        {
+          url: `${product.images[0]}`,
+          width: 1200,
+          height: 630,
+          alt: store?.name,
+        },
+      ],
+    },
   }
 }
 
@@ -167,7 +181,7 @@ export default async function ProductoPage({ params }: Props) {
         href={isSubdomain ? `/${product.category.slug}` : `/${storeSlug}/${product.category.slug}`}
         query={{ category: product.category.id, limit: 4 }}
         title={`Productos similares`}
-        subtitle={`Encuentra vinos similares a '${product.name}' en ${product.category.name}`}
+        subtitle={`Encuentra productos similares a '${product.name}' en ${product.category.name}`}
         isSubdomain={isSubdomain}
       />
     </MaxWidthWrapper>

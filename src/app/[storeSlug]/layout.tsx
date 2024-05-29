@@ -6,11 +6,33 @@ import { auth } from "@/lib/auth";
 import { constructMetadata, htmlToText } from "@/lib/utils";
 import { getStoreDAOBySlug } from "@/services/store-services";
 import { UserRole } from "@prisma/client";
+import { Metadata } from "next";
 import { headers } from "next/headers";
 
-export const metadata = constructMetadata()
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const storeSlug = params.storeSlug
+  const store = await getStoreDAOBySlug(storeSlug)
+ 
+  return {
+    title: store?.name,
+    description: store?.description,
+    openGraph: {
+      title: store?.name,
+      description: store?.description,
+      url: `${store?.mpRedirectUrl}`,
+      // images: [
+      //   {
+      //     url: `${store?.mpRedirectUrl}/favicon.ico`,
+      //     width: 1200,
+      //     height: 630,
+      //     alt: store?.name,
+      //   },
+      // ],
+    },
+  }
+}
 
-interface Props {
+type Props= {
   children: React.ReactNode
   params: {
     storeSlug: string
@@ -27,11 +49,6 @@ export default async function AdminLayout({ children, params }: Props) {
   const isAdmin= currentRole === UserRole.ADMIN || currentRole === UserRole.STORE_OWNER || currentRole === UserRole.STORE_ADMIN
 
   const pathName= headers().get("next-url")
-
-  const store= await getStoreDAOBySlug(params.storeSlug)
-  
-  metadata.title= `${store?.name || 'Tienda'}`
-  metadata.description= htmlToText(store?.description || '')
 
   if (!isAdmin && pathName?.endsWith("/oauth/mp-callback")) {
     // public url only for MP

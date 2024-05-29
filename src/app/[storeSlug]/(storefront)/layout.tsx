@@ -14,6 +14,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: store?.name,
     description: store?.description,
+    openGraph: {
+      title: store?.name,
+      description: store?.description,
+      url: `${store?.mpRedirectUrl}`,
+      // images: [
+      //   {
+      //     url: `${store?.mpRedirectUrl}/favicon.ico`,
+      //     width: 1200,
+      //     height: 630,
+      //     alt: store?.name,
+      //   },
+      // ],
+    },
   }
 }
 
