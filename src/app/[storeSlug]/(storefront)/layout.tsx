@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [
         {
           url: `${store?.image}`,
-          width: 1200,
-          height: 630,
+          width: 661,
+          height: 661,
           alt: store?.name,
         },
       ],
