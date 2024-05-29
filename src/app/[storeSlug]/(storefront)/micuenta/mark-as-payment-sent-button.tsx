@@ -17,9 +17,9 @@ type Props = {
 export default function MarkAsPaymentSentButton({ order }: Props) {
     const [loading, setLoading] = useState(false)
     const status= order.status
-    const user= useSession().data?.user
-    if (!user) return <div>Debes estar logueado para poder marcar como pagado</div>
-    if (user.email !== order.email) return <div>No puedes marcar como pagado si la orden no es de tu cuenta</div>
+    // const user= useSession().data?.user
+    // if (!user) return <div>Debes estar logueado para poder marcar como pagado</div>
+    // if (user.email !== order.email) return <div>No puedes marcar como pagado si la orden no es de tu cuenta</div>
 
     function handleClick() {
         setLoading(true)
