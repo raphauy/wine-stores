@@ -18,19 +18,18 @@ export default async function AdminLayout({ children, params }: Props) {
     return redirect("/auth/login")
   }
 
+  const storeSlug= params.storeSlug
+
   const currentRole= await getCurrentRole()
-  if (currentRole?.startsWith("STORE")) {
-    const storeSlug= params.storeSlug
-    
+  if (currentRole?.startsWith("STORE")) {    
     if (currentUser?.storeSlug!==storeSlug) {
       return redirect("/auth/unauthorized?message=You are not authorized to access this page")
     }
-
   } else if (!currentRole?.startsWith("ADMIN")) {
     return redirect("/auth/unauthorized?message=You are not authorized to access this page")
   }
 
-  const data= await getFullInventoryItemsDAO()
+  const data= await getFullInventoryItemsDAO(storeSlug)
   const categories = data.map((item) => item.product.category.name)
   const categoryNamesSet = new Set(categories)
   const categoryNamesList = Array.from(categoryNamesSet)  
