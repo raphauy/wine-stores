@@ -25,10 +25,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: store?.name,
       description: store?.description,
-      url: `${store?.mpRedirectUrl}`,
+      url: `${store?.mpRedirectUrl}/${categorySlug}/${productSlug}`,
       images: [
         {
-          url: `${product.images[0]}`,
+          url: `${product.images[0].url}`,
           width: 661,
           height: 661,
           alt: store?.name,
