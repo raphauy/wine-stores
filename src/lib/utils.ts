@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { auth } from "./auth"
 import { Metadata } from "next"
-import { OrderStatus, UserRole } from "@prisma/client"
+import { OrderStatus, PaymentMethod, UserRole } from "@prisma/client"
 import { format, isThisWeek, isToday, isYesterday, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -166,12 +166,17 @@ export function completeWithZeros(number: number): string {
   return number.toString().padStart(7, "0")
 }
 
-export function getLabel(status: OrderStatus) {
+export function getLabel(status: OrderStatus, paymentMethod: PaymentMethod) {
   switch (status) {
     case OrderStatus.Created:
       return "Creada"
     case OrderStatus.Pending:
-      return "Transferencia Pendiente"
+      if (paymentMethod === PaymentMethod.TransferenciaBancaria)
+        return "Transferencia Pendiente"
+      else if (paymentMethod === PaymentMethod.MercadoPago)
+        return "Confirmación MP pendiente"
+      else
+        return "Pago Pendiente"
     case OrderStatus.PaymentSent:
       return "Transferencia enviada"
     case OrderStatus.Paid:
@@ -180,6 +185,8 @@ export function getLabel(status: OrderStatus) {
       return "Entregada"
     case OrderStatus.Packing:
       return "Preparando"
+    case OrderStatus.Rejected:
+      return "Rechazada"
     case OrderStatus.Refunded:
       return "Reembolsada"
     case OrderStatus.Cancelled:

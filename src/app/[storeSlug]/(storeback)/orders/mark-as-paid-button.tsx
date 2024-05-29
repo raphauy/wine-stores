@@ -37,8 +37,10 @@ export default function MarkAsPaidButton({ order }: Props) {
     }
     if (status === OrderStatus.Paid) {
         return <div className='max-w-[350px] text-center mx-auto'>Momento de preparar el paquete.</div>
-    } else if (status === OrderStatus.Pending) {
+    } else if (status === OrderStatus.Pending && order.paymentMethod === "TransferenciaBancaria") {
         return <div className='max-w-[350px] text-center mx-auto'>Hay que esperar a que el cliente marque la transferencia como enviada.</div>
+    } else if (status === OrderStatus.Pending && order.paymentMethod === "MercadoPago") {
+        return <div className='max-w-[350px] text-center mx-auto'>Esto no debería pasar, hay que chequear en Mercadopago de forma manual. También comunicar al cliente de este inconveniente.</div>
     }
 
     if (status !== OrderStatus.PaymentSent)

@@ -42,7 +42,7 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
   const { data, error } = await resend.emails.send({
     from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
-    bcc: process.env.SUPPORT_EMAIL,
+    bcc: process.env.NODE_ENV === "production" ? process.env.SUPPORT_EMAIL : "",
     reply_to,
     subject,
     react: PaymentConfirmationEmail({ 
@@ -103,7 +103,7 @@ Aquí abajo tienes el boton para hacerlo:
     from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
     reply_to,
-    bcc: process.env.SUPPORT_EMAIL,
+    bcc: process.env.NODE_ENV === "production" ? process.env.SUPPORT_EMAIL : "",
     subject,
     react: BankDataEmail({ 
       storeName: store.name, 
@@ -162,7 +162,7 @@ export async function sendNotifyPaymentEmail(orderId: string, testEmailTo?: stri
   const { data, error } = await resend.emails.send({
     from,
     to: testEmailTo ? testEmailTo : to,
-    bcc: process.env.SUPPORT_EMAIL,
+    bcc: process.env.NODE_ENV === "production" ? process.env.SUPPORT_EMAIL : "",
     reply_to,
     subject,
     react: NotifyPaymentEmail({ 
@@ -251,7 +251,7 @@ export async function sendNotifyTransferSentEmail(orderId: string, testEmailTo?:
   const { data, error } = await resend.emails.send({
     from,
     to: testEmailTo ? testEmailTo : to,
-    bcc: process.env.SUPPORT_EMAIL,
+    bcc: process.env.NODE_ENV === "production" ? process.env.SUPPORT_EMAIL : "",
     reply_to,
     subject,
     react: NotifyTransferEmail({ 

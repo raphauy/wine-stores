@@ -141,6 +141,7 @@ enum OrderStatus {
   Paid
   Packing
   Delivered
+  Rejected
   Refunded
   Cancelled
 }

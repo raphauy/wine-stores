@@ -8,6 +8,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 import ColumnItem from "../../(storeback)/orders/column-item"
 import MarkAsPaymentSentButton from "./mark-as-payment-sent-button"
+import { PaymentMethod } from "@prisma/client"
 
 
 export const columns: ColumnDef<OrderDAO>[] = [
@@ -26,7 +27,9 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const data= row.original
       return (
         <div className="flex flex-col gap-4 w-full items-center">
-          <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>{getLabel(data.status)}</Badge>
+          <Badge className={cn("text-black whitespace-nowrap w-52 border border-gray-500 flex justify-center", data.status === "Paid" ? "bg-green-300" : "bg-orange-300")}>
+            {getLabel(data.status, data.paymentMethod)}
+          </Badge>
           <div className="w-full mx-auto">
             <MarkAsPaymentSentButton order={data} />
           </div>
@@ -56,7 +59,15 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const showTotal= productsCount > 1
       return (
         <div className="">
-          <Badge>Orden: {data.store.prefix}#{completeWithZeros(data.storeOrderNumber)}</Badge>
+          <div className="flex items-center gap-1">
+            <Badge>Orden: {data.store.prefix}#{completeWithZeros(data.storeOrderNumber)}</Badge>
+            <Badge className={cn(
+                "text-black whitespace-nowrap w-36 border border-gray-500 flex justify-center", 
+                data.paymentMethod === PaymentMethod.MercadoPago ? "bg-sky-300" : "bg-gray-300"
+              )}>
+              {data.paymentMethod}
+            </Badge>
+          </div>
           <div className="w-full flex">
             {items.map((item) => {
               return <ColumnItem key={item.id} item={item} />

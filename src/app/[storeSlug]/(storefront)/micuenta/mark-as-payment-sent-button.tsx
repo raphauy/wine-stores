@@ -5,8 +5,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from '@/components/ui/use-toast'
 import { cn, completeWithZeros } from '@/lib/utils'
 import { OrderDAO } from '@/services/order-services'
-import { OrderStatus } from '@prisma/client'
-import { Loader } from 'lucide-react'
+import { OrderStatus, PaymentMethod } from '@prisma/client'
+import { Info, Loader } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { setOrderTransferenciaBancariaPaymentSentAction } from '../../(storeback)/orders/order-actions'
@@ -43,6 +43,9 @@ export default function MarkAsPaymentSentButton({ order }: Props) {
     if (status !== OrderStatus.Pending) 
         return null
 
+    if (order.paymentMethod !== PaymentMethod.TransferenciaBancaria)
+        return null
+
     const bankDataStr= order.store.bankData.map((item) => item.name + "\n" + item.info).join("\n\n")
     return (
         <div className='flex flex-col gap-2'>
@@ -51,7 +54,7 @@ export default function MarkAsPaymentSentButton({ order }: Props) {
             </Button>
             <Popover>
                 <PopoverTrigger>
-                    <div className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")} >Ver datos bancarios</div>
+                    <div className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full gap-2")} ><Info className='w-4 h-4' /><p>Ver datos bancarios</p></div>
                 </PopoverTrigger>
                 <PopoverContent className='w-full'>
                     <div className="p-4 bg-white rounded-md dark:bg-gray-800">

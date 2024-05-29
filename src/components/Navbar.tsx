@@ -63,7 +63,7 @@ export default async function Navbar({ storeSlug, categories, featuredProducts, 
                     <UserAccountNav user={user} />
                   ) : (
                     <Link
-                      href={isSubdomain ? `/micuenta` : `/${storeSlug}/micuenta`}
+                      href={isSubdomain ? `/micuenta?storeId=${store.id}` : `/${storeSlug}/micuenta?storeId=${store.id}`}
                       className={buttonVariants({
                         variant: 'ghost',
                       })}>

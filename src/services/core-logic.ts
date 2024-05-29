@@ -1,4 +1,4 @@
-import { MovementType, OrderStatus } from "@prisma/client"
+import { MovementType, OrderStatus, PaymentMethod } from "@prisma/client"
 import { getFullOrderDAO, setOrderStatus } from "./order-services"
 import { getInventoryItemDAOByProductId } from "./inventoryitem-services"
 import { StockMovementFormValues, createStockMovement } from "./stockmovement-services"
@@ -78,3 +78,26 @@ export async function setOrderTransferenciaBancariaPaymentSent(orderId: string) 
     return updated
 }
   
+
+export async function setOrderMercadoPagoNotApproved(orderId: string) {
+    const order= await getFullOrderDAO(orderId)
+    if (!order)
+        throw new Error("No se encontró la orden")
+    if (order.paymentMethod !== PaymentMethod.MercadoPago) {
+        console.log("order is not in payment method MercadoPago, paymentMethod:", order.paymentMethod)
+        return
+    }
+    if (order.status !== OrderStatus.Pending) {
+        console.log("order is not in status Pending, status:", order.status)
+        return
+    } else {
+        console.log("setting order to status Rejected")
+    }
+
+    const updated= await setOrderStatus(orderId, OrderStatus.Rejected)
+    if (!updated) {
+        return null
+    }
+
+    return updated
+}

@@ -90,7 +90,7 @@ export default async function DatosBancariosPage({ params }: Props) {
       <p className="mb-4">
         Una vez que hayas realizado el pago, debes marcar la orden como pagada en &quot;Mi cuenta&quot;.
       </p>
-      <Link href={`/micuenta?storeId=${store.id}`}>
+      <Link href={`/micuenta?storeId=${store.id}&email=${order.email}`}>
         <Button className="w-full">Mi cuenta</Button>
       </Link>
       <CleanCart />
