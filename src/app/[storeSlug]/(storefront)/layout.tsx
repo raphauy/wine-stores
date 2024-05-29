@@ -3,10 +3,19 @@ import { constructMetadata, htmlToText } from '@/lib/utils'
 import { getCategorysDAO } from '@/services/category-services'
 import { getFeaturedProducts } from '@/services/product-services'
 import { getStoreDAOBySlug } from '@/services/store-services'
+import { Metadata, ResolvingMetadata } from 'next'
 import { headers } from 'next/headers'
 import { Toaster } from 'sonner'
 
-export const metadata = constructMetadata()
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const storeSlug = params.storeSlug
+  const store = await getStoreDAOBySlug(storeSlug)
+ 
+  return {
+    title: store?.name,
+    description: store?.description,
+  }
+}
 
 type Props= {
   children: React.ReactNode
@@ -18,11 +27,6 @@ export default async function RootLayout({ children, params }: Props) {
   const storeSlug= params.storeSlug
   const categories= await getCategorysDAO(storeSlug)
   const featuredProducts= await getFeaturedProducts(storeSlug)
-
-  const store= await getStoreDAOBySlug(storeSlug)
-  
-  metadata.title= `${store?.name || 'Tienda'}`
-  metadata.description= htmlToText(store?.description || '')
 
   const host= headers().get('host')
   const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")

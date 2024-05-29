@@ -7,13 +7,24 @@ import { Button } from '@/components/ui/button'
 import { cn, constructMetadata, formatPrice } from '@/lib/utils'
 import { getProductDAOBySlug } from '@/services/product-services'
 import { Check, Shield } from 'lucide-react'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-export const metadata = constructMetadata()
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const productSlug = params.productSlug
+  const storeSlug = params.storeSlug
+  const categorySlug = params.categorySlug
+  const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
+ 
+  return {
+    title: product?.name + ' - ' + product?.category.name + ' - ' + product?.category.store.name,
+    description: product?.description,
+  }
+}
 
-interface PageProps {
+type Props= {
   params: {
     storeSlug: string
     categorySlug: string
@@ -21,7 +32,7 @@ interface PageProps {
   }
 }
 
-export default async function ProductoPage({ params }: PageProps) {
+export default async function ProductoPage({ params }: Props) {
 
   const storeSlug = params.storeSlug
   const categorySlug = params.categorySlug
@@ -29,16 +40,10 @@ export default async function ProductoPage({ params }: PageProps) {
 
   const product = await getProductDAOBySlug(storeSlug, categorySlug, productSlug)
 
-
-  if (!product) return notFound()
-
-      // const store= await getStoreDAOBySlug(params.storeSlug)
-  metadata.title= product.name + ' - ' + product.category.name + ' - ' + product.category.store.name
-  metadata.description= product.description
+  if (!product) 
+    return notFound()
 
   const host= headers().get('host')
-  // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
-  // const isSubdomain= hostUrl !== host
   const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")
   const isServer= serverUrls.some((serverUrl) => host ===serverUrl)
   const isSubdomain= !isServer

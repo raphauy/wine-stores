@@ -2,9 +2,21 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
 import { constructMetadata } from '@/lib/utils'
 import { getCategoryDAOBySlug } from '@/services/category-services'
+import { getStoreDAOBySlug } from '@/services/store-services'
+import { Metadata } from 'next'
 import { headers } from 'next/headers'
 
-export const metadata = constructMetadata()
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const storeSlug = params.storeSlug
+  const store = await getStoreDAOBySlug(storeSlug)
+  const categorySlug = params.categorySlug
+  const category = await getCategoryDAOBySlug(storeSlug, categorySlug)
+ 
+  return {
+    title: category?.name + ' - ' + store?.name,
+    description: store?.description,
+  }
+}
 
 type Props= {
   params: {
@@ -23,11 +35,6 @@ export default async function StoreFrontHome({ params }: Props) {
   if (!category) {
     return <div></div>
   }
-
-  const store= category.store
-
-  metadata.title = category.name + ' - ' + store.name
-  metadata.description = store.description
 
   const host= headers().get('host')
   // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 
