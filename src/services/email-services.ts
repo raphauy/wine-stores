@@ -107,6 +107,7 @@ Aquí abajo tienes el boton para hacerlo:
     subject,
     react: BankDataEmail({ 
       storeName: store.name, 
+      storeImage: store.image || "",
       storeId: store.id, 
       orderEmail: order.email, 
       orderId: order.id,

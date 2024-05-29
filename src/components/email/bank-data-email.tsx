@@ -6,6 +6,7 @@ import * as React from "react"
 
 type Props = {
   storeName: string
+  storeImage: string
   storeId: string
   orderEmail: string
   orderId: string
@@ -21,7 +22,20 @@ type Props = {
   bankData: BankDataDAO[]
   storeOrderNumber: string
 }
-export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail="test@test.com", orderId="clvwozc58000135igexu0egeu", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0, finalText="Texto final", bankData=[], storeOrderNumber }: Props) {
+export default function BankDataEmail({ 
+  storeName="Latidio", 
+  storeImage="https://res.cloudinary.com/dcy8vuzjb/image/upload/v1715110186/demo-store/uruguay_en_vinos_n9orku.png", 
+  storeId, 
+  orderEmail="test@test.com", 
+  orderId="clvwozc58000135igexu0egeu", 
+  baseUrl="http://localhost:3000", 
+  formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", 
+  items=[], 
+  totalPrice=0, 
+  finalText="Texto final", 
+  bankData=[], 
+  storeOrderNumber 
+}: Props) {
     return (
   <Html>
     <Head />
@@ -33,7 +47,7 @@ export default function BankDataEmail({ storeName="Latidio", storeId, orderEmail
           <Row>
             <Column style={logoColumn}>
               <Img
-                src={`https://res.cloudinary.com/dcy8vuzjb/image/upload/v1715110186/demo-store/uruguay_en_vinos_n9orku.png`}
+                src={storeImage}
                 width="42"
                 height="42"
                 style={logoStyle}
