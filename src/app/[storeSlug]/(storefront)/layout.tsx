@@ -18,14 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: store?.name,
       description: store?.description,
       url: `${store?.mpRedirectUrl}`,
-      // images: [
-      //   {
-      //     url: `${store?.mpRedirectUrl}/favicon.ico`,
-      //     width: 1200,
-      //     height: 630,
-      //     alt: store?.name,
-      //   },
-      // ],
+      images: [
+        {
+          url: `${store?.image}`,
+          width: 1200,
+          height: 630,
+          alt: store?.name,
+        },
+      ],
     },
   }
 }
