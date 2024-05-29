@@ -309,7 +309,10 @@ export async function getFullOrdersDAOByEmail(email: string, storeSlug: string) 
   
   const found = await prisma.order.findMany({
     where: {
-      email,
+      email: {
+        equals: email.toLowerCase(),
+        mode: "insensitive"
+      },
       store: {
         slug: storeSlug
       }
