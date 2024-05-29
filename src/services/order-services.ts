@@ -162,7 +162,10 @@ export async function getLastOrderDAOOfUser(storeId:string, email: string) {
   const found = await prisma.order.findFirst({
     where: {
       storeId,
-      email
+      email: {
+        equals: email.toLowerCase(),
+        mode: "insensitive"
+      }
     },
     orderBy: {
       createdAt: 'desc'
