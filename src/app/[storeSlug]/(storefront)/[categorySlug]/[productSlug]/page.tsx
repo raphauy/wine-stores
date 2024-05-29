@@ -33,7 +33,7 @@ export default async function ProductoPage({ params }: PageProps) {
   if (!product) return notFound()
 
       // const store= await getStoreDAOBySlug(params.storeSlug)
-  metadata.title= product.name
+  metadata.title= product.name + ' - ' + product.category.name + ' - ' + product.category.store.name
   metadata.description= product.description
 
   const host= headers().get('host')

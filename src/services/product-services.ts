@@ -82,7 +82,11 @@ export async function getProductDAOBySlug(storeSlug: string, categorySlug: strin
     },
     include: {
       images: true,
-      category: true,
+      category: {
+        include: {
+          store: true
+        }
+      }
     }
   })
   return found as ProductDAO

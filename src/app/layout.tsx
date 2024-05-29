@@ -11,7 +11,7 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Latidio",
+  title: "Latidio - Plataforma de ecommerce para pequeños productores.",
   description: "Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.",
   openGraph: {
     title: "Latidio",

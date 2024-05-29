@@ -24,8 +24,10 @@ export default async function StoreFrontHome({ params }: Props) {
     return <div></div>
   }
 
-  metadata.title= category.name
-  metadata.description= category.store.name
+  const store= category.store
+
+  metadata.title = category.name + ' - ' + store.name
+  metadata.description = store.description
 
   const host= headers().get('host')
   // const hostUrl= process.env.NEXT_PUBLIC_URL?.split('//')[1] 

@@ -30,7 +30,7 @@ export default async function AdminLayout({ children, params }: Props) {
 
   const store= await getStoreDAOBySlug(params.storeSlug)
   
-  metadata.title= `${store?.name || 'Tienda'}`
+  metadata.title= `1-${store?.name || 'Tienda'}`
   metadata.description= htmlToText(store?.description || '')
 
   if (!isAdmin && pathName?.endsWith("/oauth/mp-callback")) {

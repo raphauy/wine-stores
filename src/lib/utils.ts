@@ -5,6 +5,7 @@ import { Metadata } from "next"
 import { OrderStatus, PaymentMethod, UserRole } from "@prisma/client"
 import { format, isThisWeek, isToday, isYesterday, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
+import { StoreDAO } from "@/services/store-services"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -65,11 +66,8 @@ export function formatPrice(price: number | string, options: CurrencyOptions = {
 
 
 export function constructMetadata({
-  title = 'Latidio - Conectamos a pequeños productores con el mundo digital', 
-  description = 'Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.',
-  image = '/thumbnail.png',
-  icons = '/favicon.ico',
-  noIndex = false,
+  title = 'Tienda', 
+  description = 'ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.',
 }: {
   title?: string
   description?: string
@@ -80,30 +78,6 @@ export function constructMetadata({
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      images: [
-        {
-          url: image,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [image],
-      creator: '@tinta.wine',
-    },
-    icons,
-    metadataBase: new URL('https://latidio.com'),
-    ...(noIndex && {
-      robots: {
-        index: false,
-        follow: false,
-      },
-    }),
   }
 }
 
