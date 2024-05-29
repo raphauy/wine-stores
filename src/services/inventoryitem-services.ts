@@ -26,10 +26,15 @@ export const inventoryItemSchema = z.object({
 export type InventoryItemFormValues = z.infer<typeof inventoryItemSchema>
 
 
-export async function getInventoryItemsDAO() {
+export async function getInventoryItemsDAO(storeSlug: string) {
   const found = await prisma.inventoryItem.findMany({
+    where: {
+      store: {
+        slug: storeSlug
+      }
+    },
     orderBy: {
-      id: 'asc'
+      createdAt: 'desc'
     },
   })
   return found as InventoryItemDAO[]
@@ -80,8 +85,13 @@ export async function deleteInventoryItem(id: string) {
 }
     
 
-export async function getFullInventoryItemsDAO(): Promise<InventoryItemDAO[]> {
+export async function getFullInventoryItemsDAO(storeSlug: string): Promise<InventoryItemDAO[]> {
   const found = await prisma.inventoryItem.findMany({
+    where: {
+      store: {
+        slug: storeSlug
+      }
+    },
     orderBy: {
       id: 'asc'
     },
@@ -118,6 +128,29 @@ export async function getInventoryItemDAOByProductId(productId: string) {
   const found = await prisma.inventoryItem.findUnique({
     where: {
       productId
+    },
+    include: {
+			product: true,
+			store: true,
+			stockMovements: {
+        orderBy: {
+          createdAt: 'desc'
+        },
+      }
+		}
+  })
+  return found as InventoryItemDAO
+}
+
+export async function getLastInventoryItemDAO(storeSlug: string) {
+  const found = await prisma.inventoryItem.findFirst({
+    where: {
+      store: {
+        slug: storeSlug
+      }
+    },
+    orderBy: {
+      createdAt: 'asc'
     },
     include: {
 			product: true,
