@@ -49,12 +49,6 @@ export async function POST(request: NextRequest) {
       return Response.json({success: false});
     }
 
-    track("Payment_MP", {
-      storeSlug: updated.store.slug,
-      email: updated.email,
-      order: updated.store.prefix + "#" + completeWithZeros(updated.storeOrderNumber),
-    });
-
     return Response.json({success: true });
   } else {
     await setOrderMercadoPagoNotApproved(orderId)

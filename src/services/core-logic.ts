@@ -3,6 +3,8 @@ import { getFullOrderDAO, setOrderStatus } from "./order-services"
 import { getInventoryItemDAOByProductId } from "./inventoryitem-services"
 import { StockMovementFormValues, createStockMovement } from "./stockmovement-services"
 import { sendBankDataEmail, sendNotifyPaymentEmail, sendNotifyTransferSentEmail, sendPaymentConfirmationEmail } from "./email-services"
+import { track } from "@vercel/analytics/server"
+import { completeWithZeros } from "@/lib/utils"
 
 export async function processOrderConfirmation(orderId: string) {
     const order = await getFullOrderDAO(orderId)
@@ -29,6 +31,14 @@ export async function processOrderConfirmation(orderId: string) {
         return null
     }
     
+    const eventName= order.paymentMethod === PaymentMethod.MercadoPago ? "Payment_MP" : "Payment_Bank"
+    
+    track(eventName, {
+        storeSlug: updated.store.slug,
+        email: updated.email,
+        order: updated.store.prefix + "#" + completeWithZeros(updated.storeOrderNumber),
+    });
+  
     await sendPaymentConfirmationEmail(order.id)
     await sendNotifyPaymentEmail(order.id)
 
