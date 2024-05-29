@@ -5,7 +5,7 @@ import { OrderStatus } from "@prisma/client";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import { track } from "@vercel/analytics/server";
 import { completeWithZeros } from "@/lib/utils";
-import { processOrderConfirmation } from "@/services/core-logic";
+import { processOrderConfirmation, setOrderMercadoPagoNotApproved } from "@/services/core-logic";
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
 
@@ -42,19 +42,24 @@ export async function POST(request: NextRequest) {
   const externalReference= payment.external_reference
   console.log("externalReference", externalReference)
   
-  const updated= await processOrderConfirmation(orderId)
+  if (paymentStatus === "approved") {
+    const updated= await processOrderConfirmation(orderId)
 
-  if (!updated) {
+    if (!updated) {
+      return Response.json({success: false});
+    }
+
+    track("Payment_MP", {
+      storeSlug: updated.store.slug,
+      email: updated.email,
+      order: updated.store.prefix + "#" + completeWithZeros(updated.storeOrderNumber),
+    });
+
+    return Response.json({success: true });
+  } else {
+    await setOrderMercadoPagoNotApproved(orderId)
     return Response.json({success: false});
   }
-
-  track("Payment_MP", {
-    storeSlug: updated.store.slug,
-    email: updated.email,
-    order: updated.store.prefix + "#" + completeWithZeros(updated.storeOrderNumber),
-});
-
-  return Response.json({success: true});
 }
 
 export async function GET(request: NextRequest) {
