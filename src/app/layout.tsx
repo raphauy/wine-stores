@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://latidio.com",
   },
+  metadataBase: new URL("https://latidio.com"),
 };
 
 interface Props {

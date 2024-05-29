@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       ],
     },
+    metadataBase: new URL(store?.mpRedirectUrl || process.env.NEXT_PUBLIC_URL!),
   }
 }
 
