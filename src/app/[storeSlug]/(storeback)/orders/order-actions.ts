@@ -13,7 +13,7 @@ export async function getOrderDAOAction(id: string): Promise<OrderDAO | null> {
 export async function deleteOrderAction(id: string): Promise<OrderDAO | null> {    
     const deleted= await deleteOrder(id)
 
-    revalidatePath("/[storeSlug]/orders")
+    revalidatePath("/[storeSlug]/orders", "page")
 
     return deleted as OrderDAO
 }
@@ -29,7 +29,7 @@ export async function setOrderTransferenciaBancariaPaymentSentAction(id: string)
 export async function processOrderConfirmationAction(id: string): Promise<OrderDAO | null> {
     const updated= await processOrderConfirmation(id)
 
-    revalidatePath("/[storeSlug]/orders")
+    revalidatePath("/[storeSlug]/orders", "page")
 
     return updated as OrderDAO
 }
