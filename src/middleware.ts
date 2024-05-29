@@ -64,6 +64,8 @@ function getHostRewrite(host: string) {
         case 'bodega-familiar.latidio.com': 
             return 'bodega-familiar'
 
+        case 'libro.localhost:3000':
+            return 'uruguayenvinos'
         case 'libro.uruguayenvinos.com':
             return 'uruguayenvinos'
             

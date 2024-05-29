@@ -41,6 +41,9 @@ export default function MarkAsPaidButton({ order }: Props) {
         return <div className='max-w-[350px] text-center mx-auto'>Hay que esperar a que el cliente marque la transferencia como enviada.</div>
     }
 
+    if (status !== OrderStatus.PaymentSent)
+        return null
+
     return (
         <div className='flex flex-col gap-2'>
             <Button variant="outline" className="" onClick={handleClick}>

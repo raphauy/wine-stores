@@ -40,6 +40,9 @@ export default function MarkAsPaymentSentButton({ order }: Props) {
         return <div className='max-w-[350px] text-center mx-auto'>En breve nos pondremos en contacto contigo con información del envío.</div>
     }
 
+    if (status !== OrderStatus.Pending) 
+        return null
+
     const bankDataStr= order.store.bankData.map((item) => item.name + "\n" + item.info).join("\n\n")
     return (
         <div className='flex flex-col gap-2'>
