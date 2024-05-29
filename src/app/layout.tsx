@@ -18,14 +18,6 @@ export const metadata: Metadata = {
     description: "Latidio es la plataforma de ecommerce que conecta a pequeños productores rurales y empresas familiares con las ventas en el mundo digital. Con simplicidad y accesibilidad, transformamos vidas y promovemos un comercio justo y sostenible.",
     type: "website",
     url: "https://latidio.com",
-    images: [
-      {
-        url: "https://latidio.com/wine-stores-logo.png",
-        width: 282,
-        height: 45,
-        alt: "Latidio Logo",
-      },
-    ],
   },
 };
 

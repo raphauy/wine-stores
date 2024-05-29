@@ -61,7 +61,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
       return (
         <div className="">
           <div className="flex items-center gap-1">
-            <Badge>
+            <Badge className="whitespace-nowrap">
               Orden: {data.store.prefix}#{completeWithZeros(data.storeOrderNumber)}
             </Badge>
             <Badge className={cn(
