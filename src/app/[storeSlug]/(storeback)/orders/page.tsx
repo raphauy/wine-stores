@@ -19,7 +19,7 @@ export default async function OrdersPage({ params }: Props) {
     <div className="w-full">      
 
       <div className="container bg-white p-3 py-4 mx-auto border rounded-md text-muted-foreground dark:text-white">
-        <DataTable columns={columns} data={data} subject="Order"/>      
+        <DataTable columns={columns} data={data} subject="Order" />      
       </div>
     </div>
   )

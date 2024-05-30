@@ -10,13 +10,14 @@ import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRende
 import { DataTablePagination } from "@/components/data-table/data-table-pagination"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
-import { OrderStatus } from "@prisma/client"
+import { OrderStatus, PaymentMethod } from "@prisma/client"
   
 interface DataTableToolbarProps<TData> {
   table: TanstackTable<TData>;
 }
 
 const statuses= Object.values(OrderStatus)
+const paymentMethods= Object.values(PaymentMethod)
 export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -28,6 +29,14 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             column={table.getColumn("status")}
             title="Estado"
             options={statuses}
+          />
+        )}
+
+        {table.getColumn("paymentMethod")  && (
+          <DataTableFacetedFilter
+            column={table.getColumn("paymentMethod")}
+            title="Forma de Pago"
+            options={paymentMethods}
           />
         )}
 

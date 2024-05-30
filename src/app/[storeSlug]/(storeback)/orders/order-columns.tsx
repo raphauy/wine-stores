@@ -34,6 +34,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
           <div className="w-full mx-auto">
             <MarkAsPaidButton order={data} />
           </div>
+          <p>{formatWhatsAppStyle(data.createdAt)}</p>
         </div>
       )
     },
@@ -98,8 +99,8 @@ export const columns: ColumnDef<OrderDAO>[] = [
       const data= row.original
       return (
         <div>
+          <p>Name: <span className="font-bold">{data.name}</span></p>
           <p>Email: {data.email}</p>
-          <p>Name: {data.name}</p>
           <p>Phone: {data.phone}</p>
           <p>Address: {data.address} ({data.city})</p>
         </div>
@@ -108,22 +109,15 @@ export const columns: ColumnDef<OrderDAO>[] = [
   },
 
   {
-    id: "createdAt",
-    header: ({ column }) => {
-        return (
-          <Button variant="ghost" className="pl-0 dark:text-white"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Created At
-            <ArrowUpDown className="w-4 h-4 ml-1" />
-          </Button>
-    )},
+    accessorKey: "paymentMethod",
     cell: ({ row }) => {
-      const data= row.original
-      return (
-        <div className="ml-2">
-          <p>{formatWhatsAppStyle(data.createdAt)}</p>
-        </div>
-      )
+      return null
+    },
+    header: ({ column }) => { 
+      return null
+    },      
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
     },
   },
 
