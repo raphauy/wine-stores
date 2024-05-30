@@ -1,11 +1,10 @@
 import type { NextRequest } from "next/server";
 
-import { setOrderStatus } from "@/services/order-services";
-import { OrderStatus } from "@prisma/client";
-import { MercadoPagoConfig, Payment } from "mercadopago";
-import { track } from "@vercel/analytics/server";
-import { completeWithZeros } from "@/lib/utils";
 import { processOrderConfirmation, setOrderMercadoPagoNotApproved } from "@/services/core-logic";
+import { MercadoPagoConfig, Payment } from "mercadopago";
+
+export const maxDuration = 59; // This function can run for a maximum of 30 seconds
+export const dynamic = 'force-dynamic';
 
 const mercadopago = new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN!});
 
