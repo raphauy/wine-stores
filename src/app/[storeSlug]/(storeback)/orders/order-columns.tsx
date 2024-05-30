@@ -44,7 +44,7 @@ export const columns: ColumnDef<OrderDAO>[] = [
   },
 
   {
-    accessorKey: "address",
+    accessorKey: "name",
     header: ({ column }) => {
         return (
           <Button variant="ghost" className="pl-0 dark:text-white"

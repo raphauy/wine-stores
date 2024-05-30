@@ -40,15 +40,16 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
           />
         )}
 
+        <Input className="max-w-xs" placeholder="name filter..."
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}                
+        />
+        
         <Input className="max-w-xs" placeholder="email filter..."
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
         />
 
-        <Input className="max-w-xs" placeholder="address filter..."
-            value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => table.getColumn("address")?.setFilterValue(event.target.value)}                
-        />
           
         {isFiltered && (
           <Button

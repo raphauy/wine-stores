@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { DeleteOrderForm } from "./order-forms";
+import { useSession } from "next-auth/react";
 
   
 type DeleteProps= {
@@ -13,6 +14,10 @@ type DeleteProps= {
 
 export function DeleteOrderDialog({ id, description }: DeleteProps) {
   const [open, setOpen] = useState(false)
+  const session= useSession()
+  const user= session?.data?.user
+  if (user?.email !== "rapha.uy2@rapha.uy") 
+    return null
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
