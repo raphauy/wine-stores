@@ -14,7 +14,7 @@ export default function Page() {
   const router= useRouter()
 
   function setData(data: DatosEnvioFormValues) {
-    setEmail(data.email)
+    setEmail(data.email.trim())
     setName(data.name)
     setAddress(data.address)
     setCity(data.city)

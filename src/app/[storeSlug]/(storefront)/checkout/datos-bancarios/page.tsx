@@ -2,18 +2,26 @@ import { getStoreDAOBySlugAction } from "@/app/admin/stores/store-actions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { completeWithZeros, getCurrentUser } from "@/lib/utils"
+import { setOrderTransferenciaBancariaPending } from "@/services/core-logic"
 import { getLastOrderDAOOfUser } from "@/services/order-services"
 import Image from "next/image"
 import Link from "next/link"
 import CleanCart from "./clean-cart"
-import { setOrderTransferenciaBancariaPending } from "@/services/core-logic"
 
 type Props = {
   params: {
     storeSlug: string
   }
+  searchParams: {
+    email: string
+  }
 }
-export default async function DatosBancariosPage({ params }: Props) {
+
+export default async function DatosBancariosPage({ params, searchParams }: Props) {
+  const email= searchParams.email
+  if (!email) {
+    return <div>no se encontró el email</div>
+  }
 
   const user= await getCurrentUser()
   if (!user) {
@@ -29,9 +37,14 @@ export default async function DatosBancariosPage({ params }: Props) {
   }
 
   const bankData= store.bankData
-  const order= await getLastOrderDAOOfUser(store.id, user.email)
+  const order= await getLastOrderDAOOfUser(store.id, email)
   if (!order) {
-    return <div>No se encontró una orden para el mail: {user.email}</div>
+    return <div>No se encontró una orden para el mail: {email}</div>
+  }
+
+  let emailMessage
+  if (user.email !== order.email) {
+    emailMessage= `Estas logueado con el email ${user.email} pero la orden que estas intentando pagar es de ${order.email}. Ten encuenta que para ver las ordenes del email ${email} debes loguearte con ese email.`
   }
 
   await setOrderTransferenciaBancariaPending(order.id)
@@ -87,9 +100,12 @@ export default async function DatosBancariosPage({ params }: Props) {
           <span>${totalValue}</span>
         </div>
       </div>
-      <p className="mb-4">
+      <p className="mb-2">
         Una vez que hayas realizado el pago, debes marcar la orden como pagada en &quot;Mi cuenta&quot;.
       </p>
+      {
+        emailMessage && <p className="text-red-500 mb-4">{emailMessage}</p>
+      }
       <Link href={`/micuenta?storeId=${store.id}&email=${order.email}`}>
         <Button className="w-full">Mi cuenta</Button>
       </Link>

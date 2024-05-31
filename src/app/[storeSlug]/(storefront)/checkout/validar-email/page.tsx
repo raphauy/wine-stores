@@ -13,7 +13,7 @@ export default async function ValidarEmailPage({ searchParams }: Props) {
   const user= await getCurrentUser()
 
   if (user) {
-    return redirect("/checkout/datos-bancarios")
+    return redirect("/checkout/datos-bancarios?email=" + email)
   }
   return (
     <div className="w-full flex flex-col items-center justify-center mt-10">
