@@ -41,7 +41,10 @@ export const columns: ColumnDef<InventoryItemDAO>[] = [
       const data= row.original
       const product: ProductDAO= data.product
       const firstImage = product.images[0].url;
-      const host= window ? window.location.host : ""
+      let host= ""
+      if (typeof window !== 'undefined') {
+        host= window.location.host
+      }
       const serverUrls= process.env.NEXT_PUBLIC_SERVER_HOSTs!.split(",")
       const isServer= serverUrls.some((serverUrl) => host ===serverUrl)
           return (

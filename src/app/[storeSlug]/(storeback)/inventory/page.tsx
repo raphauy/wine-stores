@@ -1,4 +1,5 @@
 import { getLastInventoryItemDAO } from "@/services/inventoryitem-services"
+import { Loader } from "lucide-react"
 import { redirect } from "next/navigation"
 
 type Props = {
@@ -13,6 +14,10 @@ export default async function InventoryItemPage({ params }: Props) {
     redirect(`/inventory/${lastInventory.product.id}`)
   }
 
-  return <div className="w-full" />
+  return (
+    <div className="w-full">
+      <Loader className="h-10 w-10 animate-spin" />
+    </div>
+  )
 }
   
