@@ -1,6 +1,6 @@
 "use server"
   
-import { processOrderConfirmation, setOrderTransferenciaBancariaPaymentSent } from "@/services/core-logic"
+import { processOrderConfirmation, setOrderTransferenciaBancariaPaymentSent, setOrderTransferenciaBancariaPaymentSentWithBank } from "@/services/core-logic"
 import { OrderDAO, deleteOrder, getFullOrderDAO } from "@/services/order-services"
 import { revalidatePath } from "next/cache"
 
@@ -25,6 +25,15 @@ export async function setOrderTransferenciaBancariaPaymentSentAction(id: string)
 
     return updated as OrderDAO
 }
+
+export async function setOrderTransferenciaBancariaPaymentSentWithBankAction(id: string, bankId: string, comment: string | undefined): Promise<OrderDAO | null> {   
+    const updated= await setOrderTransferenciaBancariaPaymentSentWithBank(id, bankId, comment)
+
+    revalidatePath("/[storeSlug]", "page")
+
+    return updated as OrderDAO
+}
+
 
 export async function processOrderConfirmationAction(id: string): Promise<OrderDAO | null> {
     const updated= await processOrderConfirmation(id)

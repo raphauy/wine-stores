@@ -23,6 +23,8 @@ export type OrderDAO = {
 	store: StoreDAO
 	storeId: string
   orderItems: OrderItemDAO[]
+  bankDataId: string
+  bankTransferComment: string
 }
 
 export const orderSchema = z.object({
@@ -159,6 +161,8 @@ export async function getLastOrderDAO(storeId: string) {
 }
 
 export async function getLastOrderDAOOfUser(storeId:string, email: string) {
+  console.log(storeId, email)
+  
   const found = await prisma.order.findFirst({
     where: {
       storeId,

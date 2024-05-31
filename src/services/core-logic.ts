@@ -5,6 +5,8 @@ import { StockMovementFormValues, createStockMovement } from "./stockmovement-se
 import { sendBankDataEmail, sendNotifyPaymentEmail, sendNotifyTransferSentEmail, sendPaymentConfirmationEmail } from "./email-services"
 import { track } from "@vercel/analytics/server"
 import { completeWithZeros } from "@/lib/utils"
+import { prisma } from "@/lib/db"
+import { getBankDataDAO } from "./bankdata-services"
 
 export async function processOrderConfirmation(orderId: string) {
     const order = await getFullOrderDAO(orderId)
@@ -87,7 +89,44 @@ export async function setOrderTransferenciaBancariaPaymentSent(orderId: string) 
 
     return updated
 }
-  
+
+export async function setOrderTransferenciaBancariaPaymentSentWithBank(orderId: string, bankDataId: string, bankTransferComment: string | undefined) {
+    console.log("setOrderTransferenciaBancariaPaymentSentWithBank", orderId, bankDataId, bankTransferComment)
+    
+    
+    const order= await getFullOrderDAO(orderId)
+    if (!order)
+        throw new Error("No se encontro la orden")
+    if (order.status !== OrderStatus.Pending) {
+        console.log("order is not in status Pending, status:", order.status)
+        return order
+    } else {
+        console.log("setting order to status PaymentSent")
+    }
+
+    const updated= await setOrderStatus(orderId, OrderStatus.PaymentSent)
+    if (!updated) {
+        return null
+    }
+
+    const bankData= await getBankDataDAO(bankDataId)
+    const comment= bankData.name + (bankTransferComment ? " - " + bankTransferComment : "")
+
+    await prisma.order.update({
+        where: {
+            id: orderId
+        },
+        data: {
+            bankDataId,
+            bankTransferComment: comment
+        }
+    })
+
+    await sendNotifyTransferSentEmail(order.id)
+
+    return updated
+}
+
 
 export async function setOrderMercadoPagoNotApproved(orderId: string) {
     const order= await getFullOrderDAO(orderId)

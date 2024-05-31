@@ -10,6 +10,7 @@ import { Info, Loader } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { setOrderTransferenciaBancariaPaymentSentAction } from '../../(storeback)/orders/order-actions'
+import { MarkAsPaidDialog } from './bank-form-and-dialog'
 
 type Props = {
     order: OrderDAO
@@ -49,9 +50,11 @@ export default function MarkAsPaymentSentButton({ order }: Props) {
     const bankDataStr= order.store.bankData.map((item) => item.name + "\n" + item.info).join("\n\n")
     return (
         <div className='flex flex-col gap-2'>
-            <Button variant="outline" className="" onClick={handleClick}>
+            {/* <Button variant="outline" className="" onClick={handleClick}>
                 {loading ? <Loader className="w-4 h-4 animate-spin" /> : "Marcar transferencia enviada"}
-            </Button>
+            </Button> */}
+
+            <MarkAsPaidDialog storeId={order.store.id} orderId={order.id} />
             <Popover>
                 <PopoverTrigger>
                     <div className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full gap-2")} ><Info className='w-4 h-4' /><p>Ver datos bancarios</p></div>

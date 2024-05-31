@@ -1,9 +1,7 @@
 "use client"
 
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { cn } from '@/lib/utils'
 import { OrderDAO } from '@/services/order-services'
 import { OrderStatus, UserRole } from '@prisma/client'
 import { Loader } from 'lucide-react'
@@ -47,7 +45,8 @@ export default function MarkAsPaidButton({ order }: Props) {
         return null
 
     return (
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-1'>
+            <p className='text-center'>{order.bankTransferComment}</p>
             <Button variant="outline" className="" onClick={handleClick}>
                 {loading ? <Loader className="w-4 h-4 animate-spin" /> : "Marcar transferencia recibida"}
             </Button>

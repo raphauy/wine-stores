@@ -21,8 +21,11 @@ export const bankDataSchema = z.object({
 export type BankDataFormValues = z.infer<typeof bankDataSchema>
 
 
-export async function getBankDatasDAO() {
+export async function getBanksDatasOfStore(storeId: string) {
   const found = await prisma.bankData.findMany({
+    where: {
+      storeId
+    },
     orderBy: {
       id: 'asc'
     },

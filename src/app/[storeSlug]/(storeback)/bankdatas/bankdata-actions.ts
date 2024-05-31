@@ -1,7 +1,7 @@
 "use server"
   
 import { revalidatePath } from "next/cache"
-import { BankDataDAO, BankDataFormValues, createBankData, updateBankData, getFullBankDataDAO, deleteBankData } from "@/services/bankdata-services"
+import { BankDataDAO, BankDataFormValues, createBankData, updateBankData, getFullBankDataDAO, deleteBankData, getBanksDatasOfStore } from "@/services/bankdata-services"
 
 
 export async function getBankDataDAOAction(id: string): Promise<BankDataDAO | null> {
@@ -29,3 +29,6 @@ export async function deleteBankDataAction(id: string): Promise<BankDataDAO | nu
     return deleted as BankDataDAO
 }
 
+export async function getBanksDatasOfStoreAction(storeId: string): Promise<BankDataDAO[]> {
+    return getBanksDatasOfStore(storeId)
+}
