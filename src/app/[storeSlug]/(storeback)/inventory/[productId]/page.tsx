@@ -21,17 +21,9 @@ export default async function ProductInventoryPage({ params }: Props) {
     const soldPercentage = (totalSold / inventoryItem?.quantity * 100).toFixed(0)
     return (
         <div className="w-full">
-            <Card className="p-2 md:p-4">
+            <Card className="p-2 md:p-4 flex justify-between items-center">
                 <CardTitle>Inventario de {inventoryItem?.product?.name}</CardTitle>
-                <div className="flex justify-between mt-4">
-                    <div className="flex flex-col gap-2">
-                        <div className="">
-                            <div className="text-xl">{inventoryItem?.quantity} en stock</div>
-                            <div className="text-xl">vendidos: {totalSold}</div>
-                        </div>
-                    </div>
-                    <StockMovementDialog inventoryItemId={inventoryItem.id} />
-                </div>
+                <StockMovementDialog inventoryItemId={inventoryItem.id} />
             </Card>
 
             <div className="w-full pt-6 grid md:grid-cols-2 gap-4 lg:w-[600px] mx-auto">
