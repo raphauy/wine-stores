@@ -42,7 +42,7 @@ export async function sendPaymentConfirmationEmail(orderId: string, testEmailTo?
   const { data, error } = await resend.emails.send({
     from,
     to: testEmailTo ? testEmailTo : order.email.trim(),
-    bcc: process.env.NODE_ENV === "production" ? process.env.SUPPORT_EMAIL : "",
+    //bcc: process.env.NODE_ENV === "production" ? process.env.SUPPORT_EMAIL : "",
     reply_to,
     subject,
     react: PaymentConfirmationEmail({ 
