@@ -55,7 +55,7 @@
     "input-otp": "^1.2.2",
     "lucide-react": "^0.363.0",
     "mercadopago": "^2.0.9",
-    "next": "^14.2.3",
+    "next": "^14.2.5",
     "next-auth": "5.0.0-beta.4",
     "next-cloudinary": "^6.3.0",
     "next-themes": "^0.3.0",

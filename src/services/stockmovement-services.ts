@@ -74,7 +74,7 @@ export async function updateQuantityStockMovement(inventoryItemId: string) {
   for (const stockMovement of stockMovements) {
     if (stockMovement.type === MovementType.ENTRADA) {
       quantity += stockMovement.quantity
-    } else if (stockMovement.type === MovementType.SALIDA) {
+    } else if (stockMovement.type === MovementType.SALIDA || stockMovement.type === MovementType.VENTA) {
       quantity -= stockMovement.quantity
     }
   }

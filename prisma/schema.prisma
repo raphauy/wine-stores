@@ -230,6 +230,7 @@ model Oauth {
 enum MovementType {
   ENTRADA   // Indica un ingreso de stock
   SALIDA  // Indica una salida de stock
+  VENTA   // Indica una venta de stock
 }
 
 model InventoryItem {

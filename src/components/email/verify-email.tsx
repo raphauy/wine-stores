@@ -34,7 +34,7 @@ export const CodeVerifyEmail = ({ validationCode, sotreName, contactEmail }: Cod
           </Link>{" "}
         </Text>
       </Container>
-      <Text style={footer}>Powered by{" "}
+      <Text style={footer}>Un servicio de{" "}
         <Link href="https://latidio.com/" style={link}>
             latidio.com
         </Link>

@@ -11,12 +11,15 @@ import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Loader } from "lucide-react"
 import { MovementType } from "@prisma/client"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 type Props= {
   id?: string
   inventoryItemId: string
   closeDialog: () => void
 }
+
+const types= ["ENTRADA", "SALIDA"]
 
 export function StockMovementForm({ id, inventoryItemId, closeDialog }: Props) {
   const form = useForm<StockMovementFormValues>({
@@ -67,6 +70,30 @@ export function StockMovementForm({ id, inventoryItemId, closeDialog }: Props) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rol</FormLabel>
+                <Select onValueChange={(value) => field.onChange(value)} value={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona un Tipo de Movimiento" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {types.map(type => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="quantity"

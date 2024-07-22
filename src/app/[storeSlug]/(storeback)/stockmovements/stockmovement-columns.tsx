@@ -6,6 +6,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 import { format } from "date-fns"
 import { DeleteStockMovementDialog, StockMovementDialog } from "./stockmovement-dialogs"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
 
 export const columns: ColumnDef<StockMovementDAO>[] = [
@@ -22,7 +24,7 @@ export const columns: ColumnDef<StockMovementDAO>[] = [
     )},
     cell: ({ row }) => {
       const data= row.original
-      return data.type === "ENTRADA" ? "Ingreso" : "Venta"
+      return (<Badge className={cn(data.type === "ENTRADA" && "bg-green-500", data.type === "SALIDA" && "bg-red-500")}>{data.type}</Badge>)
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))

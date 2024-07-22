@@ -25,7 +25,7 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
         <DataTableFacetedFilter
           column={table.getColumn("type")}
           title="Type"
-          options={["ENTRADA", "SALIDA"]}
+          options={["ENTRADA", "SALIDA", "VENTA"]}
         />
       )}
       
