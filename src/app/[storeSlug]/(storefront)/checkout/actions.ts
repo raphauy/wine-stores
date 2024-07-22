@@ -21,6 +21,13 @@ export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug:
     const store= await getStoreDAOBySlug(storeSlug)
     console.log("store:", store.name)    
 
+    // shipping cost is the the top shipping cost of all items
+    let shippingCost= 0
+    items.forEach((item) => {
+        if (item.product.shippingCost > shippingCost) {
+            shippingCost= item.product.shippingCost
+        }
+    })
     const orderForm: OrderFormValues = {
         paymentMethod,
         storeId: store.id,
@@ -29,6 +36,7 @@ export async function createOrderAction(paymentMethod: PaymentMethod, storeSlug:
         address,
         city,
         phone,
+        shippingCost: Number(shippingCost).toFixed(2),
     }
 
     const orderCreated= await createOrder(orderForm, storeSlug)

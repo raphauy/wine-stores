@@ -13,8 +13,6 @@ import { useCart } from '@/hooks/use-cart'
 import CartItem from './CartItem'
 import { ProductDAO } from '@/services/product-services'
 
-export const FEE = 0
-
 export type ProductQuantity = {
   product: ProductDAO
   quantity: number
@@ -25,6 +23,7 @@ const Cart = () => {
   const { items } = useCart()
   const itemCount = items.length
 
+  const [fee, setFee] = useState<number>(0)
   const [isMounted, setIsMounted] = useState<boolean>(false)
 
   useEffect(() => {
@@ -36,6 +35,10 @@ const Cart = () => {
   const uniqueProducts: ProductQuantity[] = []
 
   items.forEach(({ product }) => {
+    const shippingCost= product.shippingCost ? product.shippingCost : 0
+    if (shippingCost > fee) {
+      setFee(shippingCost)
+    }
     if (!uniqueProducts.find(({ product: p }) => p.id === product.id)) {
       uniqueProducts.push({ product, quantity: 1 })
     } else {
@@ -73,7 +76,7 @@ const Cart = () => {
               <div className='space-y-1.5 text-sm'>
                 <div className='flex'>
                   <span className='flex-1'>Envío</span>
-                  { FEE > 0 ? formatPrice(FEE) 
+                  { fee > 0 ? formatPrice(fee) 
                     :
                     <p>Gratis</p>
                   }
@@ -81,7 +84,7 @@ const Cart = () => {
                 <div className='flex'>
                   <span className='flex-1'>Total</span>
                   <span>
-                    {formatPrice(cartTotal)}
+                    {formatPrice(cartTotal + fee)}
                   </span>
                 </div>
               </div>

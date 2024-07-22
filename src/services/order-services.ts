@@ -18,6 +18,7 @@ export type OrderDAO = {
 	address: string
   city: string
 	phone: string
+  shippingCost: number
 	createdAt: Date
 	updatedAt: Date
 	store: StoreDAO
@@ -35,6 +36,7 @@ export const orderSchema = z.object({
 	address: z.string().min(1, "necesitamos una dirección para poder enviar tu pedido."),
   city: z.string().min(1, "necesitamos una ciudad para poder enviar tu pedido."),
 	phone: z.string().min(1, "necesitamos un teléfono para asociar este pedido."),
+  shippingCost: z.string().refine((val) => !isNaN(Number(val)), { message: "(debe ser un número)" }).optional(),
 })
 
 export type OrderFormValues = z.infer<typeof orderSchema>
@@ -70,9 +72,11 @@ export async function getOrderDAO(id: string) {
 }
     
 export async function createOrder(data: OrderFormValues, storeSlug: string) {
+  const shippingCost= data.shippingCost ? Number(data.shippingCost) : 0
   const created = await prisma.order.create({
     data: {
       ...data,
+      shippingCost,
       storeOrderNumber: 0 // será sobreescrito por el trigger de postgres que genera el número de orden
     },
     include: {
@@ -90,11 +94,15 @@ export async function createOrder(data: OrderFormValues, storeSlug: string) {
   return created  
 }
 export async function updateOrder(id: string, data: OrderFormValues) {
+  const shippingCost= data.shippingCost ? Number(data.shippingCost) : 0
   const updated = await prisma.order.update({
     where: {
       id
     },
-    data
+    data: {
+      ...data,
+      shippingCost,
+    }
   })
   return updated
 }

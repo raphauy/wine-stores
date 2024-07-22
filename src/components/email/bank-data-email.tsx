@@ -16,6 +16,7 @@ type Props = {
   address: string
   city: string
   phone: string
+  shippingCost: number
   items: OrderItem[]
   totalPrice: number
   finalText: string
@@ -29,7 +30,12 @@ export default function BankDataEmail({
   orderEmail="test@test.com", 
   orderId="clvwozc58000135igexu0egeu", 
   baseUrl="http://localhost:3000", 
-  formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", 
+  formattedDate="18 enero 2024", 
+  name="Alan Turing", 
+  address="Garzón 1234", 
+  city="Montevideo", 
+  phone="0987654321", 
+  shippingCost=0,
   items=[], 
   totalPrice=0, 
   finalText="Texto final", 
@@ -123,6 +129,19 @@ export default function BankDataEmail({
             </Row>
           ))
           }
+          { shippingCost > 0 &&
+            <Row style={ { marginBottom: "10px" } }>
+              <Column style={{ paddingLeft: "22px" }}>
+                <Text style={productTitle}>Costo de envío</Text>
+              </Column>
+
+              <Column style={productPriceWrapper} align="right">
+                <Text style={productPrice}>
+                  ${shippingCost}
+                </Text>
+              </Column>
+            </Row>
+          }
         </Section>
         {/* <Section>
           <Row>
@@ -159,7 +178,7 @@ export default function BankDataEmail({
             </Column>
             <Column style={productPriceVerticalLine}></Column>
             <Column style={productPriceLargeWrapper}>
-              <Text style={productPriceLarge}>${totalPrice}</Text>
+              <Text style={productPriceLarge}>${totalPrice + shippingCost}</Text>
             </Column>
           </Row>
         </Section>

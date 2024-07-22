@@ -106,6 +106,7 @@ model Product {
   deliveryInfo String?
   price       Float                                       // gennext: show.column
   discountPrice Float?                                    // gennext: show.column
+  shippingCost  Float? @default(0)                        // gennext: show.column
   isFeatured  Boolean   @default(false)                   // gennext: show.column
   isArchived  Boolean   @default(false)                   // gennext: show.column
 
@@ -155,6 +156,7 @@ model Order {
   address       String                                   // gennext: show.column
   city          String                                   // gennext: show.column
   phone         String                                   // gennext: show.column
+  shippingCost  Float? @default(0)                       // gennext: show.column
 
   paymentMethod PaymentMethod                            // gennext: show.column
 

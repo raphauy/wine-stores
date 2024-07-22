@@ -117,6 +117,7 @@ Aquí abajo tienes el boton para hacerlo:
       address: order.address,
       city: order.city,
       phone: order.phone,
+      shippingCost: order.shippingCost,
       items: order.orderItems,
       totalPrice,
       finalText,

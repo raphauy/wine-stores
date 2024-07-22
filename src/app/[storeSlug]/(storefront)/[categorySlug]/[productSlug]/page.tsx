@@ -116,7 +116,7 @@ export default async function ProductoPage({ params }: Props) {
 
             <section className='mt-4'>
               {
-                product.discountPrice &&
+                product.discountPrice !== 0 &&
                   <p className='font-medium dark:text-white text-red-500 line-through'>
                     {formatPrice(product.price)}
                   </p>

@@ -7,6 +7,7 @@ import { getLastOrderDAOOfUser } from "@/services/order-services"
 import Image from "next/image"
 import Link from "next/link"
 import CleanCart from "./clean-cart"
+import { Truck } from "lucide-react"
 
 type Props = {
   params: {
@@ -50,7 +51,7 @@ export default async function DatosBancariosPage({ params, searchParams }: Props
   await setOrderTransferenciaBancariaPending(order.id)
   
   const items= order.orderItems
-  const totalValue= items.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0)
+  const totalValue= items.reduce((acc, item) => acc + item.soldUnitPrice * item.quantity, 0) + order.shippingCost
 
   return (
     <div className="max-w-2xl mt-5 mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-black dark:text-white">
@@ -94,6 +95,19 @@ export default async function DatosBancariosPage({ params, searchParams }: Props
 
             </div>
             ))
+          }
+          {
+            order.shippingCost > 0 &&
+            <div className="flex justify-between items-center mt-5">
+              <div className="flex items-center space-x-4">
+                <Truck className="w-4 h-4" />
+                <div>
+                  <p className="font-semibold">Costo de envío</p>
+                </div>
+              </div>
+            <p className="text-lg">${order.shippingCost}</p>
+          </div>
+
           }
           <div className="flex justify-between items-center mt-4 font-bold text-lg">
           <span>TOTAL a transferir</span>

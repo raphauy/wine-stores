@@ -1,19 +1,25 @@
 'use client'
 
-import { FEE, ProductQuantity } from '@/components/Cart'
+import { ProductQuantity } from '@/components/Cart'
 import { useCart } from '@/hooks/use-cart'
 import { formatPrice } from '@/lib/utils'
+import { useState } from 'react'
 
 
 export default function OrderSummary() {
 
   const { items, email, phone, address } = useCart()
+  const [fee, setFee] = useState<number>(0)
 
   const cartTotal = items.reduce((total, { product }) => total + (product.discountPrice ? product.discountPrice : product.price),0)
 
   const uniqueProducts: ProductQuantity[] = []
 
   items.forEach(({ product }) => {
+    const shippingCost= product.shippingCost ? product.shippingCost : 0
+    if (shippingCost > fee) {
+      setFee(shippingCost)
+    }
     if (!uniqueProducts.find(({ product: p }) => p.id === product.id)) {
       uniqueProducts.push({ product, quantity: 1 })
     } else {
@@ -47,7 +53,7 @@ export default function OrderSummary() {
           </div>
           <div className='text-sm font-medium text-gray-900'>
             {(
-              FEE > 0 && cartTotal > 0? formatPrice(FEE) 
+              fee > 0 && cartTotal > 0? formatPrice(fee) 
               :
               <p>Gratis</p>
             )}
@@ -59,7 +65,7 @@ export default function OrderSummary() {
             Total
           </div>
           <div className='text-base font-medium text-gray-900'>
-            {formatPrice(cartTotal + FEE)}
+            {formatPrice(cartTotal + fee)}
           </div>
         </div>
       </div>

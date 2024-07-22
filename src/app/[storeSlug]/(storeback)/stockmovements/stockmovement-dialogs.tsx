@@ -13,7 +13,7 @@ type Props= {
   inventoryItemId: string
 }
 
-const addTrigger= <Button><PlusCircle size={22} className="mr-2"/>Ingresar prducto</Button>
+const addTrigger= <Button><PlusCircle size={22} className="mr-2"/>Ingresar movimiento</Button>
 const updateTrigger= <Pencil size={30} className="pr-2 hover:cursor-pointer"/>
 
 export function StockMovementDialog({ id, inventoryItemId }: Props) {
