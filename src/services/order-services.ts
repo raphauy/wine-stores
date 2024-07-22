@@ -252,7 +252,11 @@ async function processOrderMercadoPago(order: OrderDAO) {
           quantity: item.quantity,
           unit_price: item.soldUnitPrice
         }
-      }),
+      }),      
+      shipments: {
+        cost: order.shippingCost,
+        mode: "not_specified",
+      },
       external_reference: order.id,
       metadata: {
         order_id: order.id,
