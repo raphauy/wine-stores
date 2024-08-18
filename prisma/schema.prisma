@@ -75,6 +75,7 @@ model Store {
   categories    Category[] @relation("StoreToCategory")   // gennext: skip.list
   products      Product[]  @relation("StoreToProduct")    // gennext: skip.list
   orders        Order[]     @relation("StoreToOrder")     // gennext: skip.list
+  experiences   Experience[] @relation("StoreToExperience")    // gennext: skip.list
 
   oauth         Oauth[]
 
@@ -94,6 +95,7 @@ model Category {
   storeId     String      
 
   products    Product[]   @relation("CategoryToProduct")   // gennext: skip.list
+  experiences Experience[] @relation("CategoryToExperience")   // gennext: skip.list
 
   @@index([storeId])                                     // gennext: show.list skip.zod
 }
@@ -188,8 +190,11 @@ model OrderItem {
   order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId       String  
 
-  product       Product    @relation(fields: [productId], references: [id])
-  productId     String
+  product       Product?    @relation(fields: [productId], references: [id])
+  productId     String?
+
+  experience    Experience?    @relation(fields: [experienceId], references: [id])
+  experienceId  String?
 
   @@index([orderId])                            // gennext: show.list skip.zod
   @@index([productId])                          // gennext: show.list skip.zod
@@ -197,14 +202,18 @@ model OrderItem {
 
 
 model Image {
-  id          String    @id @default(cuid())
-  url         String                             // gennext: show.column
+  id            String    @id @default(cuid())
+  url           String                             // gennext: show.column
 
-  createdAt   DateTime    @default(now())        // gennext: skip.zod
-  updatedAt   DateTime    @updatedAt             // gennext: skip.zod
+  createdAt     DateTime    @default(now())        // gennext: skip.zod
+  updatedAt     DateTime    @updatedAt             // gennext: skip.zod
 
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId   String
+  product       Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     String?
+
+  experience    Experience? @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  experienceId  String?
+
 
   @@index([productId])                           // gennext: show.list skip.zod
 }
@@ -276,4 +285,30 @@ model BankData {
   storeId     String
 
   orders      Order[]    @relation("BankDataToOrder")
+}
+
+model Experience {
+  id          String    @id @default(cuid())
+  name        String                                      // gennext: show.column
+  slug        String                                      // gennext: show.column
+  description String?
+  price       Float                                       // gennext: show.column
+  discountPrice Float?                                    // gennext: show.column
+  isFeatured  Boolean   @default(false)                   // gennext: show.column
+  isArchived  Boolean   @default(false)                   // gennext: show.column
+
+  createdAt   DateTime    @default(now())                 // gennext: skip.zod
+  updatedAt   DateTime    @updatedAt                      // gennext: skip.zod
+
+  storeId     String    // Foreign Key to Store
+  store       Store     @relation("StoreToExperience", fields: [storeId], references: [id])
+
+  categoryId  String    // Foreign Key to Category
+  category    Category  @relation("CategoryToExperience", fields: [categoryId], references: [id])
+
+  images      Image[]                           // gennext: skip.list
+  orderItems  OrderItem[]                       // gennext: skip.list
+
+  @@index([storeId])                            // gennext: show.list skip.zod
+  @@index([categoryId])                         // gennext: show.list skip.zod
 }

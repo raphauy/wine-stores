@@ -1,26 +1,24 @@
 "use client"
 
-import * as z from "zod"
-import { useEffect, useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { useParams, useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/heading"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ImageUpload from "@/components/image-upload"
+import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ProductDAO, ProductFormValues, productSchema } from "@/services/product-services"
-import { ImageDAO } from "@/services/image-services"
-import { CategoryDAO } from "@/services/category-services"
-import { toast } from "@/components/ui/use-toast"
-import { DeleteProductDialog } from "../product-dialogs"
-import { createProductAction, updateProductAction } from "../product-actions"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
 import { generateSlug } from "@/lib/utils"
+import { CategoryDAO } from "@/services/category-services"
+import { ProductDAO, ProductFormValues, productSchema } from "@/services/product-services"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useParams, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { createProductAction, updateProductAction } from "../product-actions"
+import { DeleteProductDialog } from "../product-dialogs"
 
 
 interface ProductFormProps {
@@ -166,6 +164,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="name"

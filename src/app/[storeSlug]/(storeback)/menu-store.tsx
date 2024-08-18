@@ -3,7 +3,7 @@
 import { useAdminRoles } from "@/app/admin/users/use-roles"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { BadgeDollarSign, Box, CreditCard, ListChecks, Settings, ShoppingBasket, Store, Tag, User } from "lucide-react"
+import { BadgeDollarSign, Box, CreditCard, ListChecks, Settings, ShoppingBasket, Store, Tag, Tent, User } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
@@ -52,6 +52,12 @@ export default function MenuStore({ isSubdomain }: Props) {
             href: `${basePath}/products`,
             icon: ShoppingBasket, 
             text: "Productos",
+            roles: alowedRoles
+        },
+        {
+            href: `${basePath}/experiences`,
+            icon: Tent,
+            text: "Experiences",
             roles: alowedRoles
         },
         {
