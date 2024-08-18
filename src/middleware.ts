@@ -6,14 +6,7 @@ const { auth } = NextAuth(authConfig)
 
 export default auth((req) => {
     const { nextUrl } = req
-    console.log("Middleware invoked:", {
-        method: req.method,
-        url: req.url,
-        headers: req.headers,
-        auth: req.auth
-    })
-
-
+    
     const isApiAuthRoute = nextUrl.pathname.startsWith("/api/auth")
     if (isApiAuthRoute) {
         return
