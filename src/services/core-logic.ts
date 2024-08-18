@@ -17,7 +17,12 @@ export async function processOrderConfirmation(orderId: string) {
     }
 
     const items= order.orderItems
-    for (const item of items) {
+    const productItems= items.filter(item => item.productId)
+    const experienceItems= items.filter(item => item.experienceId)
+    // Todo: procesar experienceItems
+
+    for (const item of productItems) {
+        if (!item.productId) throw new Error("productId no encontrado")
         const inventoryItem= await getInventoryItemDAOByProductId(item.productId)
         const stockMovement: StockMovementFormValues = {
             type: MovementType.SALIDA,

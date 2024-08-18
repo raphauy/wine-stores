@@ -7,8 +7,10 @@ export type ImageDAO = {
 	url: string
 	createdAt: Date
 	updatedAt: Date
-	product: ProductDAO
-	productId: string
+	product?: ProductDAO
+	productId?: string
+//  experience?: ExperienceDAO
+  experienceId?: string
 }
 
 export const imageSchema = z.object({

@@ -1,8 +1,7 @@
-import { completeWithZeros, generateSlug } from "@/lib/utils"
+import { generateSlug } from "@/lib/utils"
 import { BankDataDAO } from "@/services/bankdata-services"
-import { OrderItem } from "@prisma/client"
-import { Body, Container, Button, Column, Head, Hr, Html, Img, Link, Preview, Row, Section, Text } from "@react-email/components"
-import * as React from "react"
+import { OrderItemDAO } from "@/services/orderitem-services"
+import { Body, Button, Column, Container, Head, Hr, Html, Img, Link, Preview, Row, Section, Text } from "@react-email/components"
 
 type Props = {
   storeName: string
@@ -17,7 +16,7 @@ type Props = {
   city: string
   phone: string
   shippingCost: number
-  items: OrderItem[]
+  items: OrderItemDAO[]
   totalPrice: number
   finalText: string
   bankData: BankDataDAO[]

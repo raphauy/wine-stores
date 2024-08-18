@@ -1,7 +1,6 @@
 import { generateSlug } from "@/lib/utils"
-import { OrderItem } from "@prisma/client"
-import { Body, Container, Column, Head, Hr, Html, Img, Link, Preview, Row, Section, Text } from "@react-email/components"
-import * as React from "react"
+import { OrderItemDAO } from "@/services/orderitem-services"
+import { Body, Column, Container, Head, Hr, Html, Img, Link, Preview, Row, Section, Text } from "@react-email/components"
 
 type Props = {
   storeName: string
@@ -15,7 +14,7 @@ type Props = {
   address: string
   city: string
   phone: string
-  items: OrderItem[]
+  items: OrderItemDAO[]
   totalPrice: number
 }
 export default function PaymentConfirmationEmail({ storeName="Latidio", storeId, orderName="Alan Turing", orderEmail="test@test.com", storeOrderNumber="UV#00000123", baseUrl="http://localhost:3000", formattedDate="18 enero 2024", name="Alan Turing", address="Garzón 1234", city="Montevideo", phone="0987654321", items=[], totalPrice=0 }: Props) {

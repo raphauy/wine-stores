@@ -12,7 +12,8 @@ export type OrderItemDAO = {
   soldImage: string
 	order: OrderDAO
 	orderId: string
-	productId: string
+	productId?: string
+  experienceId?: string
 }
 
 export const orderItemSchema = z.object({

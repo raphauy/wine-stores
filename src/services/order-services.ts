@@ -245,8 +245,9 @@ async function processOrderMercadoPago(order: OrderDAO) {
   const preferenceResponse = await preference.create({
     body: {
       items: order.orderItems.map(item => {
+        if (!item.productId && !item.experienceId) throw new Error("ni productId ni experienceId encontrado")
         return {
-          id: item.productId,
+          id: item.productId || item.experienceId || "",
           title: item.soldName,
           image: item.soldImage,
           quantity: item.quantity,
