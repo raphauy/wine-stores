@@ -7,5 +7,5 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "unauthorized" }, { status: 401 })
     }
 
-    return NextResponse.json({ data: "ok" })
+    return NextResponse.json({ data: "ok", message: "ok" })
 }
