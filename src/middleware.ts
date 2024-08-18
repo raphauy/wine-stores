@@ -66,7 +66,7 @@ function getHostRewrite(host: string) {
 
         case 'libro.preview.localhost:3000':
             return 'uruguayenvinos'
-        case 'libro.preview.latidio.com':
+        case 'preview.latidio.com':
             return 'uruguayenvinos'
         case 'libro.localhost:3000':
             return 'uruguayenvinos'
