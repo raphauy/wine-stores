@@ -21,11 +21,13 @@ export default function Footer(){
           <div className='mt-4 flex items-center justify-center md:mt-0'>
             <div className='flex space-x-8 items-center'>
               <Link
+                prefetch={false}
                 href='/terminos'
                 className='text-sm text-muted-foreground hover:text-gray-600'>
                 Términos del servicio
               </Link>
               <Link
+                prefetch={false}
                 href='/privacidad'
                 className='text-sm text-muted-foreground hover:text-gray-600'>
                 Política de privacidad

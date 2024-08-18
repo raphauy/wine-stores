@@ -34,7 +34,7 @@ export default auth((req) => {
         
         return NextResponse.rewrite(new URL(newUrl, req.url))
     } else {
-        console.log('no hostRewrite')        
+        //console.log('no hostRewrite')        
     }
 
     return
